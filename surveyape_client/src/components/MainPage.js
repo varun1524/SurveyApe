@@ -29,7 +29,7 @@ class MainPage extends Component {
                         email: userdata.email
                     });
                     this.handlePageChange("/home/login")
-                } else if (response.status === 401) {
+                } else if (response.status === 400) {
                     console.log("State");
                     this.setState({
                         ...this.state,
@@ -62,6 +62,7 @@ class MainPage extends Component {
 
         API.doLogin(loginData)
             .then((res) => {
+                console.log(res.status);
                 if(res.status === 200){
                     this.setState({
                         ...this.state,
@@ -77,7 +78,7 @@ class MainPage extends Component {
 
                     this.handlePageChange("/user/home")
                 }
-                else if(res.status===301){
+                else if(res.status===400){
                     this.setState({
                         ...this.state,
                         isLoggedIn: false,
@@ -85,7 +86,7 @@ class MainPage extends Component {
                     });
                     // this.props.history.push("/login")
                 }
-                else if(res.status===401){
+                else if(res.status===404){
                     this.setState({
                         ...this.state,
                         isLoggedIn: false,
@@ -99,7 +100,7 @@ class MainPage extends Component {
     handleLogout=(()=>{
         API.doLogout()
             .then((res) => {
-                if(res.status===201){
+                if(res.status===200){
                     // sessionStorage.removeItem('username');
                     this.setState({
                         ...this.state,
@@ -110,7 +111,7 @@ class MainPage extends Component {
                     this.props.setResolvedIssues([]);
                     this.handlePageChange("/");
                 }
-                else if(res.status===401){
+                else if(res.status===400){
                     this.setState({
                         ...this.state,
                         isLoggedIn: true,
@@ -126,23 +127,20 @@ class MainPage extends Component {
 
     doesSessionExist = (()=>{
         API.validateSession().then((response) => {
+            console.log(response.status);
             if(response.status === 200){
                 response.json().then((data) => {
-                    this.setState({
-                        ...this.state,
-                        isLoggedIn : true,
-                        email : data.email
-                    })
+                    this.props.login_success(data);
                 });
-                this.props.history.push("/user/home");
+                this.handlePageChange("/user/home");
             }
-            else if(response.status === 203) {
+            else if(response.status === 404) {
                 this.setState({
                     ...this.state,
                     isLoggedIn : false,
                     email : ""
                 });
-                this.props.history.push("/home/signup");
+                this.handlePageChange("/home/signup");
             }
         });
     });
@@ -161,7 +159,6 @@ class MainPage extends Component {
                             {this.doesSessionExist()}
                         </div>
                     )}/>
-
                     <Route path="/home" render={() => (
                         <div>
                             <div className="container-fluid">

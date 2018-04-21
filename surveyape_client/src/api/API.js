@@ -5,7 +5,7 @@ const headers = {
 };
 
 export const validateSession = () =>
-    fetch(`${api}/users/validateSession`, {
+    fetch(`${api}/user/validateSession`, {
         method: 'POST',
         headers: {
             ...headers,
@@ -14,14 +14,14 @@ export const validateSession = () =>
         credentials:'include'
         // body: JSON.stringify()
     }).then(res => {
-        return res.status;
+        return res;
     }).catch(error => {
         console.log("This is error");
         return error;
     });
 
 export const doLogout = () =>
-    fetch(`${api}/users/logout`, {
+    fetch(`${api}/user/logout`, {
         method: 'POST',
         headers: {
             ...headers,
@@ -59,11 +59,12 @@ export const doLogin = (payload) =>
             ...headers,
             'Content-Type': 'application/json'
         },
+        credentials:'include',
         body: JSON.stringify(payload)
     }).then(res => {
         return res;
     }).catch(error => {
-            console.log("This is error");
-            console.log(error);
-            return error;
-        });
+        console.log("This is error");
+        console.log(error);
+        return error;
+    });
