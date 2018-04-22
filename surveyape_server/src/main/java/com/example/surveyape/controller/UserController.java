@@ -28,11 +28,14 @@ public class UserController {
         try {
             JSONObject jsonObject = new JSONObject(body);
             User user = new User(jsonObject.getString("email"), jsonObject.getString("firstname"), jsonObject.getString("lastname"), jsonObject.getString("password"));
-            user = userService.saveUser(user);
+            user = userService.registerUser(user);
             if(user!=null){
                 String msgBody = MailUtility.createVerificationMsg(user.getVerificationCode());
                 mailService.sendEmail(user.getEmail(),msgBody," Verify Account");
                 responseEntity = new ResponseEntity(user, HttpStatus.OK);
+            }
+            else{
+                responseEntity = new ResponseEntity(user, HttpStatus.FOUND);
             }
         }
         catch (Exception e){
@@ -46,13 +49,21 @@ public class UserController {
         ResponseEntity responseEntity = new ResponseEntity(null, HttpStatus.BAD_REQUEST);
         try{
             JSONObject jsonObject = new JSONObject(body);
-            User user = userService.findByEmailAndPassword(jsonObject.getString("email"), jsonObject.getString("password"));
+            User user = userService.findByEmail(jsonObject.getString("email"));
             if(user!=null){
-                httpSession.setAttribute("email", jsonObject.getString("email"));
-                jsonObject = new JSONObject(user);
-                jsonObject.remove("password");
-                System.out.println(jsonObject);
-                responseEntity = new ResponseEntity(jsonObject.toString(), HttpStatus.OK);
+                //TODO: put verified check
+                if(user.getPassword().equals(jsonObject.getString("password"))){
+                    httpSession.setAttribute("email", jsonObject.getString("email"));
+                    jsonObject = new JSONObject(user);
+                    jsonObject.remove("password");
+                    jsonObject.remove("verificationCode");
+                    jsonObject.remove("verified");
+                    System.out.println(jsonObject);
+                    responseEntity = new ResponseEntity(jsonObject.toString(), HttpStatus.OK);
+                }
+            }
+            else{
+                responseEntity = new ResponseEntity(null, HttpStatus.NOT_FOUND);
             }
         }
         catch (Exception e){

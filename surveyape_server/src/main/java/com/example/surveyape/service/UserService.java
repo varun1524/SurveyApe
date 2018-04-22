@@ -31,4 +31,29 @@ public class UserService {
         }
         return user;
     }
+
+    public User findByEmail(String email){
+        User user = null;
+        try{
+            user = userRepository.findByEmail(email);
+        }
+        catch (Exception e){
+            throw e;
+        }
+        return user;
+    }
+
+    public User registerUser(User user){
+        User user1 = null;
+        try{
+            if(userRepository.findByEmail(user.getEmail())==null) {
+                userRepository.save(user1);
+            }
+        }
+        catch (Exception e){
+            throw e;
+        }
+        return user1;
+    }
 }
+
