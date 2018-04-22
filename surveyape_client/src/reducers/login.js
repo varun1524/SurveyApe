@@ -2,7 +2,7 @@ import {actionTypes} from "../actions/actionTypes";
 
 const userdata = [];
 
-const user = (state = userdata,action)=>
+const user = (state = userdata, action)=>
 {
     switch (action.type) {
         case actionTypes.LOGIN_SUCCESS :
