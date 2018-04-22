@@ -3,7 +3,7 @@ import HeaderComponent from './Header';
 
 import '../stylesheets/DemoSignIn.css';
 
-class DemoSignIn extends Component {
+class SignIn extends Component {
 
     constructor() {
         super();
@@ -33,4 +33,4 @@ class DemoSignIn extends Component {
     }
 }
 
-export default DemoSignIn;
+export default SignIn;
