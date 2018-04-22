@@ -7,6 +7,10 @@ import User from './User';
 import {login_success, logout_success} from "../actions/login";
 import {connect} from 'react-redux';
 
+// 1
+import DemoSignIn from './DemoSignIn';
+import DemoSignUp from './DemoSignUp';
+
 class MainPage extends Component {
 
     state={
@@ -124,7 +128,7 @@ class MainPage extends Component {
         this.props.history.push(page);
     });
 
-    doesSessionExist = (()=>{
+    /*doesSessionExist = (()=>{
         API.validateSession().then((response) => {
             if(response.status === 200){
                 response.json().then((data) => {
@@ -145,7 +149,7 @@ class MainPage extends Component {
                 this.props.history.push("/home/signup");
             }
         });
-    });
+    });*/
 
     componentDidMount(){
 
@@ -176,20 +180,22 @@ class MainPage extends Component {
                                         </div>
                                         <div className="col-lg-5 col-xs-5 col-md-5 col-sm-5">
                                             <Switch>
-                                                <Route path= "/home/signup" render={() => (
-                                                    <div>
-                                                        <SignUp
-                                                            handleSignUp={this.handleSignUp}
-                                                            handlePageChange={this.handlePageChange}
-                                                        />
-                                                    </div>
-                                                )}/>
                                                 <Route path="/home/login" render={() => (
                                                     <div>
-                                                        <Login
-                                                            handleLogin={this.handleLogin}
-                                                            handlePageChange={this.handlePageChange}
-                                                        />
+                                                        {/*<Login*/}
+                                                        {/*handleLogin={this.handleLogin}*/}
+                                                        {/*handlePageChange={this.handlePageChange}*/}
+                                                        {/*/>*/}
+                                                        <DemoSignIn />
+                                                    </div>
+                                                )}/>
+                                                <Route path= "/home/signup" render={() => (
+                                                    <div>
+                                                        {/*<SignUp*/}
+                                                            {/*handleSignUp={this.handleSignUp}*/}
+                                                            {/*handlePageChange={this.handlePageChange}*/}
+                                                        {/*/>*/}
+                                                        <DemoSignUp />
                                                     </div>
                                                 )}/>
                                             </Switch>
@@ -223,7 +229,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-    console.log(state);
+    // console.log(state);
     return {state : state};
 }
 

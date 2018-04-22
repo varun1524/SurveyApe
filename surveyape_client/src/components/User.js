@@ -3,6 +3,13 @@ import * as API from '../api/API';
 import { Route, withRouter, Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
 
+
+import '../stylesheets/User.css';
+import QuestionComponent from "./QuestionComponent";
+import QuestionSidebar from "./QuestionSidebar";
+import QuestionDashboard from './QuestionDashboard';
+import Header from './Header';
+
 class User extends Component {
 
     constructor(){
@@ -12,7 +19,7 @@ class User extends Component {
     }
 
     componentWillMount(){
-        console.log(this.state);
+        // console.log(this.state);
         // API.validateSession().then((response)=>{
         //     if(response.status===201){
         //         console.log("session active");
@@ -37,18 +44,33 @@ class User extends Component {
     }
 
     render() {
-        console.log(this.props);
+        // console.log(this.props);
 
         return (
-            <div className="container-fluid">
-                Hello I am {this.props.state.user.firstname}
+            <div className="User">
+                <div>
+                    <Header />
+                </div>
+                <div className="user_body">
+                    <div className="user_body_navbar">
+                        <QuestionSidebar handlePageChange={this.props.handlePageChange}/>
+                    </div>
+
+                    <div className="user_body_dashboard">
+                        <QuestionDashboard/>
+                    </div>
+
+                </div>
+                {/*Hello I am {this.props.state.user.firstname}*/}
+
             </div>
+
         );
     }
 }
 
 function mapStateToProps(state) {
-    console.log(state);
+    // console.log(state);
     return {state : state};
 }
 
