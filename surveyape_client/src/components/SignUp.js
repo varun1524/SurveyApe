@@ -4,7 +4,7 @@ import HeaderComponent from './Header';
 import '../stylesheets/DemoSignUp.css';
 import * as API from "../api/API";
 
-class DemoSignUp extends Component {
+class SignUp extends Component {
 
     constructor() {
         super();
@@ -109,4 +109,4 @@ class DemoSignUp extends Component {
     }
 }
 
-export default DemoSignUp;
+export default SignUp;
