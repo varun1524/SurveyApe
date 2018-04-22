@@ -22,6 +22,25 @@ public class User {
 
     private String password;
 
+    private Integer verificationCode;
+
+    private Boolean verified;
+
+    public void setVerificationCode(Integer verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public void setVerified(Boolean verified) {
+        this.verified = verified;
+    }
+
+    public Integer getVerificationCode() {
+        return verificationCode;
+    }
+
+    public Boolean getVerified() {
+        return verified;
+    }
     public User(){}
 
     public User(String email, String firstname, String lastname, String password){
@@ -29,6 +48,8 @@ public class User {
         this.firstname = firstname;
         this.lastname = lastname;
         this.password = password;
+        this.verificationCode = (int)((Math.random() * 99999)+100000);
+        this.verified = false;
     }
 
     public String getUserId() {
