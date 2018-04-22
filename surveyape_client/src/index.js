@@ -8,9 +8,7 @@ import { Provider } from 'react-redux';
 import allreducers from './reducers/index'
 // import reducer from './reducers';
 
-const store = createStore(
-    allreducers
-);
+const store = createStore(allreducers);
 
 // const store = createStore(
 //     reducer,

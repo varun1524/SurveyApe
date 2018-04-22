@@ -1,22 +1,20 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+
+import { Route, withRouter, Switch } from 'react-router-dom';
 import './App.css';
-import MainPage from './components/MainPage';
 import {BrowserRouter} from 'react-router-dom';
+import DemoSignIn from './components/DemoSignIn';
+import DemoSignUp from './components/DemoSignUp';
 
 class App extends Component {
     render() {
         return (
             <div className="App">
-                <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo" />
-                    <h1 className="App-title">Welcome to React</h1>
-                </header>
-                <p className="App-intro">
-                    To get started, edit <code>src/App.js</code> and save to reload.
-                </p>
                 <BrowserRouter>
-                    <MainPage/>
+                    <Switch>
+                        <Route path= "/signup" render = {() => ( <DemoSignUp />)}/>
+                        <Route path= "/" render = {() => (<DemoSignIn />)}/>
+                    </Switch>
                 </BrowserRouter>
             </div>
         );
