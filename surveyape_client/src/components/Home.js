@@ -10,7 +10,7 @@ import QuestionSidebar from "./QuestionSidebar";
 import QuestionDashboard from './QuestionDashboard';
 import Header from './Header';
 
-class User extends Component {
+class Home extends Component {
 
     constructor(){
         super();
@@ -74,4 +74,4 @@ function mapStateToProps(state) {
     return {state : state};
 }
 
-export default withRouter(connect(mapStateToProps, null)(User));
+export default withRouter(connect(mapStateToProps, null)(Home));

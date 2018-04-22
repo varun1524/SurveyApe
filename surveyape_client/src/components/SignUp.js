@@ -4,7 +4,7 @@ import HeaderComponent from './Header';
 import '../stylesheets/DemoSignUp.css';
 import * as API from "../api/API";
 
-class DemoSignUp extends Component {
+class SignUp extends Component {
 
     constructor() {
         super();
@@ -100,7 +100,11 @@ class DemoSignUp extends Component {
                             <input type="button" id="button" className="btn btn-primary col-sm-8 col-md-8 col-lg-8"
                                    onClick={()=>this.handleSignUp()} value="Sign Up"/>
 
-                            <span className="sign-up-password">Have an account ? <a href="/">Login</a></span>
+                            <span className="sign-up-password">Have an account ?
+                                <Link to={'/signin'} component={DemoSignUp}>
+                                    Sign In
+                                </Link>
+                            </span>
                         </div>
                     </form>
                 </div>
@@ -109,4 +113,4 @@ class DemoSignUp extends Component {
     }
 }
 
-export default DemoSignUp;
+export default SignUp;

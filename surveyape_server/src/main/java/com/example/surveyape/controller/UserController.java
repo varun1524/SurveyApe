@@ -8,7 +8,6 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.MailException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -23,7 +22,7 @@ public class UserController {
     @Autowired
     MailService mailService;
 
-    @PostMapping(path = "/signUp")
+    @PostMapping(path = "/signup")
     public ResponseEntity signup(@RequestBody String body){
         ResponseEntity responseEntity = new ResponseEntity(null, HttpStatus.BAD_REQUEST);
         try {
@@ -80,6 +79,4 @@ public class UserController {
         }
         return responseEntity;
     }
-    
-
 }

@@ -48,7 +48,8 @@ export const doSignUp = (payload) =>
         }).then(res => {
         return res;
     }).catch(error => {
-        console.log("Error: "+error);
+        console.log("Error: ");
+        console.log(error);
         return error;
     });
 
