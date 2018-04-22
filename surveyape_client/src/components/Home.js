@@ -43,6 +43,13 @@ class Home extends Component {
         // this.fetchDirectoryData(this.state.dirpath);
     }
 
+    handleLogout = (()=>{
+        API.doLogout().then((response)=>{
+            console.log(response.status);
+            this.props.history.push("/login");
+        });
+    });
+
     render() {
         console.log(this.props.state);
 
@@ -52,6 +59,7 @@ class Home extends Component {
                     <Header />
 
                     Hello I am {this.props.state.user.firstname}
+                    <button type="button" onClick={(()=>{this.handleLogout()})}>Logout</button>
                 </div>
                 <div className="user_body">
                     <div className="user_body_navbar">
