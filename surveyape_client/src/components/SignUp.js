@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import HeaderComponent from './Header';
-
+import Login from './Login';
 import '../stylesheets/DemoSignUp.css';
 import * as API from "../api/API";
+import {Link, withRouter} from 'react-router-dom';
 
 class SignUp extends Component {
 
@@ -18,20 +19,23 @@ class SignUp extends Component {
         };
     }
 
-    handleSignUp() {
-        console.log("[Signup Component] handleSignUp() userdetail: " + this.state);
+    handleSignUp = (() => {
+        console.log("[Signup Component] handleSignUp() userdetail: " );
+        console.log(this.state);
 
         API.doSignUp(this.state)
             .then((response) => {
+                console.log(response.status);
                 if (response.status === 200) {
                     this.setState({
                         ...this.state,
                         isLoggedIn: true,
                         message: "You have successfully signed up. Please login here"
                     });
-                    this.props.history.push("/");
+                    //TODO: Modal for verification
+                    this.props.history.push("/login");
 
-                } else if (response.status === 401) {
+                } else if (response.status === 400) {
                     console.log("State");
                     this.setState({
                         ...this.state,
@@ -40,11 +44,11 @@ class SignUp extends Component {
                     });
                     // this.props.history.push("/signup")
                 }
-                else if (response.status === 301) {
+                else if (response.status === 302) {
                     this.setState({
                         ...this.state,
                         isLoggedIn: false,
-                        message: "Email Id already exists. Try to sign up with another Email Id"
+                        message: "User already exists with emailId"
                     });
                     // this.props.history.push("/signup")
                 }
@@ -54,10 +58,9 @@ class SignUp extends Component {
                         isLoggedIn: false,
                         message: "Error while signing up."
                     });
-
                 }
             });
-    }
+    });
 
     render() {
         return (
@@ -94,15 +97,13 @@ class SignUp extends Component {
                                            lastname: event.target.value
                                        })
                                    }}/>
-
                             {/*<button onClick={() => this.handleSignUp()}>Sign Up</button>*/}
-
                             <input type="button" id="button" className="btn btn-primary col-sm-8 col-md-8 col-lg-8"
                                    onClick={()=>this.handleSignUp()} value="Sign Up"/>
 
                             <span className="sign-up-password">Have an account ?
-                                <Link to={'/signin'} component={DemoSignUp}>
-                                    Sign In
+                                <Link to={'/login'} component={Login}>
+                                    Login
                                 </Link>
                             </span>
                         </div>
@@ -113,4 +114,4 @@ class SignUp extends Component {
     }
 }
 
-export default SignUp;
+export default withRouter(SignUp);

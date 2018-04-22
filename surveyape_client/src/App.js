@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import * as API from './api/API';
 import { Route, withRouter, Switch } from 'react-router-dom';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import './App.css';
-import DemoSignIn from './components/DemoSignIn';
-import DemoSignUp from './components/DemoSignUp';
+import Login from './components/Login';
+import SignUp from './components/SignUp';
 import Home from './components/Home';
+import {login_success} from './actions/login';
 
 class App extends Component {
 
-    handlePageChange=((page)=>{
+    handlePageChange = ((page)=>{
         this.props.history.push(page);
     });
 
@@ -48,14 +51,13 @@ class App extends Component {
                             {this.validateSession()}
                         </div>
                     )}/>
-
                     <Route path= "/signup" render = {() => (
-                        <DemoSignUp
+                        <SignUp
                             handlePageChange = {this.handlePageChange}
                         />)}
                     />
                     <Route path= "/login" render = {() => (
-                        <DemoSignIn
+                        <Login
                             handlePageChange = {this.handlePageChange}
                         />)}
                     />
@@ -70,4 +72,14 @@ class App extends Component {
     }
 }
 
-export default withRouter(App);
+function mapStateToProps(state) {
+    return {
+        state: state
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({login_success: login_success}, dispatch)
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

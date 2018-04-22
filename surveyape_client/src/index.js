@@ -11,7 +11,7 @@ import {BrowserRouter} from 'react-router-dom';
 
 const store = createStore(
     allreducers,
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
 // const store = createStore(

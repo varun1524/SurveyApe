@@ -44,12 +44,14 @@ class Home extends Component {
     }
 
     render() {
-        // console.log(this.props);
+        console.log(this.props.state);
 
         return (
             <div className="User">
                 <div>
                     <Header />
+
+                    Hello I am {this.props.state.user.firstname}
                 </div>
                 <div className="user_body">
                     <div className="user_body_navbar">
@@ -61,7 +63,7 @@ class Home extends Component {
                     </div>
 
                 </div>
-                {/*Hello I am {this.props.state.user.firstname}*/}
+
 
             </div>
 
