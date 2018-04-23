@@ -4,9 +4,9 @@ import { Route, withRouter, Switch } from 'react-router-dom';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import './App.css';
-import Login from './components/Login';
-import SignUp from './components/SignUp';
-import Home from './components/Home';
+import Login from './components/login';
+import SignUp from './components/signup';
+import Home from './components/home';
 import {login_success} from './actions/login';
 
 class App extends Component {
