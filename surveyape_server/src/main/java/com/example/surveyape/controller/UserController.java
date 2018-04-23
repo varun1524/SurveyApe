@@ -19,6 +19,7 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
     @Autowired
     MailService mailService;
 
@@ -65,6 +66,19 @@ public class UserController {
             else{
                 responseEntity = new ResponseEntity(null, HttpStatus.NOT_FOUND);
             }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return responseEntity;
+    }
+
+    @PostMapping(path = "/logout")
+    public ResponseEntity logout(HttpSession httpSession){
+        ResponseEntity responseEntity = new ResponseEntity(null, HttpStatus.BAD_REQUEST);
+        try{
+            httpSession.removeAttribute("email");
+            responseEntity = new ResponseEntity(null, HttpStatus.OK);
         }
         catch (Exception e){
             e.printStackTrace();
