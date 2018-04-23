@@ -1,0 +1,11 @@
+.surveyeedashboard {
+    width: 98%;
+    height: 100%;
+    margin: 1% 1%;
+    background-color: #f1f1f1;
+    border: 1px solid #cccccc;
+}
+
+.surveyeedashboard h3 {
+    padding: 5px 10px;
+}
