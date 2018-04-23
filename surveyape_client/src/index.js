@@ -7,7 +7,6 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import allreducers from './reducers/index'
 import {BrowserRouter} from 'react-router-dom';
-// import reducer from './reducers';
 
 const store = createStore(
     allreducers,
