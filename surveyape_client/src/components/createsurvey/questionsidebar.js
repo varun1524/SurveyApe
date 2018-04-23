@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {chooseQuestion} from '../actions/question';
-import QuestionComponent from './QuestionComponent';
-import QuestionDashboard from './QuestionDashboard';
+import {chooseQuestion} from '../../actions/question';
+import QuestionComponent from './questioncomponent';
+import QuestionDashboard from './questiondashboard';
 
-import '../stylesheets/QuestionSidebar.css';
+import '../../stylesheets/createsurvey/questionsidebar.css';
 
 class QuestionSidebar extends Component {
 

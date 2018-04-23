@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import '../stylesheets/QuestionComponent.css';
+import '../../stylesheets/createsurvey/questioncomponent.css';
 
 class QuestionComponent extends Component {
 
