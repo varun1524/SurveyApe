@@ -4,11 +4,13 @@ import { Route, withRouter, Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
 
 
-import '../stylesheets/User.css';
-import QuestionComponent from "./QuestionComponent";
-import QuestionSidebar from "./QuestionSidebar";
-import QuestionDashboard from './QuestionDashboard';
-import Header from './Header';
+import '../stylesheets/home.css';
+import QuestionComponent from "./createsurvey/questioncomponent";
+import QuestionSidebar from "./createsurvey/questionsidebar";
+import QuestionDashboard from './createsurvey/questiondashboard';
+import SurveyorDashboard from './userdashboard/surveyordashboard';
+import SurveyeeDashboard from './userdashboard/surveyeedashboard';
+import Header from './header';
 
 class Home extends Component {
 
@@ -43,36 +45,19 @@ class Home extends Component {
         // this.fetchDirectoryData(this.state.dirpath);
     }
 
-    handleLogout = (()=>{
-        API.doLogout().then((response)=>{
-            console.log(response.status);
-            this.props.history.push("/login");
-        });
-    });
 
     render() {
         console.log(this.props.state);
 
         return (
             <div className="User">
-                <div>
-                    <Header />
-
-                    Hello I am {this.props.state.user.firstname}
-                    <button type="button" onClick={(()=>{this.handleLogout()})}>Logout</button>
-                </div>
-                <div className="user_body">
-                    <div className="user_body_navbar">
-                        <QuestionSidebar handlePageChange={this.props.handlePageChange}/>
-                    </div>
-
-                    <div className="user_body_dashboard">
-                        <QuestionDashboard/>
-                    </div>
-
+                <Header />
+                <div className="welcome-user">
+                    <h3>Welcome, </h3> <h5>{this.props.state.user.firstname}</h5>
                 </div>
 
-
+                <SurveyorDashboard />
+                <SurveyeeDashboard />
             </div>
 
         );
