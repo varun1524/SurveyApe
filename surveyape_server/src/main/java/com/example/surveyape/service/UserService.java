@@ -47,7 +47,7 @@ public class UserService {
         User user1 = null;
         try{
             if(userRepository.findByEmail(user.getEmail())==null) {
-                userRepository.save(user1);
+                user1 = userRepository.save(user);
             }
         }
         catch (Exception e){
