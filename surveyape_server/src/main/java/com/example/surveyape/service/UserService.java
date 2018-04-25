@@ -1,11 +1,10 @@
 package com.example.surveyape.service;
 
-import com.example.surveyape.entity.User;
 import com.example.surveyape.repository.UserRepository;
 import com.example.surveyape.utils.UserUtility;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.stereotype.Service;
+import com.example.surveyape.entity.User;
 
 @Service
 public class UserService {
@@ -51,8 +50,6 @@ public class UserService {
         try{
             if(userRepository.findByEmail(user.getEmail())==null)
                 user1 = userRepository.save(user);
-
-            }
         }
         catch (Exception e){
             throw e;

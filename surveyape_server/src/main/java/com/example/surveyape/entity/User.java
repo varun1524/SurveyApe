@@ -1,7 +1,10 @@
 package com.example.surveyape.entity;
 
 import org.hibernate.annotations.GenericGenerator;
-import javax.persistence.*;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 @Entity
 public class User {
@@ -19,24 +22,10 @@ public class User {
 
     private String password;
 
-    @Column(unique = true)
     private Integer verificationcode;
 
     private Boolean verified;
 
-    public User(){}
-
-    public User(String email, String firstname, String lastname, String password){
-        this.email = email;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.password = password;
-        this.verificationcode = (int)((Math.random() * 99999)+100000);
-        this.verified = false;
-    }
-    public String toString(){
-        return "User : [firstname: "+this.firstname+" lastname: "+this.lastname+" email: "+this.email+"]";
-    }
     public void setVerificationCode(Integer verificationcode) {
         this.verificationcode = verificationcode;
     }
@@ -51,6 +40,16 @@ public class User {
 
     public Boolean getVerified() {
         return verified;
+    }
+    public User(){}
+
+    public User(String email, String firstname, String lastname, String password){
+        this.email = email;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.password = password;
+        this.verificationcode = (int)((Math.random() * 99999)+100000);
+        this.verified = false;
     }
 
     public String getUserId() {
