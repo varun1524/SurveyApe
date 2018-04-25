@@ -47,17 +47,17 @@ public class UserService {
     }
 
     public User registerUser(User user){
+        User user1 = null;
         try{
-            System.out.println(user+" user email: "+user.getEmail());
-            System.out.println(userRepository.findByEmail(user.getEmail()));
-            if(userRepository.findByEmail(user.getEmail())==null) {
-                userRepository.save(user);
+            if(userRepository.findByEmail(user.getEmail())==null)
+                user1 = userRepository.save(user);
+
             }
         }
         catch (Exception e){
             throw e;
         }
-        return user;
+        return user1;
     }
 
     public Integer verifyUserAccount(Integer code){
@@ -74,4 +74,3 @@ public class UserService {
 
     }
 }
-

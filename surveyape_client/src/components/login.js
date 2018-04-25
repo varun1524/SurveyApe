@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import HeaderComponent from './Header';
+import HeaderComponent from './header';
 import {Link, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import SignUp from './SignUp';
+import SignUp from './signup';
 import {login_success} from "../actions/login";
 import * as API from '../api/API';
-import '../stylesheets/DemoSignIn.css';
+import '../stylesheets/signin.css';
 
 class Login extends Component {
 

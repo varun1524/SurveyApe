@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import HeaderComponent from './Header';
-import Login from './Login';
-import '../stylesheets/DemoSignUp.css';
+import HeaderComponent from './header';
+import Login from './login';
+import '../stylesheets/signup.css';
 import * as API from "../api/API";
 import {Link, withRouter} from 'react-router-dom';
 

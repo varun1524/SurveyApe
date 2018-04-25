@@ -1,0 +1,55 @@
+body {
+    font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+}
+
+input[type = button]{
+    background-color: #52BE80;
+    text-align: center;
+    font-size: 18px;
+    padding: 10px 20px;
+    border: none;
+    margin-top: 3px;
+    margin-right: 3px;
+    letter-spacing: 2px;
+    color: white;
+}
+
+input[type = button]:hover{
+    background-color: #54CB8B;
+
+}
+
+.header-child {
+    overflow: hidden;
+    background-color: #52BE80;
+    letter-spacing: 2px;
+}
+
+.header-child a {
+    float: left;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 10px 20px;
+}
+
+.header-child a.logo {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.header-child-right {
+    float: right;
+}
+
+/*@media screen and (max-width: 500px) {*/
+    /*.header a {*/
+        /*float: none;*/
+        /*display: block;*/
+        /*text-align: left;*/
+    /*}*/
+    /*.header-right {*/
+        /*float: none;*/
+    /*}*/
+/*}*/

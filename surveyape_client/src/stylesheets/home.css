@@ -18,3 +18,15 @@
     background-color: #f1f1f1;
     margin-right: 5px;
 }
+
+.welcome-user {
+    width: 98%;
+    height: 40%;
+    margin: 1% 1%;
+    background-color: #f1f1f1;
+    border: 1px solid #cccccc;
+}
+
+.welcome-user h3 {
+    padding: 5px 10px;
+}
