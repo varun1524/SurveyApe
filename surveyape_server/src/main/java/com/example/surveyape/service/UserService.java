@@ -2,11 +2,14 @@ package com.example.surveyape.service;
 
 import com.example.surveyape.entity.User;
 import com.example.surveyape.repository.UserRepository;
+import com.example.surveyape.utils.UserUtility;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
+
     @Autowired
     UserRepository userRepository;
 
@@ -44,16 +47,31 @@ public class UserService {
     }
 
     public User registerUser(User user){
-        User user1 = null;
         try{
+            System.out.println(user+" user email: "+user.getEmail());
+            System.out.println(userRepository.findByEmail(user.getEmail()));
             if(userRepository.findByEmail(user.getEmail())==null) {
-                userRepository.save(user1);
+                userRepository.save(user);
             }
         }
         catch (Exception e){
             throw e;
         }
-        return user1;
+        return user;
+    }
+
+    public Integer verifyUserAccount(Integer code){
+        User user = userRepository.findByVerificationcode(code);
+        if(user == null){
+            return UserUtility.USER_NOT_FOUND;
+        }else if(user.getVerified()){
+            return UserUtility.ALREADY_VERIFIED;
+        }else{
+            user.setVerified(true);
+            userRepository.save(user);
+            return UserUtility.SUCCESSFULLY_VERIFIED;
+        }
+
     }
 }
 

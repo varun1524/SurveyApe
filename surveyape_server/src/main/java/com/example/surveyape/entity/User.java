@@ -1,10 +1,7 @@
 package com.example.surveyape.entity;
 
 import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class User {
@@ -22,25 +19,11 @@ public class User {
 
     private String password;
 
-    private Integer verificationCode;
+    @Column(unique = true)
+    private Integer verificationcode;
 
     private Boolean verified;
 
-    public void setVerificationCode(Integer verificationCode) {
-        this.verificationCode = verificationCode;
-    }
-
-    public void setVerified(Boolean verified) {
-        this.verified = verified;
-    }
-
-    public Integer getVerificationCode() {
-        return verificationCode;
-    }
-
-    public Boolean getVerified() {
-        return verified;
-    }
     public User(){}
 
     public User(String email, String firstname, String lastname, String password){
@@ -48,8 +31,26 @@ public class User {
         this.firstname = firstname;
         this.lastname = lastname;
         this.password = password;
-        this.verificationCode = (int)((Math.random() * 99999)+100000);
+        this.verificationcode = (int)((Math.random() * 99999)+100000);
         this.verified = false;
+    }
+    public String toString(){
+        return "User : [firstname: "+this.firstname+" lastname: "+this.lastname+" email: "+this.email+"]";
+    }
+    public void setVerificationCode(Integer verificationcode) {
+        this.verificationcode = verificationcode;
+    }
+
+    public void setVerified(Boolean verified) {
+        this.verified = verified;
+    }
+
+    public Integer getVerificationcode() {
+        return verificationcode;
+    }
+
+    public Boolean getVerified() {
+        return verified;
     }
 
     public String getUserId() {
