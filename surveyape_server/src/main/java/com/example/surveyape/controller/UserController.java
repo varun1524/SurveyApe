@@ -22,7 +22,7 @@ public class UserController {
     @Autowired
     MailService mailService;
 
-    @PostMapping(path = "/signup")
+    @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public ResponseEntity signup(@RequestBody String body){
         ResponseEntity responseEntity = new ResponseEntity(null, HttpStatus.BAD_REQUEST);
         try {
@@ -45,7 +45,7 @@ public class UserController {
         return responseEntity;
     }
 
-    @PostMapping(path = "/login")
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity login(@RequestBody String body, HttpSession httpSession){
         ResponseEntity responseEntity = new ResponseEntity(null, HttpStatus.BAD_REQUEST);
         try{
@@ -53,14 +53,19 @@ public class UserController {
             User user = userService.findByEmail(jsonObject.getString("email"));
             if(user!=null){
                 //TODO: put verified check
-                if(user.getPassword().equals(jsonObject.getString("password"))){
-                    httpSession.setAttribute("email", jsonObject.getString("email"));
-                    jsonObject = new JSONObject(user);
-                    jsonObject.remove("password");
-                    jsonObject.remove("verificationCode");
-                    jsonObject.remove("verified");
-                    System.out.println(jsonObject);
-                    responseEntity = new ResponseEntity(jsonObject.toString(), HttpStatus.OK);
+                if(user.getVerified()){
+                    if(user.getPassword().equals(jsonObject.getString("password"))){
+                        httpSession.setAttribute("email", jsonObject.getString("email"));
+                        jsonObject = new JSONObject(user);
+                        jsonObject.remove("password");
+                        jsonObject.remove("verificationCode");
+                        jsonObject.remove("verified");
+                        System.out.println(jsonObject);
+                        responseEntity = new ResponseEntity(jsonObject.toString(), HttpStatus.OK);
+                    }
+                }
+                else{
+                    responseEntity = new ResponseEntity(jsonObject.toString(), HttpStatus.NON_AUTHORITATIVE_INFORMATION);
                 }
             }
             else{
@@ -73,7 +78,7 @@ public class UserController {
         return responseEntity;
     }
 
-    @PostMapping(path = "/logout")
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public ResponseEntity logout(HttpSession httpSession){
         ResponseEntity responseEntity = new ResponseEntity(null, HttpStatus.BAD_REQUEST);
         try{
@@ -86,7 +91,7 @@ public class UserController {
         return responseEntity;
     }
 
-    @PostMapping(path = "/validateSession")
+    @RequestMapping(value = "/validateSession", method = RequestMethod.POST)
     public ResponseEntity validateSession(HttpSession session){
         ResponseEntity responseEntity = null;
         try{
