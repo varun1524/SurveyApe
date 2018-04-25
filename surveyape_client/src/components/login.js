@@ -29,11 +29,18 @@ class Login extends Component {
                 });
                 this.props.history.push("/home")
             }
+            else if(response.status===203){
+                this.setState({
+                    ...this.state,
+                    message : "User not Verified. Please verify your account."
+                });
+                console.log("User not Verified. Please verify your account.")
+            }
             else if(response.status===404){
                 this.setState({
                     ...this.state,
                     message : "User not registered. Please sign up"
-                })
+                });
             }
             else if(response.status===400){
                 this.setState({
