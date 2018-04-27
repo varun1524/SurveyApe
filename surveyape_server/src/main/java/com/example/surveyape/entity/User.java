@@ -2,9 +2,10 @@ package com.example.surveyape.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.Constraint;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 public class User {
@@ -14,6 +15,7 @@ public class User {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String userId;
 
+    @Column(unique = true, nullable = false)
     private String email;
 
     private String firstname;
@@ -25,6 +27,15 @@ public class User {
     private Integer verificationcode;
 
     private Boolean verified;
+
+    @OneToMany(mappedBy = "user")
+    private List<Survey> surveyList;
+
+    @OneToMany(mappedBy = "user")
+    private List<Invitees> invitees;
+
+    @OneToMany(mappedBy = "user")
+    private List<SurveyResponse> surveyResponses;
 
     public void setVerificationCode(Integer verificationcode) {
         this.verificationcode = verificationcode;
@@ -41,6 +52,7 @@ public class User {
     public Boolean getVerified() {
         return verified;
     }
+
     public User(){}
 
     public User(String email, String firstname, String lastname, String password){
@@ -90,5 +102,33 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setVerificationcode(Integer verificationcode) {
+        this.verificationcode = verificationcode;
+    }
+
+    public List<Survey> getSurveyList() {
+        return surveyList;
+    }
+
+    public void setSurveyList(List<Survey> surveyList) {
+        this.surveyList = surveyList;
+    }
+
+    public List<Invitees> getInvitees() {
+        return invitees;
+    }
+
+    public void setInvitees(List<Invitees> invitees) {
+        this.invitees = invitees;
+    }
+
+    public List<SurveyResponse> getSurveyResponses() {
+        return surveyResponses;
+    }
+
+    public void setSurveyResponses(List<SurveyResponse> surveyResponses) {
+        this.surveyResponses = surveyResponses;
     }
 }
