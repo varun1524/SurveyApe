@@ -13,5 +13,6 @@ public class MailUtility {
         return msg;
     }
 
-    public static String verificationSuccessfulMessage = "Congratulations. You have successfully verified your account.";
+    public static final String verificationSuccessfulMessage = "Congratulations. You have successfully verified your account.";
+
 }
