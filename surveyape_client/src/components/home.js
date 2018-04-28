@@ -36,6 +36,7 @@ class Home extends Component {
     }
 
     componentDidMount(){
+        this.props.validateSession();
     }
 
     componentDidUpdate(){
