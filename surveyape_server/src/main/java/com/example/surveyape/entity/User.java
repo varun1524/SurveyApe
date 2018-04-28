@@ -1,5 +1,7 @@
 package com.example.surveyape.entity;
 
+import com.example.surveyape.view.UserView;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -8,22 +10,27 @@ import java.util.List;
 @Entity
 public class User {
 
+    @JsonView({UserView.summary.class})
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String userId;
 
+    @JsonView({UserView.summary.class})
     @Column(unique = true, nullable = false)
     private String email;
 
+    @JsonView({UserView.summary.class})
     private String firstname;
 
+    @JsonView({UserView.summary.class})
     private String lastname;
 
     private String password;
 
     private Integer verificationcode;
 
+    @JsonView({UserView.summary.class})
     private Boolean verified;
 
     @OneToMany(mappedBy = "user")
