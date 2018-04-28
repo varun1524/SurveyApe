@@ -7,7 +7,7 @@ import './App.css';
 import Login from './components/login';
 import SignUp from './components/signup';
 import Home from './components/home';
-import VerifyAccount from './components/VerifyAccount'
+import VerifyAccount from './components/verifyaccount'
 import {login_success} from './actions/login';
 
 class App extends Component {
