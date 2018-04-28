@@ -86,7 +86,7 @@ public class SurveyController {
 
     @JsonView({SurveyView.summary.class})
     @RequestMapping(value = "/deletequestion", method = RequestMethod.DELETE)
-    public ResponseEntity deleteQuestion(@RequestBody Map<String, String> map, HttpSession session){
+    public ResponseEntity deleteQuestion(@RequestParam Map<String, String> map, HttpSession session){
         ResponseEntity responseEntity = new ResponseEntity(null, HttpStatus.BAD_REQUEST);
         try {
             int result = questionService.deleteQuestion(map.get("question_id").toString());
@@ -109,7 +109,7 @@ public class SurveyController {
 
     @JsonView({SurveyView.summary.class})
     @RequestMapping(value = "/deleteoption", method = RequestMethod.DELETE)
-    public ResponseEntity deleteoption(@RequestBody Map<String, String> map, HttpSession session){
+    public ResponseEntity deleteoption(@RequestParam Map<String, String> map, HttpSession session){
         ResponseEntity responseEntity = new ResponseEntity(null, HttpStatus.BAD_REQUEST);
         try {
             int result = optionAnsService.deleteOption(map.get("option_id").toString());
