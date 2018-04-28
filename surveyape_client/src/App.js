@@ -66,6 +66,11 @@ class App extends Component {
                             handlePageChange = {this.handlePageChange}
                         />)}
                     />
+                    <Route path= "/verifyaccount" render = {() => (
+                        <Home
+                            handlePageChange = {this.handlePageChange}
+                        />)}
+                    />
                 </Switch>
             </div>
         );

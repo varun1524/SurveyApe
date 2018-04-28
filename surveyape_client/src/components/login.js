@@ -64,14 +64,14 @@ class Login extends Component {
                 <div className="sign-in-form">
                     <form>
                         <div className="sign-in-container">
-                            <input type="text" placeholder="Enter Username" name="email"
+                            <input className = "login-input-text" type="text" placeholder="Enter Username" name="email"
                                    onChange={(event) => {
                                        this.setState({
                                            ...this.state,
                                            email: event.target.value
                                        })
                                    }}/>
-                            <input type="password" placeholder="Enter Password" name="password"
+                            <input className = "login-input-text" type="password" placeholder="Enter Password" name="password"
                                    onChange={(event) => {
                                        this.setState({
                                            ...this.state,
