@@ -103,3 +103,39 @@ export const createSurvey = (payload) =>
         console.log(error);
         return error;
     });
+
+
+
+export const deleteQuestion = (questionId, surveyId) =>
+    fetch(`${api}/survey/deletequestion?question_id=${questionId}&survey_id=${surveyId}`, {
+        method: 'DELETE',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        credentials:'include',
+        body: JSON.stringify(payload)
+    }).then(res => {
+        return res;
+    }).catch(error => {
+        console.log("This is error");
+        console.log(error);
+        return error;
+    });
+
+export const deleteOption = (optionId, surveyId) =>
+    fetch(`${api}/survey/deleteoption?option_id=${optionId}&survey_id=${surveyId}`, {
+        method: 'DELETE',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        credentials:'include',
+        body: JSON.stringify(payload)
+    }).then(res => {
+        return res;
+    }).catch(error => {
+        console.log("This is error");
+        console.log(error);
+        return error;
+    });
