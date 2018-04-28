@@ -20,11 +20,7 @@ const survey = (state = survey_data, action)=>
         case actionTypes.ADD_QUESTION :
             console.log("ADD_QUESTION reducer",action.question_type);
             let add_questions = state.questions;
-            add_questions.push({
-                question_text:"",
-                question_type:action.data.question_type,
-                options:action.data.options
-            });
+            add_questions.push(action.data);
             return Object.assign({},state,{
                 questions:add_questions
             });
