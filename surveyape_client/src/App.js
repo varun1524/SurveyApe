@@ -7,6 +7,7 @@ import './App.css';
 import Login from './components/login';
 import SignUp from './components/signup';
 import Home from './components/home';
+import VerifyAccount from './components/VerifyAccount'
 import {login_success} from './actions/login';
 
 class App extends Component {
@@ -39,7 +40,7 @@ class App extends Component {
     });
 
     componentDidMount(){
-        this.validateSession();
+
     }
 
     render() {
@@ -64,8 +65,15 @@ class App extends Component {
                     <Route path= "/home" render = {() => (
                         <Home
                             handlePageChange = {this.handlePageChange}
+                            validateSession = {this.validateSession}
                         />)}
                     />
+                    <Route path= "/verifyaccount/:token" render = {(...match) => (
+                        <VerifyAccount
+                            handlePageChange = {this.handlePageChange}
+                            context={match}
+                        />
+                    )}/>
                 </Switch>
             </div>
         );
