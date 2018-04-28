@@ -2,3 +2,25 @@
     border: 1px solid #000;
     margin-top: 2px;
 }
+
+.question-input-box {
+    width: 80%;
+    float: left;
+}
+
+.add-option-button {
+    width: 15%;
+    float: right;
+}
+
+.option-input-box {
+
+}
+
+.question-yes-no-radio-button {
+    float: left;
+}
+
+.question-yes-no-radio-label {
+    margin-left: 20px;
+}

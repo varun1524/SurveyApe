@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {chooseQuestion} from '../../actions/question';
+import {addQuestion} from '../../actions/survey';
 import QuestionComponent from './questioncomponent';
 import QuestionDashboard from './questiondashboard';
 
@@ -17,9 +17,9 @@ class QuestionSidebar extends Component {
     }
 
     renderQuestionTypes() {
-        return this.props.state.questionTypes.map((question) => {
+        return this.props.questionTypes.map((question_type) => {
             return(
-                    <a key={question.id} href = "#" onClick={() => this.props.chooseQuestion(question)}>{question.question_type}</a>
+                    <a key={question_type.id} href = "#" onClick={() => this.props.addQuestion(question_type.question_type)}>{question_type.question_type}</a>
             )
         });
     }
@@ -39,12 +39,12 @@ class QuestionSidebar extends Component {
 
 function mapStateToProps(state) {
     return {
-        state: state
+        questionTypes: state.questionTypes
     };
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({chooseQuestion: chooseQuestion}, dispatch)
+    return bindActionCreators({addQuestion: addQuestion}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionSidebar);

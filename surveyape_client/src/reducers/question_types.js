@@ -11,6 +11,22 @@ const question_types = () => {
         {
             id: 3,
             question_type: "Dropdown"
+        },
+        {
+            id: 4,
+            question_type: "Yes No"
+        },
+        {
+            id: 5,
+            question_type: "Short Answer"
+        },
+        {
+            id: 6,
+            question_type: "Date Time"
+        },
+        {
+            id: 7,
+            question_type: "Star Rating"
         }
     ]
 }

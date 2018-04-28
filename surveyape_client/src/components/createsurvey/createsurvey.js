@@ -15,6 +15,7 @@ class createsurvey extends Component {
     }
 
     render() {
+        console.log("render createsurvey");
         return (
             <div className="createsurvey">
                 <Header />
