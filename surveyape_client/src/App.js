@@ -72,8 +72,8 @@ class App extends Component {
                         <VerifyAccount
                             handlePageChange = {this.handlePageChange}
                             context={match}
-                        />
-                    )}/>
+                        />)}
+                    />
                 </Switch>
             </div>
         );

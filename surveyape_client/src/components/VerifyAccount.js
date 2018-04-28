@@ -5,11 +5,15 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as API from '../api/API';
 import '../stylesheets/signin.css';
+import {Alert} from 'reactstrap';
 
 class VerifyAccount extends Component {
 
     constructor() {
         super();
+        this.state = {
+            message : ""
+        }
     }
 
 
@@ -27,21 +31,25 @@ class VerifyAccount extends Component {
                 console.log("User Verified Successfully");
                 response.json().then((data)=>{
                    console.log(data);
+                   alert(data.message);
                 });
-                // this.props.handlePageChange("/home");
+                this.props.handlePageChange("/login");
             }
             else if(response.status === 300) {
                 console.log("All ready verified");
                 response.json().then((data)=>{
                     console.log(data);
+                    alert(data.message);
                 });
-                // this.props.handlePageChange("/login");
+                this.props.handlePageChange("/login");
             }
             else {
                 console.log("Error");
-                // response.json().then((data)=>{
-                //     console.log(data);
-                // });
+                response.json().then((data)=>{
+                    console.log(data);
+                    alert(data.message);
+                });
+                this.props.handlePageChange("/login");
             }
         });
     });
@@ -51,7 +59,7 @@ class VerifyAccount extends Component {
             <div className="DemoSignIn">
                 <HeaderComponent />
                 <div className="sign-in-form">
-                    {this.verifyAccount(this.props.match.params)}
+                    {this.verifyAccount(this.props.match.params.token)}
                 </div>
             </div>
         );
