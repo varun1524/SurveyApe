@@ -22,8 +22,8 @@ const survey = (state = survey_data, action)=>
             let add_questions = state.questions;
             add_questions.push({
                 question_text:"",
-                question_type:action.question_type,
-                options:[]
+                question_type:action.data.question_type,
+                options:action.data.options
             });
             return Object.assign({},state,{
                 questions:add_questions

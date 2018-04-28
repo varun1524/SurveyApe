@@ -16,10 +16,32 @@ class QuestionSidebar extends Component {
         }
     }
 
+    addQuestion(question_type){
+        let payload ={}
+        payload.question_type = question_type;
+        if(question_type === "CheckBox" || question_type === "RadioGroup" || question_type === "DropDown"){
+            payload.options = []
+            this.props.addQuestion(payload)
+        }else if(question_type === "YesNo"){
+            payload.options = [{
+                option_type:"text",
+                option_text:"Yes"},
+                {option_type:"text",
+                option_text:"No"}]
+            this.props.addQuestion(payload);
+        }else if(question_type === "ShortAnswer" || question_type === "DateTime" || question_type === "StarRating"){
+            payload.options = [{
+                option_type:"text",
+                option_text:""}]
+            this.props.addQuestion(payload);
+        }
+
+    }
+
     renderQuestionTypes() {
         return this.props.questionTypes.map((question_type) => {
             return(
-                    <a key={question_type.id} href = "#" onClick={() => this.props.addQuestion(question_type.question_type)}>{question_type.question_type}</a>
+                    <a key={question_type.id} href = "#" onClick={() => this.addQuestion(question_type.question_type)}>{question_type.question_type}</a>
             )
         });
     }

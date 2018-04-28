@@ -1,9 +1,9 @@
 import {actionTypes} from "./actionTypes";
 
-export function addQuestion(question_type) {
+export function addQuestion(data) {
     return {
         type: actionTypes.ADD_QUESTION,
-        question_type
+        data
     }
 }
 
