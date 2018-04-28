@@ -5,12 +5,10 @@ import com.example.surveyape.entity.Question;
 import com.example.surveyape.entity.Survey;
 import com.example.surveyape.entity.User;
 import com.example.surveyape.repository.SurveyRepository;
+import com.example.surveyape.utils.QuestionUtility;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -42,14 +40,19 @@ public class SurveyService {
     public Survey updateSurvey(Map map){
         Survey survey = null;
         try{
-            survey = surveyRepository.findBySurveyId(map.get("survey_id").toString());
+            String surveyId = map.get("survey_id").toString();
+            survey = surveyRepository.findBySurveyId(surveyId);
             if(survey!=null){
                 survey.setSurveyName(map.get("survey_name").toString());
                 survey.setSurveyType(map.get("survey_type").toString());
-                survey.setCreationDate(new Date());
-                survey.setPublishDate(new SimpleDateFormat("yyyy-MM-dd-HH").parse(map.get("publish_date").toString()));
+                survey.setUpdateDate(new Date());
+//                survey.setPublishDate(new SimpleDateFormat("yyyy-MM-dd-HH").parse(map.get("publish_date").toString()));
                 List<Map> questionMapList = (List)map.get("questions");
-                survey.setQuestions(generateQuestionList(questionMapList));
+                survey.setQuestions(generateQuestionList(questionMapList, survey));
+                survey = surveyRepository.save(survey);
+                if(survey!=null){
+                    survey = surveyRepository.findBySurveyId(surveyId);
+                }
             }
         }
         catch (Exception e){
@@ -58,7 +61,7 @@ public class SurveyService {
         return survey;
     }
 
-    private List<Question> generateQuestionList(List<Map> questionMapList) {
+    private List<Question> generateQuestionList(List<Map> questionMapList, Survey survey) {
         Question question = null;
         List<Question> questionList = new LinkedList<>();
         for(Map map : questionMapList){
@@ -66,26 +69,44 @@ public class SurveyService {
             question.setQuestionId(map.get("question_id").toString());
             question.setQuestionText(map.get("question_text").toString());
             question.setQuestionType(map.get("question_type").toString());
-            if(question.getQuestionType().equals("checkbox") || question.getQuestionType().equals("radio") || question.getQuestionType().equals("dropdown")){
+            question.setSurvey(survey);
+            String questionType = question.getQuestionType().toLowerCase();
+            if(questionType.equals(QuestionUtility.CHECKBOX)
+                    ||
+                    question.getQuestionType().equals(QuestionUtility.RADIO)
+                    ||
+                    question.getQuestionType().equals(QuestionUtility.DROPDOWN)){
                 question.setMultipleChoice(true);
                 List<Map> answerMapList = (List)map.get("options");
-                question.setOptions(generateAnswersOptions(answerMapList));
+                question.setOptions(generateAnswersOptions(answerMapList, question));
             }
             questionList.add(question);
         }
         return questionList;
     }
 
-    private List<OptionAns> generateAnswersOptions(List<Map> answerMapList) {
+    private List<OptionAns> generateAnswersOptions(List<Map> answerMapList, Question question) {
         OptionAns answerOptions = null;
         List<OptionAns> answerOptionsList = new LinkedList<>();
         for(Map map : answerMapList){
             answerOptions = new OptionAns();
             answerOptions.setOptionType(map.get("option_type").toString());
             answerOptions.setOptionText(map.get("option_text").toString());
-            answerOptions.setOptionId(map.get("answer_id").toString());
+            answerOptions.setOptionId(map.get("option_id").toString());
+            answerOptions.setQuestion(question);
             answerOptionsList.add(answerOptions);
         }
         return answerOptionsList;
+    }
+
+    public Survey findBySurveyId(String id){
+        Survey survey = null;
+        try{
+            survey = surveyRepository.findBySurveyId(id);
+        }
+        catch (Exception e){
+            throw e;
+        }
+        return survey;
     }
 }
