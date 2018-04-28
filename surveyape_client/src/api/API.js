@@ -70,19 +70,36 @@ export const doLogin = (payload) =>
         return error;
     });
 
-  export const verifyAccount = (payload) =>
-      fetch (`${api}/user/verifyaccount?verificationcode=${payload}`,
-          {
-              method: 'GET',
-              headers: {
-                  ...headers,
-                  'Content-Type': 'application/json'
-              },
-              credentials : "include"
-          }).then(res => {
-          return res;
-      }).catch(error => {
-          console.log("Error: ");
-          console.log(error);
-          return error;
-});
+export const verifyAccount = (payload) =>
+    fetch (`${api}/user/verifyaccount?verificationcode=${payload}`,
+        {
+            method: 'GET',
+            headers: {
+                ...headers,
+                'Content-Type': 'application/json'
+            },
+            credentials : "include"
+        }).then(res => {
+        return res;
+    }).catch(error => {
+        console.log("Error: ");
+        console.log(error);
+        return error;
+    });
+
+export const createSurvey = (payload) =>
+    fetch(`${api}/survey/create`, {
+        method: 'POST',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        credentials:'include',
+        body: JSON.stringify(payload)
+    }).then(res => {
+        return res;
+    }).catch(error => {
+        console.log("This is error");
+        console.log(error);
+        return error;
+    });
