@@ -4,6 +4,9 @@ import com.example.surveyape.entity.User;
 import com.example.surveyape.service.*;
 import com.example.surveyape.utils.*;
 import java.util.*;
+
+import com.example.surveyape.view.UserView;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -22,6 +25,7 @@ public class UserController {
     @Autowired
     MailService mailService;
 
+    @JsonView({UserView.summary.class})
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public ResponseEntity signup(@RequestBody String body){
         ResponseEntity responseEntity = new ResponseEntity(null, HttpStatus.BAD_REQUEST);
@@ -45,27 +49,21 @@ public class UserController {
         return responseEntity;
     }
 
+    @JsonView({UserView.summary.class})
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity login(@RequestBody String body, HttpSession httpSession){
+    public ResponseEntity login(@RequestBody Map<String, String> map, HttpSession httpSession){
         ResponseEntity responseEntity = new ResponseEntity(null, HttpStatus.BAD_REQUEST);
         try{
-            JSONObject jsonObject = new JSONObject(body);
-            User user = userService.findByEmail(jsonObject.getString("email"));
+            User user = userService.findByEmail(map.get("email"));
             if(user!=null){
-                //TODO: put verified check
                 if(user.getVerified()){
-                    if(user.getPassword().equals(jsonObject.getString("password"))){
-                        httpSession.setAttribute("email", jsonObject.getString("email"));
-                        jsonObject = new JSONObject(user);
-                        jsonObject.remove("password");
-                        jsonObject.remove("verificationCode");
-                        jsonObject.remove("verified");
-                        System.out.println(jsonObject);
-                        responseEntity = new ResponseEntity(jsonObject.toString(), HttpStatus.OK);
+                    if(user.getPassword().equals(map.get("password"))){
+                        httpSession.setAttribute("email", map.get("email"));
+                        responseEntity = new ResponseEntity(user, HttpStatus.OK);
                     }
                 }
                 else{
-                    responseEntity = new ResponseEntity(jsonObject.toString(), HttpStatus.NON_AUTHORITATIVE_INFORMATION);
+                    responseEntity = new ResponseEntity(user, HttpStatus.NON_AUTHORITATIVE_INFORMATION);
                 }
             }
             else{
@@ -91,17 +89,18 @@ public class UserController {
         return responseEntity;
     }
 
+    @JsonView({UserView.summary.class})
     @RequestMapping(value = "/validateSession", method = RequestMethod.POST)
     public ResponseEntity validateSession(HttpSession session){
-        ResponseEntity responseEntity = null;
+        ResponseEntity responseEntity = new ResponseEntity(null, HttpStatus.NOT_FOUND);
         try{
             System.out.println(session.getAttribute("email"));
-            if (session.getAttribute("email") == null) {
-                responseEntity = new ResponseEntity(null, HttpStatus.NOT_FOUND);
-            } else {
+            if (session.getAttribute("email") != null) {
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.append("email", session.getAttribute("email"));
-                responseEntity = new ResponseEntity(jsonObject.toString(), HttpStatus.OK);
+                jsonObject.put("email", session.getAttribute("email"));
+                User user = userService.findByEmail(session.getAttribute("email").toString());
+                System.out.println(jsonObject);
+                responseEntity = new ResponseEntity(user, HttpStatus.OK);
             }
         }
         catch (Exception e){
@@ -111,25 +110,26 @@ public class UserController {
     }
 
     @RequestMapping(value = "/verifyaccount", method = RequestMethod.GET)
-    public ResponseEntity<?> verifyUserAccount(@RequestParam Map<String, String> passengerQueryMap){
+    public ResponseEntity<?> verifyUserAccount(@RequestParam Map<String, String> passengerQueryMap) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
-        String resMessage = "";
-        Integer verificationcode = Integer.parseInt(passengerQueryMap.get("verificationcode"));
-        try{
-            Integer verificationStatus = userService.verifyUserAccount(verificationcode);
-            if(verificationStatus == UserUtility.SUCCESSFULLY_VERIFIED){
-                resMessage = "User successfully verified.";
+        Map<String, String> responseMap = new HashMap<>();
+        responseMap.put("message", "Not a valid code !!!");
+        try {
+            Integer verificationCode = Integer.parseInt(passengerQueryMap.get("verificationcode"));
+            System.out.println("verification Code: " + verificationCode);
+            Integer verificationStatus = userService.verifyUserAccount(verificationCode);
+            if (verificationStatus == UserUtility.SUCCESSFULLY_VERIFIED) {
+                responseMap.put("message", "User successfully verified.");
                 status = HttpStatus.OK;
-            }else if(verificationStatus == UserUtility.ALREADY_VERIFIED){
-                resMessage = "Link expired as user already verified";
-            }else if(verificationStatus == UserUtility.USER_NOT_FOUND){
-                resMessage = "Not a valid code !!!";
+            } else if (verificationStatus == UserUtility.ALREADY_VERIFIED) {
+                responseMap.put("message", "Link expired as user already verified");
+            } else if (verificationStatus == UserUtility.USER_NOT_FOUND) {
+                responseMap.put("message", "Not a valid code !!!");
             }
-        }catch(Exception exp){
-            System.out.println("[UserController] Exception:"+exp.getMessage());
-            resMessage = exp.getMessage();
+        } catch (Exception exp) {
+            System.out.println("[UserController] Exception:" + exp.getMessage());
+            responseMap.put("message", exp.getMessage());
         }
-        return new ResponseEntity(resMessage,null, status);
-
+        return new ResponseEntity(responseMap, null, status);
     }
 }

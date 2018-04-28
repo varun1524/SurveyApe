@@ -21,33 +21,14 @@ class Home extends Component {
     }
 
     componentWillMount(){
-        // console.log(this.state);
-        // API.validateSession().then((response)=>{
-        //     if(response.status===201){
-        //         console.log("session active");
-        //     }
-        //     else if(response.status===203){
-        //         this.props.handlePageChange("/");
-        //     }
-        //     else{
-        //         console.log("Error");
-        //     }
-        // });
     }
 
     componentDidMount(){
+        this.props.validateSession();
     }
-
-    componentDidUpdate(){
-    }
-
-    componentWillUpdate(){
-        // this.fetchDirectoryData(this.state.dirpath);
-    }
-
 
     render() {
-        console.log(this.props.state);
+        console.log(this.props.state.user);
 
         return (
             <div className="User">

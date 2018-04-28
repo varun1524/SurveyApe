@@ -1,5 +1,3 @@
-
-
 const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://localhost:8080';
 
 const headers = {
@@ -72,34 +70,36 @@ export const doLogin = (payload) =>
         return error;
     });
 
-  export const verifyAccount1 = (payload) =>
-        fetch(`${api}/user/verifyaccount`, {
-            method: 'POST',
+export const verifyAccount = (payload) =>
+    fetch (`${api}/user/verifyaccount?verificationcode=${payload}`,
+        {
+            method: 'GET',
             headers: {
                 ...headers,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(payload)
+            credentials : "include"
         }).then(res => {
-            return res;
-        }).catch(error => {
-            console.log("[API] verifyAccount() error:");
-            console.log(error);
-            return error;
-  });
+        return res;
+    }).catch(error => {
+        console.log("Error: ");
+        console.log(error);
+        return error;
+    });
 
-  export const verifyAccount = (payload) =>
-      fetch (`${api}/user/verifyaccount?verificationcode=${payload}`,
-          {
-              method: 'GET',
-              headers: {
-                  ...headers,
-                  'Content-Type': 'application/json'
-              }
-          }).then(res => {
-          return res;
-      }).catch(error => {
-          console.log("Error: ");
-          console.log(error);
-          return error;
-});
+export const createSurvey = (payload) =>
+    fetch(`${api}/survey/create`, {
+        method: 'POST',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        credentials:'include',
+        body: JSON.stringify(payload)
+    }).then(res => {
+        return res;
+    }).catch(error => {
+        console.log("This is error");
+        console.log(error);
+        return error;
+    });

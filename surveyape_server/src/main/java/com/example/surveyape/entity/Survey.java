@@ -1,5 +1,7 @@
 package com.example.surveyape.entity;
 
+import com.example.surveyape.view.SurveyView;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.Date;
@@ -8,29 +10,41 @@ import java.util.List;
 @Entity
 public class Survey {
 
+    @JsonView({SurveyView.summary.class})
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String surveyId;
 
+    @JsonView({SurveyView.summary.class})
     private String surveyName;
 
+    @JsonView({SurveyView.summary.class})
     private String surveyType;
 
+    @JsonView({SurveyView.summary.class})
     private Date creationDate;
 
+    @JsonView({SurveyView.summary.class})
     private Date updateDate;
 
+    @JsonView({SurveyView.summary.class})
     private Date publishDate;
 
+    @JsonView({SurveyView.summary.class})
     private Date surveyEndDate;
 
     @ManyToOne(targetEntity = User.class, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
+    @JsonView({SurveyView.summary.class})
     @OneToMany(mappedBy = "survey")
     private List<Question> questions;
+
+    @JsonView({SurveyView.summary.class})
+    @OneToMany(mappedBy = "survey")
+    private List<SurveyResponse> surveyResponses;
 
     public String getSurveyId() {
         return surveyId;
