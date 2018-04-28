@@ -27,10 +27,10 @@ public class Question {
     private Boolean isMultipleChoice;
 
     @JsonView({SurveyView.summary.class})
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", cascade = {CascadeType.PERSIST})
     private List<OptionAns> options;
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", cascade = {CascadeType.PERSIST})
     private List<ResponseAnswers> responseAnswers;
 
     public String getQuestionId() {

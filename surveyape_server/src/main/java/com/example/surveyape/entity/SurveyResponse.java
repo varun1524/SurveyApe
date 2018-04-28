@@ -21,7 +21,7 @@ public class SurveyResponse {
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "surveyResponse")
+    @OneToMany(mappedBy = "surveyResponse", cascade = {CascadeType.PERSIST})
     private List<ResponseAnswers> responseAnswers;
 
     public String getResponseId() {

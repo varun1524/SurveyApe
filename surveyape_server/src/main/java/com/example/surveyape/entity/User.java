@@ -33,13 +33,13 @@ public class User {
     @JsonView({UserView.summary.class})
     private Boolean verified;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST})
     private List<Survey> surveyList;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST})
     private List<Invitees> invitees;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST})
     private List<SurveyResponse> surveyResponses;
 
     public void setVerificationCode(Integer verificationcode) {

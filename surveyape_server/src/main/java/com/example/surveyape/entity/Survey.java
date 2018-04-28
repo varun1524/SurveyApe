@@ -39,11 +39,11 @@ public class Survey {
     private User user;
 
     @JsonView({SurveyView.summary.class})
-    @OneToMany(mappedBy = "survey")
+    @OneToMany(mappedBy = "survey", cascade = {CascadeType.PERSIST})
     private List<Question> questions;
 
     @JsonView({SurveyView.summary.class})
-    @OneToMany(mappedBy = "survey")
+    @OneToMany(mappedBy = "survey", cascade = {CascadeType.PERSIST})
     private List<SurveyResponse> surveyResponses;
 
     public String getSurveyId() {
