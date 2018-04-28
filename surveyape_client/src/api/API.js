@@ -113,8 +113,7 @@ export const deleteQuestion = (questionId, surveyId) =>
             ...headers,
             'Content-Type': 'application/json'
         },
-        credentials:'include',
-        body: JSON.stringify(payload)
+        credentials:'include'
     }).then(res => {
         return res;
     }).catch(error => {
@@ -130,8 +129,7 @@ export const deleteOption = (optionId, surveyId) =>
             ...headers,
             'Content-Type': 'application/json'
         },
-        credentials:'include',
-        body: JSON.stringify(payload)
+        credentials:'include'
     }).then(res => {
         return res;
     }).catch(error => {
