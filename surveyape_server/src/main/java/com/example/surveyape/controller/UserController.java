@@ -4,6 +4,9 @@ import com.example.surveyape.entity.User;
 import com.example.surveyape.service.*;
 import com.example.surveyape.utils.*;
 import java.util.*;
+
+import com.example.surveyape.view.UserView;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -22,6 +25,7 @@ public class UserController {
     @Autowired
     MailService mailService;
 
+    @JsonView({UserView.summary.class})
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public ResponseEntity signup(@RequestBody String body){
         ResponseEntity responseEntity = new ResponseEntity(null, HttpStatus.BAD_REQUEST);
@@ -45,26 +49,21 @@ public class UserController {
         return responseEntity;
     }
 
+    @JsonView({UserView.summary.class})
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity login(@RequestBody String body, HttpSession httpSession){
+    public ResponseEntity login(@RequestBody Map<String, String> map, HttpSession httpSession){
         ResponseEntity responseEntity = new ResponseEntity(null, HttpStatus.BAD_REQUEST);
         try{
-            JSONObject jsonObject = new JSONObject(body);
-            User user = userService.findByEmail(jsonObject.getString("email"));
+            User user = userService.findByEmail(map.get("email"));
             if(user!=null){
                 if(user.getVerified()){
-                    if(user.getPassword().equals(jsonObject.getString("password"))){
-                        httpSession.setAttribute("email", jsonObject.getString("email"));
-                        jsonObject = new JSONObject(user);
-                        jsonObject.remove("password");
-                        jsonObject.remove("verificationCode");
-                        jsonObject.remove("verified");
-                        System.out.println(jsonObject);
-                        responseEntity = new ResponseEntity(jsonObject.toString(), HttpStatus.OK);
+                    if(user.getPassword().equals(map.get("password"))){
+                        httpSession.setAttribute("email", map.get("email"));
+                        responseEntity = new ResponseEntity(user, HttpStatus.OK);
                     }
                 }
                 else{
-                    responseEntity = new ResponseEntity(jsonObject.toString(), HttpStatus.NON_AUTHORITATIVE_INFORMATION);
+                    responseEntity = new ResponseEntity(user, HttpStatus.NON_AUTHORITATIVE_INFORMATION);
                 }
             }
             else{
@@ -90,6 +89,7 @@ public class UserController {
         return responseEntity;
     }
 
+    @JsonView({UserView.summary.class})
     @RequestMapping(value = "/validateSession", method = RequestMethod.POST)
     public ResponseEntity validateSession(HttpSession session){
         ResponseEntity responseEntity = new ResponseEntity(null, HttpStatus.NOT_FOUND);
@@ -97,8 +97,10 @@ public class UserController {
             System.out.println(session.getAttribute("email"));
             if (session.getAttribute("email") != null) {
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.append("email", session.getAttribute("email"));
-                responseEntity = new ResponseEntity(jsonObject.toString(), HttpStatus.OK);
+                jsonObject.put("email", session.getAttribute("email"));
+                User user = userService.findByEmail(session.getAttribute("email").toString());
+                System.out.println(jsonObject);
+                responseEntity = new ResponseEntity(user, HttpStatus.OK);
             }
         }
         catch (Exception e){
