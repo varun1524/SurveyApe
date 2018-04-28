@@ -52,7 +52,6 @@ public class UserController {
             JSONObject jsonObject = new JSONObject(body);
             User user = userService.findByEmail(jsonObject.getString("email"));
             if(user!=null){
-                //TODO: put verified check
                 if(user.getVerified()){
                     if(user.getPassword().equals(jsonObject.getString("password"))){
                         httpSession.setAttribute("email", jsonObject.getString("email"));
@@ -109,28 +108,26 @@ public class UserController {
     }
 
     @RequestMapping(value = "/verifyaccount", method = RequestMethod.GET)
-    public ResponseEntity<?> verifyUserAccount(@RequestParam Map<String, String> passengerQueryMap){
+    public ResponseEntity<?> verifyUserAccount(@RequestParam Map<String, String> passengerQueryMap) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         Map<String, String> responseMap = new HashMap<>();
-        responseMap.put("message","Not a valid code !!!");
-
-        try{
+        responseMap.put("message", "Not a valid code !!!");
+        try {
             Integer verificationCode = Integer.parseInt(passengerQueryMap.get("verificationcode"));
-            System.out.println("verification Code: "+  verificationCode);
+            System.out.println("verification Code: " + verificationCode);
             Integer verificationStatus = userService.verifyUserAccount(verificationCode);
-            if(verificationStatus == UserUtility.SUCCESSFULLY_VERIFIED){
-                responseMap.put("message","User successfully verified.");
+            if (verificationStatus == UserUtility.SUCCESSFULLY_VERIFIED) {
+                responseMap.put("message", "User successfully verified.");
                 status = HttpStatus.OK;
-            }else if(verificationStatus == UserUtility.ALREADY_VERIFIED){
-                responseMap.put("message","Link expired as user already verified");
-            }else if(verificationStatus == UserUtility.USER_NOT_FOUND){
-                responseMap.put("message","Not a valid code !!!");
+            } else if (verificationStatus == UserUtility.ALREADY_VERIFIED) {
+                responseMap.put("message", "Link expired as user already verified");
+            } else if (verificationStatus == UserUtility.USER_NOT_FOUND) {
+                responseMap.put("message", "Not a valid code !!!");
             }
-        }catch(Exception exp){
-            System.out.println("[UserController] Exception:"+exp.getMessage());
-            responseMap.put("message",exp.getMessage());
+        } catch (Exception exp) {
+            System.out.println("[UserController] Exception:" + exp.getMessage());
+            responseMap.put("message", exp.getMessage());
         }
-        return new ResponseEntity(responseMap,null, status);
-
+        return new ResponseEntity(responseMap, null, status);
     }
 }
