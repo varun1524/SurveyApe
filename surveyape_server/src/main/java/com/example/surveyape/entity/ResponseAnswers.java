@@ -12,11 +12,11 @@ public class ResponseAnswers {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
-    @ManyToOne(targetEntity = SurveyResponse.class, cascade = {CascadeType.PERSIST})
+    @ManyToOne(targetEntity = SurveyResponse.class, cascade = {CascadeType.ALL})
     @JoinColumn(name = "responseId", nullable = false)
     private SurveyResponse surveyResponse;
 
-    @ManyToOne(targetEntity = Question.class, cascade = {CascadeType.PERSIST})
+    @ManyToOne(targetEntity = Question.class, cascade = {CascadeType.ALL})
     @JoinColumn(name = "questionId", nullable = false)
     private Question question;
 

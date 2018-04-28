@@ -13,11 +13,11 @@ public class Invitees {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String inviteId;
 
-    @ManyToOne(targetEntity = User.class, cascade = {CascadeType.PERSIST})
+    @ManyToOne(targetEntity = User.class, cascade = {CascadeType.ALL})
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
-    @ManyToOne(targetEntity = Survey.class, cascade = {CascadeType.PERSIST})
+    @ManyToOne(targetEntity = Survey.class, cascade = {CascadeType.ALL})
     @JoinColumn(name = "surveyId", nullable = false)
     private Survey survey;
 
