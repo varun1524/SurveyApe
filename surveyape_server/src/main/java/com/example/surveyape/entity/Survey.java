@@ -32,6 +32,9 @@ public class Survey {
     @OneToMany(mappedBy = "survey")
     private List<Question> questions;
 
+    @OneToMany(mappedBy = "survey")
+    private List<SurveyResponse> surveyResponses;
+
     public String getSurveyId() {
         return surveyId;
     }
