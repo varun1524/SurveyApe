@@ -1,3 +1,9 @@
+.verify-code-box{
+  display: block;
+  width:100%;
+  margin-left: 15%;
+  margin-top: 5%;
+}
 .verify-input-text{
     text-align: center;
     border: 1px solid #000;
@@ -10,14 +16,6 @@
     border: 2px solid #c0c0c0;
 
 }
-
-.verify-code-box{
-  display: block;
-  width:100%;
-  margin-left: 15%;
-  margin-top: 5%;
-}
-
 .verify-modal-footer{
   display: block;
   margin:10px;
