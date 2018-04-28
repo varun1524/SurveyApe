@@ -27,7 +27,7 @@ public class Question {
     private Boolean isMultipleChoice;
 
     @JsonView({SurveyView.summary.class})
-    @OneToMany(mappedBy = "question", cascade = {CascadeType.PERSIST})
+    @OneToMany(mappedBy = "question", cascade = {CascadeType.ALL})
     private List<OptionAns> options;
 
     @OneToMany(mappedBy = "question", cascade = {CascadeType.PERSIST})

@@ -34,12 +34,12 @@ public class Survey {
     @JsonView({SurveyView.summary.class})
     private Date surveyEndDate;
 
-    @ManyToOne(targetEntity = User.class, cascade = CascadeType.PERSIST)
+    @ManyToOne(targetEntity = User.class, cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
     @JsonView({SurveyView.summary.class})
-    @OneToMany(mappedBy = "survey", cascade = {CascadeType.PERSIST})
+    @OneToMany(mappedBy = "survey", cascade = {CascadeType.ALL})
     private List<Question> questions;
 
     @JsonView({SurveyView.summary.class})
@@ -116,5 +116,13 @@ public class Survey {
 
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
+    }
+
+    public List<SurveyResponse> getSurveyResponses() {
+        return surveyResponses;
+    }
+
+    public void setSurveyResponses(List<SurveyResponse> surveyResponses) {
+        this.surveyResponses = surveyResponses;
     }
 }
