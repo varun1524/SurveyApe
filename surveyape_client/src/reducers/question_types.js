@@ -2,31 +2,31 @@ const question_types = () => {
     return [
         {
             id: 1,
-            question_type: "Checkbox"
+            question_type: "CheckBox"
         },
         {
             id: 2,
-            question_type: "Radio Group"
+            question_type: "RadioGroup"
         },
         {
             id: 3,
-            question_type: "Dropdown"
+            question_type: "DropDown"
         },
         {
             id: 4,
-            question_type: "Yes No"
+            question_type: "YesNo"
         },
         {
             id: 5,
-            question_type: "Short Answer"
+            question_type: "ShortAnswer"
         },
         {
             id: 6,
-            question_type: "Date Time"
+            question_type: "DateTime"
         },
         {
             id: 7,
-            question_type: "Star Rating"
+            question_type: "StarRating"
         }
     ]
 }

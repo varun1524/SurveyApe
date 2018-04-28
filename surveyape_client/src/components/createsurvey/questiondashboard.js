@@ -27,14 +27,16 @@ class QuestionDashboard extends Component {
 
     getPublishandSave(){
         if(this.props.survey.questions.length>0){
-            return(<div>
+            return(
                 <div>
-                    <button type="button">Save</button>
+                    <div>
+                        <button type="button">Save</button>
+                    </div>
+                    <div>
+                        <button type="button">Publish</button>
+                    </div>
                 </div>
-                <div>
-                    <button type="button">Publish</button>
-                </div>
-            </div>);
+            );
         }
 
 

@@ -1,26 +1,28 @@
 .component_div {
-    border: 1px solid #000;
-    margin-top: 2px;
+    margin-top: 20px;
+    height: 100%;
+    background-color: #cccccc;
+}
+
+.question-div {
+    width: 100%;
 }
 
 .question-input-box {
     width: 80%;
     float: left;
+    margin-top: 8px;
 }
 
 .add-option-button {
-    width: 15%;
+    width: 18%;
     float: right;
+}
+
+.option-div {
+    width: 100%
 }
 
 .option-input-box {
 
-}
-
-.question-yes-no-radio-button {
-    float: left;
-}
-
-.question-yes-no-radio-label {
-    margin-left: 20px;
 }

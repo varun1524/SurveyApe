@@ -7,24 +7,6 @@ import {addQuestion, editQuestion,editOption, addOption} from "../../actions/sur
 
 class QuestionComponent extends Component {
 
-    constructor() {
-        super();
-        this.state = {
-            question : {
-                "question-id" : "",
-                "question-type" : "",
-                "question-text" : "",
-                "options" : [
-                    {
-                        "type" : "checkbox",
-                        "optionvalue":""
-                    }
-                ]
-            }
-        }
-    }
-
-
 
     addOptionView(){
         console.log("addOptionView question index: ",this.props.index_id )
@@ -51,133 +33,171 @@ class QuestionComponent extends Component {
         this.props.editQuestion(payload);
     }
 
+    getAddButtonView(){
+        if((this.props.question_type === "CheckBox") || (this.props.question_type === "RadioGroup") || (this.props.question_type === "DropDown")){
+           return(
+                <div className="add-option-button">
+                    <button type="button" onClick={()=>{this.addOptionView()}}>Add Option</button>
+                </div>);
+
+        }
+    }
+
+    getQuestionView(){
+        return (
+            <div>
+                <div>
+
+                    <input className="question-input-box" type="text" placeholder="Type your question here" onChange={(event) => {
+
+                        this.editQuestionText(event.target.value);
+                    }} defaultValue={this.props.questions[this.props.index_id].question_text}/>
+                </div>
+
+                <div>
+                    {this.getAddButtonView()}
+                </div>
+
+            </div>
+        );
+    }
+
+    getOptionView(){
+        if(this.props.question_type === "CheckBox"){
+           return(
+                <div className="option-input-box">
+                {
+                    this.props.questions[this.props.index_id].options.map((option, id) => {
+
+                        return(
+                            <div>
+                                <input type="checkbox" className="option-"/>
+                                <input type="text"
+                                       placeholder="Enter option here"
+                                       defaultValue={option.value}
+                                       onChange={(event)=>{this.editOptionText(event.target.value, id)}}
+                                /></div>
+                        )
+                    })
+
+                }
+                </div>);
+        }else if(this.props.question_type === "RadioGroup"){
+            return( <div className="option-input-box">
+                {
+                    this.props.questions[this.props.index_id].options.map((option, id) => {
+
+                        return(
+                            <div>
+                                <input type="radio" />
+                                <input type="text"
+                                       placeholder="Enter option here"
+                                       defaultValue={option.option_text}
+                                       onChange={(event)=>{this.editOptionText(event.target.value, id)}}
+                                /></div>
+                        )
+                    })
+
+                }
+
+            </div>);
+
+        }else if(this.props.question_type === "YesNo"){
+
+            return(
+                <div className="option-input-box">
+                    {
+                        this.props.questions[this.props.index_id].options.map((option, id) => {
+
+                            return(
+                                <div>
+                                    <input type="radio"/>
+                                    <label >{option.option_text}</label>
+                                </div>
+
+                            )
+                        })
+
+                    }
+
+                </div>
+            );
+
+        }else if(this.props.question_type === "ShortAnswer"){
+
+
+            return(
+                <div className="option-input-box">
+                    {
+                        this.props.questions[this.props.index_id].options.map((option, id) => {
+
+                            return(
+                                <div>
+                                    Option
+                                    <input type="text"
+                                           placeholder="Enter option here"
+                                           defaultValue={option.value}
+                                           onChange={(event)=>{this.editOptionText(event.target.value, id)}}
+                                    />
+                                </div>
+                            )
+                        })
+
+                    }
+
+                </div>
+            );
+
+        }else if(this.props.question_type === "DateTime"){
+
+            return(
+                <div className="option-input-box">
+                    {
+                        this.props.questions[this.props.index_id].options.map((option, id) => {
+
+                            return(
+                                <div>
+
+                                    <input type="date"
+                                    />
+                                </div>
+                            )
+                        })
+
+                    }
+
+                </div>
+            );
+
+        }
+
+    }
+
     render() {
         console.log(this.props.index_id)
         console.log(this.props.question_type)
         console.log("this.props.questions[this.props.index_id].options",this.props.questions[this.props.index_id].options)
-        if(this.props.question_type === 'Checkbox') {
+
             return(
                 <div className="QuestionComponent">
                     <div className="component_div">
                         <form>
-                            Question:
 
-                            <div style={{width:"100%"}}>
-                                <div className="question-input-box">
-
-                                    <input type="text" placeholder="Type your question here" onChange={(event) => {
-
-                                        this.editQuestionText(event.target.value);
-                                    }} defaultValue={this.props.questions[this.props.index_id].question_text}/>
-                                </div>
-
-                                <div className="add-option-button">
-                                    <button type="button" onClick={()=>{this.addOptionView()}}>Add Option</button>
-                                </div>
+                            <div className="question-div">
+                                Question:
+                                {this.getQuestionView()}
                             </div>
 
-                            <div className="option-input-box">
-                                {
-                                    this.props.questions[this.props.index_id].options.map((option, id) => {
-
-                                       return(
-                                           <div>
-                                           <input type="checkbox" />
-                                           <input type="text"
-                                                  placeholder="Enter option here"
-                                                  defaultValue={option.value}
-                                                  onChange={(event)=>{this.editOptionText(event.target.value, id)}}
-                                           /></div>
-                                           )
-                                    })
-
-                                }
-
+                            <div className="option-div">
+                                {this.getOptionView()}
                             </div>
 
+                        </form>
+                    </div>
+                </div>
+            );
 
-                        </form>
-                    </div>
-                </div>
-            );
-        }
-        else if(this.props.question_type === 'Radio Group') {
-            return (
-                <div className="QuestionComponent">
-                    <div className="component_div">
-                        <h3>{this.props.question_type}</h3>
-                    </div>
-                </div>
-            );
-        }
-        else if(this.props.question_type === 'Dropdown') {
-            return (
-                <div className="QuestionComponent">
-                    <div className="component_div">
-                        <h3>{this.props.question_type}</h3>
-                    </div>
 
-                </div>
-            );
-        }
-        else if(this.props.question_type === 'Yes No') {
-            return (
-                <div className="QuestionComponent">
-                    <div className="component_div">
-                        <form>
-                            Question:
-                            <input type="text" placeholder="Type your question here"/>
-                            <label className="question-yes-no-radio-label">
-                                <input type="radio" className="question-yes-no-radio-button" value="Yes"/>
-                                Yes
-                            </label>
-                            <label className="question-yes-no-radio-label">
-                                <input type="radio" className="question-yes-no-radio-button" value="No"/>
-                                No
-                            </label>
-                        </form>
-                    </div>
-                </div>
-            );
-        }
-        else if(this.props.question_type === 'Short Answer') {
-            return (
-                <div className="QuestionComponent">
-                    <div className="component_div">
-                        <form>
-                            Question:
-                            <input type="text" placeholder="Type your question here"/>
-                            <input type="text" placeholder="Type your answer here"/>
-                        </form>
-                    </div>
-                </div>
-            );
-        }
-        else if(this.props.question_type === 'Date Time') {
-            return (
-                <div className="QuestionComponent">
-                    <div className="component_div">
-                        <form>
-                            Question:
-                            <input type="text" placeholder="Type your question here"/>
-                            <input type="date"/>
-                        </form>
-                    </div>
-                </div>
-            );
-        }
-        else if(this.props.question_type === 'Star Rating') {
-            return (
-                <div className="QuestionComponent">
-                    <div className="component_div">
-
-                    </div>
-                </div>
-            );
-        }
-        else {
-            console.log("questioncomponent : any other question")
-        }
     }
 }
 
