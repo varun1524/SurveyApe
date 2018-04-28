@@ -12,7 +12,7 @@ public class Question {
 //    @GeneratedValue(generator = "uuid")
 //    @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String questionId;
-
+    // checkbox/dropdown/radio
     private String questionType;
 
     @ManyToOne(targetEntity = Survey.class, cascade = CascadeType.PERSIST)

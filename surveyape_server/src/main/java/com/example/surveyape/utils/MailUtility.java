@@ -1,7 +1,8 @@
 package com.example.surveyape.utils;
 
 public class MailUtility {
-    static String verifyUrlPrefix = "http://localhost:8080/user/verifyaccount?verificationcode=";
+//    static String verifyUrlPrefix = "http://localhost:8080/verifyaccount/?verificationcode=";
+static String verifyUrlPrefix = "http://localhost:3000/verifyaccount/";
 
     public static String createVerificationMsg(int verificationcode){
         String msg = "Thank you for registering with SurveyApe !!!\nKindly verify your account"

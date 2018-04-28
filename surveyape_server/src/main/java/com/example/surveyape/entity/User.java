@@ -3,8 +3,6 @@ package com.example.surveyape.entity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.validation.Constraint;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
