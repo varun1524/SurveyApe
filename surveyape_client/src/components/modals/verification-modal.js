@@ -1,5 +1,7 @@
 import React,{Component} from 'react';
 import '../../stylesheets/verify-modal.css';
+import * as API from "../../api/API";
+import { Alert } from 'reactstrap';
 class VerificationModal extends Component {
   constructor(){
     super();
@@ -11,7 +13,24 @@ class VerificationModal extends Component {
     console.log("[VerificationModal] handleVerification()");
     console.log(this.props);
     console.log("[VerificationModal] code:"+this.state.code);
-    this.props.verifySuccess();
+    let code ="";
+    this.state.code.map((codechar)=>{
+      code +=codechar;
+    })
+    if(code.length <6){
+      alert("Code length is less than 6 character !!!")
+    }
+    let requestPayload = {"verificationcode":code}
+    API.verifyAccount(code)
+          .then((response) => {
+              console.log(response.status);
+              if (response.status === 200) {
+
+                  this.props.verifyAccount();
+              }else{
+
+              }});
+
   });
   render() {
     if(!this.props.showVerification) {

@@ -18,7 +18,7 @@ public class AnswerOptions {
     private Question question;
 
     private String answer;
-
+    // text/image
     private String answerType;
 
     public String getId() {
