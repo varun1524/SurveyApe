@@ -4,9 +4,8 @@ import com.example.surveyape.view.SurveyView;
 import com.example.surveyape.view.UserView;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
-import java.util.List;
+import java.util.*;
 
 @Entity
 public class User {
@@ -115,6 +114,9 @@ public class User {
     }
 
     public List<Survey> getSurveyList() {
+    	if(this.surveyList == null) {
+    		return new LinkedList<Survey>();
+    	}
         return surveyList;
     }
 

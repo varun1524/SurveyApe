@@ -1,5 +1,6 @@
 package com.example.surveyape.entity;
 
+import com.example.surveyape.view.*;
 import com.example.surveyape.view.SurveyView;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -18,12 +19,12 @@ public class Survey {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String surveyId;
 
+    @JsonView({SurveyView.summary.class,SurveyListView.summary.class})
     @JsonProperty("survey_name")
-    @JsonView({SurveyView.summary.class})
     private String surveyName;
 
     @JsonProperty("survey_type")
-    @JsonView({SurveyView.summary.class})
+    @JsonView({SurveyView.summary.class,SurveyListView.summary.class})
     private String surveyType;
 
     @JsonProperty("creation_date")
@@ -39,7 +40,7 @@ public class Survey {
     private Date publishDate;
 
     @JsonProperty("ispublished")
-    @JsonView({SurveyView.summary.class})
+    @JsonView({SurveyView.summary.class,SurveyListView.summary.class})
     private Boolean isPublished;
 
     @JsonProperty("end_date")
