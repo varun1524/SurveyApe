@@ -1,6 +1,6 @@
 package com.example.surveyape.entity;
 
-import com.example.surveyape.view.SurveyView;
+import com.example.surveyape.view.*;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
@@ -16,10 +16,10 @@ public class Survey {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String surveyId;
 
-    @JsonView({SurveyView.summary.class})
+    @JsonView({SurveyView.summary.class,SurveyListView.summary.class})
     private String surveyName;
 
-    @JsonView({SurveyView.summary.class})
+    @JsonView({SurveyView.summary.class,SurveyListView.summary.class})
     private String surveyType;
 
     @JsonView({SurveyView.summary.class})
@@ -31,7 +31,7 @@ public class Survey {
     @JsonView({SurveyView.summary.class})
     private Date publishDate;
 
-    @JsonView({SurveyView.summary.class})
+    @JsonView({SurveyView.summary.class,SurveyListView.summary.class})
     private Date surveyEndDate;
 
     @ManyToOne(targetEntity = User.class, cascade = {CascadeType.PERSIST})

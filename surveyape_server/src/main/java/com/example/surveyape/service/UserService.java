@@ -3,8 +3,13 @@ package com.example.surveyape.service;
 import com.example.surveyape.repository.UserRepository;
 import com.example.surveyape.utils.MailUtility;
 import com.example.surveyape.utils.UserUtility;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.example.surveyape.entity.Survey;
 import com.example.surveyape.entity.User;
 
 @Service
@@ -80,4 +85,12 @@ public class UserService {
         }
         return status;
     }
+    
+    public List<Survey> getAllUserSurvey(String email) {
+		List<Survey> surveyList = null;
+		User user = userRepository.findByEmail(email);
+		surveyList = user.getSurveyList();
+		return surveyList;
+
+	}
 }
