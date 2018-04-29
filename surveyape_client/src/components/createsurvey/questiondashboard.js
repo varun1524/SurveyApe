@@ -1,13 +1,17 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import QuestionComponent from './questioncomponent';
+import * as API from './../../api/API';
+import {bindActionCreators} from 'redux';
+import {updateSurvey} from './../../actions/survey';
+
 
 class QuestionDashboard extends Component {
 
     constructor() {
 
         super();
-        console.log("constructor questiondashboard")
+        console.log("constructor questiondashboard");
         this.state = {
 
         }
@@ -34,6 +38,13 @@ class QuestionDashboard extends Component {
     saveSurvey(){
         console.log("saveSurvey() Survey Data: ",this.props.survey);
         console.log(JSON.stringify(this.props.survey));
+        API.updateSurvey(this.props.survey).then((response)=>{
+            console.log(response.status);
+            response.json().then((data)=>{
+               console.log(data);
+                this.props.updateSurvey(data);
+            });
+        });
     }
 
     getPublishandSave(){
@@ -71,7 +82,7 @@ class QuestionDashboard extends Component {
         return(
             <div>
                 {this.displayQuestionComponent()}
-                {/*{this.getPublishandSave()}*/}
+                {this.getPublishandSave()}
             </div>
         );
     }
@@ -84,4 +95,10 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(QuestionDashboard);
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        updateSurvey: updateSurvey
+    }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuestionDashboard);

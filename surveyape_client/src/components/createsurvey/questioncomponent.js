@@ -235,6 +235,7 @@ class QuestionComponent extends Component {
 }
 
 function mapStateToProps(state) {
+    console.log("questioncomponent : mapStateToProps",state.survey);
     console.log("questioncomponent : mapStateToProps",state.survey.questions);
 
     return {

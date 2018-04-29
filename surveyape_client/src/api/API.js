@@ -104,6 +104,22 @@ export const createSurvey = (payload) =>
         return error;
     });
 
+export const updateSurvey = (payload) =>
+    fetch(`${api}/survey/create`, {
+        method: 'PUT',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        credentials:'include',
+        body: JSON.stringify(payload)
+    }).then(res => {
+        return res;
+    }).catch(error => {
+        console.log("This is error");
+        console.log(error);
+        return error;
+    });
 
 
 export const deleteQuestion = (questionId, surveyId) =>

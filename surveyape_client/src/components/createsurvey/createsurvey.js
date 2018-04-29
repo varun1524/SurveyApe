@@ -18,9 +18,7 @@ class createsurvey extends Component {
         console.log("render createsurvey");
         return (
             <div className="createsurvey">
-                <Header />
                 <div className="welcome-user">
-                    {/*Welcome, {this.props.state.user.firstname}*/}
                 </div>
                 <div className="user_body">
                     <div className="user_body_navbar">
