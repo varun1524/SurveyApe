@@ -73,9 +73,10 @@ public class SurveyService {
             String questionType = question.getQuestionType().toLowerCase();
             if(questionType.equals(QuestionUtility.CHECKBOX)
                     ||
-                    question.getQuestionType().equals(QuestionUtility.RADIO)
+                    questionType.equals(QuestionUtility.RADIO)
                     ||
-                    question.getQuestionType().equals(QuestionUtility.DROPDOWN)){
+                    questionType.equals(QuestionUtility.DROPDOWN)
+                    ){
                 question.setMultipleChoice(true);
                 List<Map> answerMapList = (List)map.get("options");
                 question.setOptions(generateAnswersOptions(answerMapList, question));
