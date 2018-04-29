@@ -56,6 +56,13 @@ const survey = (state = survey_data, action)=>
             return Object.assign({},state,{
                 questions:edit_questions2
             });
+
+        case actionTypes.UPDATE_SURVEY:
+            console.log("Update Survey", action.data);
+            state = action.data;
+            return Object.assign({},state,{
+                survey:action.data
+            });
         default :
             return state;
     }

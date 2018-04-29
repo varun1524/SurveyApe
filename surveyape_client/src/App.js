@@ -8,6 +8,7 @@ import Login from './components/login';
 import SignUp from './components/signup';
 import Home from './components/home';
 import VerifyAccount from './components/verifyaccount'
+import CreateSurvey from './components/createsurvey/createsurvey';
 import {login_success} from './actions/login';
 
 class App extends Component {
@@ -40,7 +41,6 @@ class App extends Component {
     });
 
     componentDidMount(){
-
     }
 
     render() {
