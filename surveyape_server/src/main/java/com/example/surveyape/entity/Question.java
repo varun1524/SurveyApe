@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -70,6 +72,9 @@ public class Question {
     }
 
     public List<OptionAns> getOptions() {
+        if(this.options==null){
+            return Collections.emptyList();
+        }
         return options;
     }
 
@@ -78,6 +83,9 @@ public class Question {
     }
 
     public List<ResponseAnswers> getResponseAnswers() {
+        if(this.responseAnswers==null){
+            return Collections.emptyList();
+        }
         return responseAnswers;
     }
 

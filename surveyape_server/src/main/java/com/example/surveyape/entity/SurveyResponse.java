@@ -3,6 +3,7 @@ package com.example.surveyape.entity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Collections;
 import java.util.List;
 
 @Entity
@@ -49,6 +50,9 @@ public class SurveyResponse {
     }
 
     public List<ResponseAnswers> getResponseAnswers() {
+        if(this.responseAnswers==null){
+            return Collections.emptyList();
+        }
         return responseAnswers;
     }
 
