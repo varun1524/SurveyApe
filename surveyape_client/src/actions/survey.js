@@ -27,3 +27,17 @@ export function editOption(data) {
         data
     }
 }
+
+export function createSurvey(data) {
+    return {
+        type: actionTypes.CREATE_SURVEY,
+        data
+    }
+}
+
+export function updateSurvey(data) {
+    return {
+        type: actionTypes.UPDATE_SURVEY,
+        data
+    }
+}

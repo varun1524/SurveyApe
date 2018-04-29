@@ -1,6 +1,7 @@
 package com.example.surveyape.entity;
 
 import com.example.surveyape.view.SurveyView;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
@@ -9,10 +10,12 @@ import java.util.List;
 @Entity
 public class Question {
 
+    @JsonProperty("question_id")
     @JsonView({SurveyView.summary.class})
     @Id
     private String questionId;
 
+    @JsonProperty("question_type")
     @JsonView({SurveyView.summary.class})
     private String questionType;
 
@@ -20,6 +23,7 @@ public class Question {
     @JoinColumn(name = "surveyId", nullable = false)
     private Survey survey;
 
+    @JsonProperty("question_text")
     @JsonView({SurveyView.summary.class})
     private String questionText;
 

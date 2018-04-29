@@ -29,8 +29,7 @@ public class SurveyService {
 			survey.setSurveyType(map.get("survey_type").toString());
 			survey.setCreationDate(new Date());
 			survey.setUser(user);
-			// survey.setPublishDate(new
-			// SimpleDateFormat("yyyy-MM-dd-HH").parse(map.get("publish_date").toString()));
+			// survey.setPublishDate(new SimpleDateFormat("yyyy-MM-dd-HH").parse(map.get("publish_date").toString()));
 			survey = surveyRepository.save(survey);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -47,8 +46,7 @@ public class SurveyService {
 				survey.setSurveyName(map.get("survey_name").toString());
 				survey.setSurveyType(map.get("survey_type").toString());
 				survey.setUpdateDate(new Date());
-				// survey.setPublishDate(new
-				// SimpleDateFormat("yyyy-MM-dd-HH").parse(map.get("publish_date").toString()));
+				// survey.setPublishDate(new SimpleDateFormat("yyyy-MM-dd-HH").parse(map.get("publish_date").toString()));
 				List<Map> questionMapList = (List) map.get("questions");
 				survey.setQuestions(generateQuestionList(questionMapList, survey));
 				survey = surveyRepository.save(survey);
@@ -62,27 +60,30 @@ public class SurveyService {
 		return survey;
 	}
 
-	private List<Question> generateQuestionList(List<Map> questionMapList, Survey survey) {
-		Question question = null;
-		List<Question> questionList = new LinkedList<>();
-		for (Map map : questionMapList) {
-			question = new Question();
-			question.setQuestionId(map.get("question_id").toString());
-			question.setQuestionText(map.get("question_text").toString());
-			question.setQuestionType(map.get("question_type").toString());
-			question.setSurvey(survey);
-			String questionType = question.getQuestionType().toLowerCase();
-			if (questionType.equals(QuestionUtility.CHECKBOX)
-					|| question.getQuestionType().equals(QuestionUtility.RADIO)
-					|| question.getQuestionType().equals(QuestionUtility.DROPDOWN)) {
-				question.setMultipleChoice(true);
-				List<Map> answerMapList = (List) map.get("options");
-				question.setOptions(generateAnswersOptions(answerMapList, question));
-			}
-			questionList.add(question);
-		}
-		return questionList;
-	}
+    private List<Question> generateQuestionList(List<Map> questionMapList, Survey survey) {
+        Question question = null;
+        List<Question> questionList = new LinkedList<>();
+        for(Map map : questionMapList){
+            question = new Question();
+            question.setQuestionId(map.get("question_id").toString());
+            question.setQuestionText(map.get("question_text").toString());
+            question.setQuestionType(map.get("question_type").toString());
+            question.setSurvey(survey);
+            String questionType = question.getQuestionType().toLowerCase();
+            if(questionType.equals(QuestionUtility.CHECKBOX)
+                    ||
+                    questionType.equals(QuestionUtility.RADIO)
+                    ||
+                    questionType.equals(QuestionUtility.DROPDOWN)
+                    ){
+                question.setMultipleChoice(true);
+                List<Map> answerMapList = (List)map.get("options");
+                question.setOptions(generateAnswersOptions(answerMapList, question));
+            }
+            questionList.add(question);
+        }
+        return questionList;
+    }
 
 	private List<OptionAns> generateAnswersOptions(List<Map> answerMapList, Question question) {
 		OptionAns answerOptions = null;
@@ -108,5 +109,5 @@ public class SurveyService {
 		return survey;
 	}
 
-	
+
 }

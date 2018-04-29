@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import * as API from "../api/API";
 import { Route, withRouter, Switch} from 'react-router-dom';
-
+import {createSurvey} from './../actions/survey';
 import CreateSurveyModal from 'react-modal';
 import '../stylesheets/header.css';
 import {connect} from "react-redux";
+import {bindActionCreators} from 'redux';
 
 const customStyles = {
     overlay : {
@@ -73,12 +74,14 @@ class Header extends Component {
         }
         ).then((response)=>{
             if(response.status === 200){
-                console.log("Survey created successfully : survey - ")
+                console.log("Survey created successfully : survey - ");
                 response.json().then((data)=>{
                     console.log(data);
+                    this.props.createSurvey(data);
+                    this.closeCreateSurveyModal();
+                    this.props.handlePageChange("/home/createsurvey");
                 })
             }
-
         });
     }
 
@@ -129,4 +132,10 @@ function mapStateToProps(state) {
     return {state : state};
 }
 
-export default withRouter(connect(mapStateToProps, null)(Header));
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        createSurvey: createSurvey
+    }, dispatch)
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

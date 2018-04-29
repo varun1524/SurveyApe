@@ -1,6 +1,7 @@
 package com.example.surveyape.entity;
 
 import com.example.surveyape.view.SurveyView;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @Entity
 public class OptionAns {
 
+    @JsonProperty("option_id")
     @Id
 //    @GeneratedValue(generator = "uuid")
 //    @GenericGenerator(name = "uuid", strategy = "uuid2")
@@ -19,10 +21,12 @@ public class OptionAns {
     @JoinColumn(name = "questionId", nullable = false)
     private Question question;
 
+    @JsonProperty("option_text")
     @JsonView({SurveyView.summary.class})
     private String optionText;
 
     //TODO: text/image
+    @JsonProperty("option_type")
     @JsonView({SurveyView.summary.class})
     private String optionType;
 
