@@ -1,4 +1,5 @@
 import {actionTypes} from "../actions/actionTypes";
+import uuidv4 from "uuid";
 
 const survey_data = {
     survey_name: "",
@@ -38,6 +39,7 @@ const survey = (state = survey_data, action)=>
             // action data will pass question index and option text value
             let edit_questions1 = state.questions;
             edit_questions1[action.data.question_index].options.push({
+                option_id:uuidv4(),
                 option_type:"text",
                 option_text:""
             });
