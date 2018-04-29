@@ -1,5 +1,6 @@
 package com.example.surveyape.entity;
 
+import com.example.surveyape.view.SurveyView;
 import com.example.surveyape.view.UserView;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.annotations.GenericGenerator;
@@ -16,7 +17,7 @@ public class User {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String userId;
 
-    @JsonView({UserView.summary.class})
+    @JsonView({UserView.summary.class, SurveyView.summary.class})
     @Column(unique = true, nullable = false)
     private String email;
 
