@@ -10,7 +10,7 @@ import java.util.List;
 @Entity
 public class Survey {
 
-    @JsonView({SurveyView.summary.class})
+    @JsonView({SurveyView.summary.class,SurveyListView.summary.class})
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
