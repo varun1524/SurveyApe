@@ -69,9 +69,9 @@ class QuestionDashboard extends Component {
         //     )
         // }
         return(
-            <div className="QuestionDashboard">
+            <div>
                 {this.displayQuestionComponent()}
-                {this.getPublishandSave()}
+                {/*{this.getPublishandSave()}*/}
             </div>
         );
     }

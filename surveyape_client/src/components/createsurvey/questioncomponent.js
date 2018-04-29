@@ -38,7 +38,8 @@ class QuestionComponent extends Component {
            return(
                 <div>
                     <button type="button" className="add-option-button" onClick={()=>{this.addOptionView()}}>Add Option</button>
-                </div>);
+                </div>
+           );
 
         }
     }
@@ -46,16 +47,14 @@ class QuestionComponent extends Component {
     getQuestionView(){
         return (
             <div>
-                <div>
-                    <input className="question-input-box" type="text" placeholder="Type your question here" onChange={(event) => {
 
+                    <input className="question-input-box" type="text" placeholder="Type your question here" onChange={(event) => {
                         this.editQuestionText(event.target.value);
                     }} defaultValue={this.props.questions[this.props.index_id].question_text}/>
-                </div>
 
-                <div>
+
                     {this.getAddButtonView()}
-                </div>
+
 
             </div>
         );
@@ -75,7 +74,8 @@ class QuestionComponent extends Component {
                                        placeholder="Enter option here"
                                        defaultValue={option.value}
                                        onChange={(event)=>{this.editOptionText(event.target.value, id)}}
-                                /></div>
+                                />
+                            </div>
                         )
                     })
 
@@ -216,7 +216,6 @@ class QuestionComponent extends Component {
                 <div className="QuestionComponent">
                     <div className="component_div">
 
-
                             <div className="question-div">
                                 Question:
                                 {this.getQuestionView()}
@@ -226,7 +225,6 @@ class QuestionComponent extends Component {
                             <div className="option-div">
                                 {this.getOptionView()}
                             </div>
-
 
                     </div>
                 </div>
