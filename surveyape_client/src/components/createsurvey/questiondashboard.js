@@ -41,7 +41,7 @@ class QuestionDashboard extends Component {
         API.updateSurvey(this.props.survey).then((response)=>{
             console.log(response.status);
             response.json().then((data)=>{
-               console.log(data);
+                console.log(data);
                 this.props.updateSurvey(data);
             });
         });
@@ -64,9 +64,26 @@ class QuestionDashboard extends Component {
                 </div>
             );
         }
+    }
 
-
-
+    componentDidMount(){
+        console.log(this.props.param);
+        if(this.props.param.hasOwnProperty("survey_id")){
+            API.getSurveyById(this.props.param.survey_id).then((response)=>{
+                console.log("fetch survey by id status: ", response.status);
+                if(response.status===200){
+                    response.json().then((data)=>{
+                        this.props.updateSurvey(data);
+                    });
+                }
+                else if(response.status===404){
+                    alert("Survey not found for given id");
+                }
+                else if(response.status===400) {
+                    alert("Error while fetching survey by id");
+                }
+            });
+        }
     }
 
 

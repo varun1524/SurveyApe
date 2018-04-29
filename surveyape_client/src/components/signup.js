@@ -57,7 +57,6 @@ class SignUp extends Component {
                             isLoggedIn: true,
                             message: "You have successfully signed up. Please login here"
                         });
-                        //TODO: Modal for verification
                         //this.props.history.push("/login");
                         this.changeVerificationModalVisibility();
                     } else if (response.status === 400) {

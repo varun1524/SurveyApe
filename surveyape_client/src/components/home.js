@@ -82,17 +82,17 @@ class Home extends Component {
                             </div>
                         )
                     }}/>
+                    <Route path= "/home/createsurvey/:survey_id" render = {(match) => (
+                        <CreateSurvey
+                            handlePageChange = {this.props.handlePageChange}
+                            validateSession = {this.props.validateSession}
+                            {...match}
+                        />)}
+                    />
                     <Route path= "/home/createsurvey" render = {() => (
                         <CreateSurvey
                             handlePageChange = {this.props.handlePageChange}
                             validateSession = {this.props.validateSession}
-                        />)}
-                    />
-                    <Route path= "/home/createsurvey/:surveyid" render = {(match) => (
-                        <CreateSurvey
-                            handlePageChange = {this.props.handlePageChange}
-                            validateSession = {this.props.validateSession}
-                            context = {match}
                         />)}
                     />
                 </Switch>

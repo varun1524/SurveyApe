@@ -69,13 +69,16 @@ public class SurveyController {
     }
 
     @JsonView({SurveyView.summary.class})
-    @RequestMapping(value = "/survey/{id}", method = RequestMethod.PUT)
-    public ResponseEntity fetchSurvey(@PathVariable String surveyId, HttpSession session){
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public ResponseEntity fetchSurvey(@RequestParam Map<String, String> map, HttpSession session){
         ResponseEntity responseEntity = new ResponseEntity(null, HttpStatus.BAD_REQUEST);
         try {
-            Survey survey = surveyService.findBySurveyId(surveyId);
+            Survey survey = surveyService.findBySurveyId(map.get("survey_id").toString());
             if(survey!=null){
                 responseEntity = new ResponseEntity(survey, HttpStatus.OK);
+            }
+            else {
+                responseEntity = new ResponseEntity(null, HttpStatus.NOT_FOUND);
             }
         }
         catch (Exception e){

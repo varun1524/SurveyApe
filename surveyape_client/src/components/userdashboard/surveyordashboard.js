@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import MySurvey from './mysurvey';
 
 import '../../stylesheets/userdashboard/surveyordashboard.css';
-import {withRouter} from "react-router-dom";
 
 class surveyordashboard extends Component {
 
