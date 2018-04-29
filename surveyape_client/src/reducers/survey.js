@@ -4,18 +4,18 @@ const survey_data = {
     survey_name: "",
     survey_type:"",
     questions:[]
-}
+};
 
 const survey = (state = survey_data, action)=>
 {
     switch (action.type) {
         case actionTypes.CREATE_SURVEY :
             console.log("CREATE_SURVEY reducer");
-
             return Object.assign({},state,{
+                survey_id:action.data.survey_id,
                 survey_name:action.data.survey_name,
-                survey_type:action.data.survey_type
-
+                survey_type:action.data.survey_type,
+                create_date:action.create_date
             });
         case actionTypes.ADD_QUESTION :
             console.log("ADD_QUESTION reducer",action.question_type);
