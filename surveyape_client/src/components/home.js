@@ -7,12 +7,15 @@ import '../stylesheets/home.css';
 import SurveyorDashboard from './userdashboard/surveyordashboard';
 import SurveyeeDashboard from './userdashboard/surveyeedashboard';
 import Header from './header';
+import * as API from "../api/API";
 
 class Home extends Component {
 
     constructor(){
         super();
         this.state = {
+            created_surveys : [],
+            requested_surveys : []
         };
     }
 
@@ -20,7 +23,34 @@ class Home extends Component {
     }
 
     componentDidMount(){
-        this.props.validateSession();
+        // this.props.validateSession();
+        console.log("home.js - componentDidMount");
+        API.getSurveyList().then((response) => {
+            console.log(response.status);
+            if(response.status === 200){
+                response.json().then((data) => {
+                    console.log("data", data.created_surveys);
+                    this.setState({
+                        ...this.state,
+                        created_surveys : data.created_surveys,
+                        requested_surveys : data.requested_surveys
+                    })
+                });
+
+            }
+            else if(response.status === 404) {
+                this.setState({
+                    ...this.state,
+                    isLoggedIn : false,
+                    email : ""
+                });
+
+            }
+            else {
+
+            }
+        });
+
     }
 
     render() {
@@ -37,7 +67,10 @@ class Home extends Component {
                 <Switch>
                     <Route exact path="/home" render = {()=> (
                         <div>
-                            <SurveyorDashboard/>
+                            <SurveyorDashboard
+                                created_surveys = {this.state.created_surveys}
+                                handlePageChange = {this.props.handlePageChange}
+                            />
                             <SurveyeeDashboard/>
                         </div>
                     )}/>
@@ -53,6 +86,13 @@ class Home extends Component {
                         <CreateSurvey
                             handlePageChange = {this.props.handlePageChange}
                             validateSession = {this.props.validateSession}
+                        />)}
+                    />
+                    <Route path= "/home/createsurvey/:surveyid" render = {(match) => (
+                        <CreateSurvey
+                            handlePageChange = {this.props.handlePageChange}
+                            validateSession = {this.props.validateSession}
+                            context = {match}
                         />)}
                     />
                 </Switch>

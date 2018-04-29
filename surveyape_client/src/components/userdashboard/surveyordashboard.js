@@ -2,24 +2,32 @@ import React, {Component} from 'react';
 import MySurvey from './mysurvey';
 
 import '../../stylesheets/userdashboard/surveyordashboard.css';
+import {withRouter} from "react-router-dom";
 
 class surveyordashboard extends Component {
 
     constructor() {
         super();
         this.state = {
-            survey_list: [
-                {"survey_name" : "Survey_1", "creation_date" : "04/22/2018"},
-                {"survey_name" : "Survey_2", "creation_date" : "04/21/2018"},
-                {"survey_name" : "Survey_3", "creation_date" : "04/20/2018"}
-            ]
+            created_surveys : []
         }
     }
 
+    componentDidMount() {
+        this.setState({
+            ...this.state,
+            created_surveys : this.props.created_surveys
+        });
+    }
+
     displayAllSurveys() {
-        return this.state.survey_list.map((survey) => {
+        console.log("surveyordash - displayAllSurveys : ", this.props.created_surveys);
+        return this.props.created_surveys.map((survey) => {
             return (
-                <MySurvey survey_json = {survey}/>
+                <MySurvey
+                    survey_json = {survey}
+                    handlePageChange = {this.props.handlePageChange}
+                />
             )
         })
     }

@@ -14,6 +14,11 @@ class createsurvey extends Component {
         }
     }
 
+    componentDidMount() {
+        console.log("match", this.props);
+        console.log("context", this.props.context);
+    }
+
     render() {
         console.log("render createsurvey");
         return (
