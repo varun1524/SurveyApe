@@ -60,6 +60,7 @@ class Home extends Component {
             <div className="User">
                 <Header
                     handlePageChange = {this.props.handlePageChange}
+                    loggedIn = {true}
                 />
                 <div className="welcome-user">
                     <h3>Welcome, </h3> <h5>{this.props.state.user.firstname}</h5>
