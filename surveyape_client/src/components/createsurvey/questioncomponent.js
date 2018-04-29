@@ -9,7 +9,7 @@ class QuestionComponent extends Component {
 
 
     addOptionView(){
-        console.log("addOptionView question index: ",this.props.index_id )
+        console.log("addOptionView question index: ",this.props.index_id );
         this.props.addOption({question_index:this.props.index_id})
     }
 
@@ -24,7 +24,7 @@ class QuestionComponent extends Component {
     }
 
     editQuestionText(question_text){
-        console.log(this.props.index_id,"  question_text ",question_text )
+        console.log(this.props.index_id,"  question_text ",question_text );
         let payload = {
             question_text:question_text,
             question_index:this.props.index_id,
@@ -36,8 +36,8 @@ class QuestionComponent extends Component {
     getAddButtonView(){
         if((this.props.question_type === "CheckBox") || (this.props.question_type === "RadioGroup") || (this.props.question_type === "DropDown")){
            return(
-                <div className="add-option-button">
-                    <button type="button" onClick={()=>{this.addOptionView()}}>Add Option</button>
+                <div>
+                    <button type="button" className="add-option-button" onClick={()=>{this.addOptionView()}}>Add Option</button>
                 </div>);
 
         }
@@ -47,7 +47,6 @@ class QuestionComponent extends Component {
         return (
             <div>
                 <div>
-
                     <input className="question-input-box" type="text" placeholder="Type your question here" onChange={(event) => {
 
                         this.editQuestionText(event.target.value);
@@ -127,7 +126,7 @@ class QuestionComponent extends Component {
 
 
             return(
-                <div className="option-input-box">
+                <div className="option-input-box" >
                     {
                         this.props.questions[this.props.index_id].options.map((option, id) => {
 
@@ -169,6 +168,41 @@ class QuestionComponent extends Component {
                 </div>
             );
 
+        }else if(this.props.question_type === "DropDown"){
+            return(
+                <div className="option-input-box">
+                    {
+                        this.props.questions[this.props.index_id].options.map((option, id) => {
+
+                            return(
+                                <div>
+
+                                    Option{id+1}
+                                    <input type="text"
+                                           placeholder="Enter option here"
+                                           defaultValue={option.value}
+                                           onChange={(event)=>{this.editOptionText(event.target.value, id)}}
+                                    /></div>
+                            )
+                        })
+
+                    }
+                </div>);
+        }else if(this.props.question_type === "StarRating"){
+            return(
+                <div className="option-input-box">
+                    {
+                        this.props.questions[this.props.index_id].options.map((option, id) => {
+
+                            return(
+                                <div>
+                                    <span className="glyphicon glyphicon-star"> *******</span>
+                                </div>
+                            )
+                        })
+
+                    }
+                </div>);
         }
 
     }
@@ -181,18 +215,19 @@ class QuestionComponent extends Component {
             return(
                 <div className="QuestionComponent">
                     <div className="component_div">
-                        <form>
+
 
                             <div className="question-div">
                                 Question:
                                 {this.getQuestionView()}
+
                             </div>
 
                             <div className="option-div">
                                 {this.getOptionView()}
                             </div>
 
-                        </form>
+
                     </div>
                 </div>
             );

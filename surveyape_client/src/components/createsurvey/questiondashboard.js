@@ -25,15 +25,30 @@ class QuestionDashboard extends Component {
         });
     }
 
+    publishSurvey(){
+        console.log("publishSurvey() Survey Data: ",this.props.survey);
+        console.log(JSON.stringify(this.props.survey));
+
+    }
+
+    saveSurvey(){
+        console.log("saveSurvey() Survey Data: ",this.props.survey);
+        console.log(JSON.stringify(this.props.survey));
+    }
+
     getPublishandSave(){
         if(this.props.survey.questions.length>0){
             return(
                 <div>
                     <div>
-                        <button type="button">Save</button>
+                        <button type="button" onClick={()=>{this.saveSurvey()
+
+                        }}>Save</button>
                     </div>
                     <div>
-                        <button type="button">Publish</button>
+                        <button type="button" onClick={()=>{this.publishSurvey()
+
+                        }}>Publish</button>
                     </div>
                 </div>
             );

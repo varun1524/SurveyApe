@@ -4,7 +4,7 @@ import {bindActionCreators} from 'redux';
 import {addQuestion} from '../../actions/survey';
 import QuestionComponent from './questioncomponent';
 import QuestionDashboard from './questiondashboard';
-
+import uuidv4 from 'uuid';
 import '../../stylesheets/createsurvey/questionsidebar.css';
 
 class QuestionSidebar extends Component {
@@ -18,19 +18,26 @@ class QuestionSidebar extends Component {
 
     addQuestion(question_type){
         let payload ={}
+        payload.question_id = uuidv4();
         payload.question_type = question_type;
+        payload.question_text = "";
         if(question_type === "CheckBox" || question_type === "RadioGroup" || question_type === "DropDown"){
             payload.options = []
             this.props.addQuestion(payload)
         }else if(question_type === "YesNo"){
             payload.options = [{
+                option_id:uuidv4(),
                 option_type:"text",
                 option_text:"Yes"},
-                {option_type:"text",
-                option_text:"No"}]
+                {
+                  option_id:uuidv4(),
+                  option_type:"text",
+                  option_text:"No"
+              }]
             this.props.addQuestion(payload);
         }else if(question_type === "ShortAnswer" || question_type === "DateTime" || question_type === "StarRating"){
             payload.options = [{
+                option_id:uuidv4(),
                 option_type:"text",
                 option_text:""}]
             this.props.addQuestion(payload);
