@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = "*", allowCredentials = "true", allowedHeaders = "true")
+@CrossOrigin(origins = "*", allowCredentials = "true")
 @RequestMapping(path = "/survey")
 public class SurveyController {
 

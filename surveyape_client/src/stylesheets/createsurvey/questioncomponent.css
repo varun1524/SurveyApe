@@ -1,28 +1,42 @@
 .component_div {
-    margin-top: 20px;
-    height: 100%;
-    background-color: #cccccc;
+
 }
 
 .question-div {
-    width: 100%;
+    width: auto;
+    height: auto;
+    background-color: orangered;
 }
 
 .question-input-box {
-    width: 80%;
+    width: 70%;
+    height: 20px;
+    padding: 5px 5px;
+    margin: 1%;
     float: left;
-    margin-top: 8px;
 }
 
 .add-option-button {
-    width: 18%;
+    width: 20%;
+    height: 30px;
+    padding: 5px 5px;
+    margin: 1%;
     float: right;
+
+    vertical-align: center;
+
+    background-color: #52BE80;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: medium;
+    letter-spacing: 2px;
 }
 
 .option-div {
-    width: 100%
+    background-color: antiquewhite;
 }
 
 .option-input-box {
-
+    width: 50%;
 }
