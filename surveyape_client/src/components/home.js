@@ -20,7 +20,7 @@ class Home extends Component {
     }
 
     componentDidMount(){
-        // this.props.validateSession();
+        this.props.validateSession();
     }
 
     render() {
