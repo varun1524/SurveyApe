@@ -84,14 +84,6 @@ class QuestionDashboard extends Component {
                 }
             });
         }
-        else{
-            let data = {
-                survey_name: "",
-                survey_type:"",
-                questions:[]
-            };
-            this.props.updateSurvey(data);
-        }
     }
 
 
