@@ -82,7 +82,6 @@ class QuestionComponent extends Component {
                                            console.log(event.target.checked, id, question_id, event.target.value);
                                            this.response.answer_value = event.target.value;
                                            this.response.question = this.props.questions[this.props.index_id];
-                                           this.response.index = id;
                                            this.props.updateAnswer(this.response);
                                        }}
                                 />
@@ -97,6 +96,7 @@ class QuestionComponent extends Component {
             return(
                 <div className="option-input-box">
                     <select onChange={(event)=>{
+                        //TODO: Put Check for Select
                         let question_id = this.props.questions[this.props.index_id].question_id;
                         console.log(event.target.value, question_id);
                         this.response.answer_value = event.target.value;
@@ -120,7 +120,7 @@ class QuestionComponent extends Component {
 
             return(
                 <div className="option-input-box">
-                    {
+                    {/*{
                         this.props.questions[this.props.index_id].options.map((option, id) => {
                             return(
                                 <div>
@@ -129,14 +129,34 @@ class QuestionComponent extends Component {
                                 </div>
                             )
                         })
-                    }
+                    }*/}
+                    <div>
+                        <input type="radio" name={this.props.questions[this.props.index_id].question_id}
+                               onChange={(event)=>{
+                                   console.log(event.target.checked, event.target.name, event.target.value);
+                                   this.response.answer_value = event.target.value;
+                                   this.response.question = this.props.questions[this.props.index_id];
+                                   this.props.updateAnswer(this.response);
+                               }}
+                        />
+                        <label >YES</label>
+                        <input type="radio" name={this.props.questions[this.props.index_id].question_id}
+                               onChange={(event)=>{
+                                   console.log(event.target.checked, event.target.name, event.target.value);
+                                   this.response.answer_value = event.target.value;
+                                   this.response.question = this.props.questions[this.props.index_id];
+                                   this.props.updateAnswer(this.response);
+                               }}
+                        />
+                        <label >NO</label>
+                    </div>
                 </div>
             );
         }
         else if(this.props.question_type === "ShortAnswer"){
             return(
                 <div className="option-input-box" >
-                    {
+                    {/*{
                         this.props.questions[this.props.index_id].options.map((option, id) => {
                             return(
                                 <div>
@@ -149,37 +169,61 @@ class QuestionComponent extends Component {
                                 </div>
                             )
                         })
-                    }
+                    }*/}
+                    <div>
+                        Option
+                        <input type="text"
+                               placeholder="Enter option here"
+                               defaultValue="TODO:"
+                               onBlur={(event)=>{
+                                   console.log("On Blur: ", event.target.value);
+                                   console.log(event.target.checked, event.target.name, event.target.value);
+                                   this.response.answer_value = event.target.value;
+                                   this.response.question = this.props.questions[this.props.index_id];
+                                   this.props.updateAnswer(this.response);
+                               }}
+                        />
+                    </div>
                 </div>
             );
         }
         else if(this.props.question_type === "DateTime"){
             return(
                 <div className="option-input-box">
-                    {
-                        this.props.questions[this.props.index_id].options.map((option, id) => {
-                            return(
-                                <div>
-                                    <input type="date"/>
-                                </div>
-                            )
-                        })
-                    }
+                    {/*{*/}
+                    {/*this.props.questions[this.props.index_id].options.map((option, id) => {*/}
+                    {/*return(*/}
+                    {/*<div>*/}
+                    {/*<input type="date"/>*/}
+                    {/*</div>*/}
+                    {/*)*/}
+                    {/*})*/}
+                    {/*}*/}
+                    <div>
+                        <input type="date" onChange={(event)=>{
+                            console.log("On Change: ", event.target.value);
+                            console.log(event.target.checked, event.target.name, event.target.value);
+                            this.response.answer_value = event.target.value;
+                            this.response.question = this.props.questions[this.props.index_id];
+                            this.props.updateAnswer(this.response);
+                        }}/>
+                    </div>
                 </div>
             );
         }
         else if(this.props.question_type === "StarRating"){
             return(
                 <div className="option-input-box">
-                    {
-                        this.props.questions[this.props.index_id].options.map((option, id) => {
-                            return(
-                                <div>
-                                    <span className="glyphicon glyphicon-star"> *******</span>
-                                </div>
-                            )
-                        })
-                    }
+                    <div>
+                        <span className="glyphicon glyphicon-star"> *******</span>
+                        <input type="number" onChange={(event)=>{
+                            console.log("On Change: ", event.target.value);
+                            console.log(event.target.checked, event.target.name, event.target.value);
+                            this.response.answer_value = event.target.value;
+                            this.response.question = this.props.questions[this.props.index_id];
+                            this.props.updateAnswer(this.response);
+                        }}/>
+                    </div>
                 </div>);
         }
     }
