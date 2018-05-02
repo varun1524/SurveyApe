@@ -74,7 +74,7 @@ public class Question {
 
     public List<OptionAns> getOptions() {
         if(this.options==null){
-            return Collections.emptyList();
+            return new LinkedList<>();
         }
         return options;
     }
@@ -85,7 +85,7 @@ public class Question {
 
     public List<ResponseAnswers> getResponseAnswers() {
         if(this.responseAnswers==null){
-            return Collections.emptyList();
+            return new LinkedList<>();
         }
         return responseAnswers;
     }

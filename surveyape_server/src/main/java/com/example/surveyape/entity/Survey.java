@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
-import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -131,7 +130,7 @@ public class Survey {
 
     public List<Question> getQuestions() {
         if(this.questions==null){
-            return Collections.emptyList();
+            return new LinkedList<>();
         }
         return questions;
     }
@@ -142,7 +141,7 @@ public class Survey {
 
     public List<SurveyResponse> getSurveyResponses() {
         if(this.surveyResponses==null){
-            return Collections.emptyList();
+            return new LinkedList<>();
         }
         return surveyResponses;
     }

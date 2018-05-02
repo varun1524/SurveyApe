@@ -4,8 +4,6 @@ import com.example.surveyape.view.ResponseView;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 
 @Entity
@@ -17,12 +15,12 @@ public class ResponseAnswers {
     private String answerId;
 
     
-    @ManyToOne(targetEntity = SurveyResponse.class)
+    @ManyToOne(targetEntity = SurveyResponse.class, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "responseId", nullable = false)
     private SurveyResponse surveyResponse;
 
     @JsonView({ ResponseView.summary.class })
-    @ManyToOne(targetEntity = Question.class, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = Question.class, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "questionId", nullable = false)
     private Question question;
 
