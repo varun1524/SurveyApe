@@ -48,7 +48,12 @@ class QuestionSidebar extends Component {
     renderQuestionTypes() {
         return this.props.questionTypes.map((question_type) => {
             return(
+                <div>
                     <a key={question_type.id} href = "#" onClick={() => this.addQuestion(question_type.question_type)}>{question_type.question_type}</a>
+                    <hr/>
+                </div>
+
+
             )
         });
     }

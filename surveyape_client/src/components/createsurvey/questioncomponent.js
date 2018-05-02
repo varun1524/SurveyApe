@@ -4,9 +4,21 @@ import {connect} from 'react-redux';
 import '../../stylesheets/createsurvey/questioncomponent.css';
 import {bindActionCreators} from "redux";
 import {addQuestion, editQuestion,editOption, addOption} from "../../actions/survey";
+import {Glyphicon} from "react-bootstrap";
+import StarRatingComponent from 'react-star-rating-component';
 
 class QuestionComponent extends Component {
 
+    constructor() {
+        super();
+        this.state = {
+            rating: 0
+        };
+    }
+
+    onStarClick(nextValue, prevValue, name) {
+        this.setState({rating: nextValue});
+    }
 
     addOptionView(){
         console.log("addOptionView question index: ",this.props.index_id );
@@ -35,135 +47,223 @@ class QuestionComponent extends Component {
 
     getAddButtonView(){
         if((this.props.question_type === "CheckBox") || (this.props.question_type === "RadioGroup") || (this.props.question_type === "DropDown")){
-            return(
+           return(
                 <div>
                     <button type="button" className="add-option-button" onClick={()=>{this.addOptionView()}}>Add Option</button>
                 </div>
-            );
+           );
+        }
+        else {
+            return(
+                <div>
+                    <button type="button" className="add-option-button-yes-no" onClick={()=>{this.addOptionView()}}></button>
+                </div>
 
+            );
         }
     }
 
     getQuestionView(){
         return (
-            <div>
-
+            <div className="get-question-view-div">
                 <input className="question-input-box" type="text" placeholder="Type your question here" onChange={(event) => {
                     this.editQuestionText(event.target.value);
                 }} defaultValue={this.props.questions[this.props.index_id].question_text}/>
 
+                <div className="remove-glyphicon-question">
+                    <span onClick={() => {console.log("cross")}}><Glyphicon glyph="remove"/></span>
+                </div>
 
                 {this.getAddButtonView()}
-
-
             </div>
         );
     }
 
     getOptionView(){
         if(this.props.question_type === "CheckBox"){
+           return(
+               <div>
+                   {
+                       this.props.questions[this.props.index_id].options.map((option, id) => {
+                           return(
+                               <div className="option-input-box">
+                                   <input type="checkbox" className="option-type"/>
+                                   <input type="text"
+                                          className="option-text-box"
+                                          placeholder="Enter option here"
+                                          defaultValue={option.value}
+                                          onChange={(event)=>{this.editOptionText(event.target.value, id)}}
+                                   />
+                                   <div className="remove-glyphicon-option">
+                                       <span onClick={() => {console.log("cross")}}><Glyphicon glyph="remove"/></span>
+                                   </div>
+                               </div>
+                           )
+                       })
+                   }
+               </div>);
+        }
+        else if(this.props.question_type === "RadioGroup"){
             return(
-                <div className="option-input-box">
+                <div>
                     {
                         this.props.questions[this.props.index_id].options.map((option, id) => {
 
                             return(
-                                <div>
-                                    <input type="checkbox" className="option-"/>
+                                <div className="option-input-box">
+                                    <input type="radio" className="option-type"/>
                                     <input type="text"
+                                           className="option-text-box"
                                            placeholder="Enter option here"
-                                           defaultValue={option.value}
+                                           defaultValue={option.option_text}
                                            onChange={(event)=>{this.editOptionText(event.target.value, id)}}
                                     />
+                                    <div className="remove-glyphicon-option">
+                                        <span onClick={() => {console.log("cross")}}><Glyphicon glyph="remove"/></span>
+                                    </div>
                                 </div>
                             )
                         })
-                    }
-                </div>);
-        }
-        else if(this.props.question_type === "RadioGroup"){
-            return( <div className="option-input-box">
-                {
-                    this.props.questions[this.props.index_id].options.map((option, id) => {
 
-                        return(
-                            <div>
-                                <input type="radio" />
-                                <input type="text"
-                                       placeholder="Enter option here"
-                                       defaultValue={option.option_text}
-                                       onChange={(event)=>{this.editOptionText(event.target.value, id)}}
-                                />
-                            </div>
-                        )
-                    })
-                }
-            </div>);
+                    }
+
+                </div>);
+
         }
         else if(this.props.question_type === "DropDown"){
             return(
-                <div className="option-input-box">
+                <div>
                     {
                         this.props.questions[this.props.index_id].options.map((option, id) => {
 
                             return(
-                                <div>
+                                <div className="option-input-box">
 
-                                    Option{id+1}
+                                    <label className="option-type-dropdown">Option{id+1}</label>
                                     <input type="text"
+                                           className="option-text-box-dropdown"
                                            placeholder="Enter option here"
                                            defaultValue={option.value}
                                            onChange={(event)=>{this.editOptionText(event.target.value, id)}}
                                     />
+                                    <div className="remove-glyphicon-option">
+                                        <span onClick={() => {console.log("cross")}}><Glyphicon glyph="remove"/></span>
+                                    </div>
                                 </div>
                             )
                         })
+
                     }
                 </div>);
         }
         else if(this.props.question_type === "YesNo"){
+
             return(
-                <div className="option-input-box">
-                    <div>
-                        <input type="radio"/>
-                        <label >YES</label>
-                    </div>
-                    <div>
-                        <input type="radio"/>
-                        <label >NO</label>
-                    </div>
+                <div>
+                    {
+                        this.props.questions[this.props.index_id].options.map((option, id) => {
+
+                            return(
+                                <div className="option-input-box">
+                                    <input type="radio" className="option-type"/>
+                                    <label className="option-text-box-radio">{option.option_text}</label>
+                                </div>
+
+                            )
+                        })
+
+                    }
+
                 </div>
             );
+
         }
         else if(this.props.question_type === "ShortAnswer"){
+
+
             return(
-                <div className="option-input-box" >
-                    <div>
-                        Option
-                        <input type="text"
-                               placeholder="Enter option here"
-                            // defaultValue={option.value}
-                            //    onChange={(event)=>{this.editOptionText(event.target.value)}}
-                        />
-                    </div>
+                <div>
+                    {
+                        this.props.questions[this.props.index_id].options.map((option, id) => {
+
+                            return(
+                                <div className="option-input-box">
+                                    <label className="option-type-dropdown">Option</label>
+                                    <input type="text"
+                                           className="option-text-box-dropdown"
+                                           placeholder="Enter option here"
+                                           defaultValue={option.value}
+                                           onChange={(event)=>{this.editOptionText(event.target.value, id)}}
+                                    />
+                                    <div className="remove-glyphicon-option">
+                                        <span onClick={() => {console.log("cross")}}><Glyphicon glyph="remove"/></span>
+                                    </div>
+                                </div>
+                            )
+                        })
+
+                    }
+
                 </div>
             );
+
         }
         else if(this.props.question_type === "DateTime"){
+
             return(
                 <div className="option-input-box">
-                    <div>
-                        <input type="date"/>
-                    </div>
+                    {
+                        this.props.questions[this.props.index_id].options.map((option, id) => {
+
+                            return(
+                                <div>
+                                    <input type="date" className="option-text-box"/>
+                                    <div className="remove-glyphicon-option">
+                                        <span onClick={() => {console.log("cross")}}></span>
+                                    </div>
+                                </div>
+                            )
+                        })
+
+                    }
+
                 </div>
             );
+
         }
         else if(this.props.question_type === "StarRating"){
             return(
                 <div className="option-input-box">
-                    <div>
-                        <span className="glyphicon glyphicon-star"> *******</span>
-                    </div>
+                    {
+                        this.props.questions[this.props.index_id].options.map((option, id) => {
+
+                            return(
+                                <div className="option-input-box">
+                                    <label className="option-type-dropdown">Rating</label>
+                                    {/*<input type="number"*/}
+                                    {/*className="option-text-box-dropdown"*/}
+                                    {/*placeholder="Enter your rating here"*/}
+                                    {/*defaultValue={option.value}*/}
+                                    {/*onChange={(event)=>{this.editOptionText(event.target.value, id)}}*/}
+                                    {/*/>*/}
+                                    {/*<div className="remove-glyphicon-option">*/}
+                                    {/*<span onClick={() => {console.log("cross")}}><Glyphicon glyph="remove"/></span>*/}
+                                    {/*</div>*/}
+                                    <div className="option-type-star">
+                                        <StarRatingComponent
+                                            name="rate1"
+                                            starCount={5}
+                                            value={this.state.rating}
+                                            onStarClick={this.onStarClick.bind(this)}
+                                        />
+                                    </div>
+
+
+                                </div>
+                            )
+                        })
+
+                    }
                 </div>);
         }
 
@@ -174,12 +274,14 @@ class QuestionComponent extends Component {
         console.log(this.props.question_type)
         console.log("this.props.questions[this.props.index_id].options",this.props.questions[this.props.index_id].options)
 
+        console.log("rating", this.state.rating);
         return(
             <div className="QuestionComponent">
                 <div className="component_div">
 
                     <div className="question-div">
-                        Question:
+                        <div className="question-label">Question:</div>
+                        <hr className="question-hr"/>
                         {this.getQuestionView()}
 
                     </div>
@@ -212,7 +314,7 @@ function mapDispatchToProps(dispatch) {
         editQuestion : editQuestion,
         addOption: addOption,
         editOption:editOption
-    }, dispatch)
+        }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionComponent);

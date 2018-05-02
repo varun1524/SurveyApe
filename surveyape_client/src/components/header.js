@@ -25,7 +25,9 @@ const customStyles = {
         transform             : 'translate(-50%, -50%)',
         color                 : 'black',
         padding               : '0px',
-        alignContent          : 'center'
+        alignContent          : 'center',
+        width                 : '50%',
+        height                : '50%'
     }
 
 
@@ -121,17 +123,35 @@ class Header extends Component {
                     <div className="modal-body">
 
                         <label>Survey Name</label>
-                        <input type="text" onChange={(event)=>{
-                            this.state.survey_name = event.target.value;
-                        }}/>
+                        <input type="text"
+                               className="survey-name-input-box"
+                               onChange={(event)=>{this.state.survey_name = event.target.value;}}
+                               placeholder="Enter the survey name"
+                        />
 
                         <label>Survey Type</label>
-                        <input type="text" onChange={(event)=>{
-                            this.state.survey_type = event.target.value;
-                        }}/>
+                        <select name="survey-dropdown"
+                                className="survey-type-dropdown"
+                                onChange={(event)=>{this.state.survey_type = event.target.value;}}
+                        >
+                            <option value="">Select the survey type</option>
+                            <option value="general">General</option>
+                            <option value="open">Open</option>
+                            <option value="closed">Closed</option>
+                        </select>
+                        {/*<input type="text" onChange={(event)=>{*/}
+                            {/*this.state.survey_type = event.target.value;*/}
+                        {/*}}/>*/}
+
+                        <label>End Date</label>
+                        <input type="date" className="survey-name-input-box" />
 
                         <input type="button" className="submit-create-survey" value="Submit" onClick={()=>{
                             this.createSurvey()
+                        }}/>
+
+                        <input type="button" className="cancel-create-survey" value="Cancel" onClick={()=>{
+                            this.closeCreateSurveyModal()
                         }}/>
                     </div>
                 </CreateSurveyModal>

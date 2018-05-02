@@ -1,0 +1,26 @@
+.survey-name-p {
+    color: #F8F8F8;
+    font-size: 20px;
+    text-align: left;
+    background-color: #54CB8B;
+    padding: 5px;
+    width: 100%;
+    height: 40px;
+    vertical-align: center;
+}
+
+.survey-type-span {
+    font-size: 12px;
+}
+
+.save-survey-button {
+    width: 45%;
+    margin: 1%;
+    float: left;
+}
+
+.publish-survey-button {
+    width: 45%;
+    margin: 1%;
+    float: right;
+}

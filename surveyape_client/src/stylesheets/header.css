@@ -3,7 +3,7 @@ body {
 }
 
 .create-survey-button, .logout-button {
-    background-color: #52BE80;
+    background-color: #000000;
     text-align: center;
     font-size: 18px;
     padding: 10px 20px;
@@ -11,35 +11,23 @@ body {
     margin-top: 3px;
     margin-right: 3px;
     letter-spacing: 2px;
-    color: white;
-}
-
-.submit-create-survey {
-    background-color: #f1f1f1;
-    text-align: center;
-    font-size: 18px;
-    padding: 10px 20px;
-    border: none;
-    margin-top: 3px;
-    margin-right: 3px;
-    letter-spacing: 2px;
-    color: white;
+    color: #f1f1f1;
 }
 
 input[type = button]:hover{
-    background-color: #54CB8B;
+    background-color: #2D2D2D;
 
 }
 
 .header-child {
     overflow: hidden;
-    background-color: #52BE80;
+    background-color: #000000;
     letter-spacing: 2px;
 }
 
 .header-child a {
     float: left;
-    color: white;
+    color: #f1f1f1;
     text-align: center;
     text-decoration: none;
     font-size: 18px;
@@ -138,4 +126,39 @@ input[type = button]:hover{
     padding: 2px 16px;
     background-color: #F8F8F8;
     color: #7C7C7C;
+}
+
+.survey-name-input-box, .survey-type-dropdown {
+    width: 100%;
+    padding: 5px 10px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.submit-create-survey {
+    width: 45%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 18px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: left;
+}
+
+.cancel-create-survey {
+    width: 45%;
+    background-color: #FF5B38;
+    color: white;
+    padding: 14px 20px;
+    margin: 18px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: right;
 }

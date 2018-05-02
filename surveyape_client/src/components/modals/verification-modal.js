@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import '../../stylesheets/verify-modal.css';
 import * as API from "../../api/API";
 import { Alert } from 'reactstrap';
+
 class VerificationModal extends Component {
   constructor(){
     super();

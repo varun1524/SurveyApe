@@ -6,6 +6,10 @@ form {
     border: 3px solid #f1f1f1;
 }
 
+hr {
+    border-color: #7C7C7C;
+}
+
 /*input[type=text], input[type=password] {
     width: 100%;
     padding: 12px 20px;
@@ -56,4 +60,11 @@ button:hover {
 .sign-in-container.sign-in-password {
     float: right;
     padding-top: 16px;
+}
+
+.sign-in-label {
+    color: #7C7C7C;
+    font-weight: lighter;
+    font-size: 20px;
+    letter-spacing: 2px;
 }

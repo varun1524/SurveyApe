@@ -6,6 +6,8 @@ import {bindActionCreators} from 'redux';
 import {updateSurvey} from './../../actions/survey';
 import Spinner from 'react-spinkit';
 
+import './../../stylesheets/createsurvey/questiondashboard.css';
+
 class QuestionDashboard extends Component {
 
     constructor() {
@@ -14,7 +16,7 @@ class QuestionDashboard extends Component {
         console.log("constructor questiondashboard");
         this.state = {
 
-        }
+        };
     }
 
 
@@ -49,19 +51,19 @@ class QuestionDashboard extends Component {
     }
 
     getPublishandSave(){
-        if(this.props.survey.questions.length>0){
-            return(
+        if(this.props.survey.questions.length>0) {
+            return (
                 <div>
-                    <div>
-                        <button type="button" onClick={()=>{this.saveSurvey()
+                    <button type="button" className="save-survey-button" onClick={() => {
+                        this.saveSurvey()
 
-                        }}>Save</button>
-                    </div>
-                    <div>
-                        <button type="button" onClick={()=>{this.publishSurvey()
+                    }}>Save
+                    </button>
+                    <button type="button" className="publish-survey-button" onClick={() => {
+                        this.publishSurvey()
 
-                        }}>Publish</button>
-                    </div>
+                    }}>Publish
+                    </button>
                 </div>
             );
         }
@@ -87,8 +89,6 @@ class QuestionDashboard extends Component {
         }
     }
 
-
-
     render () {
         console.log("render questiondashboard")
         // if(!this.props.state.questionReducer) {
@@ -100,6 +100,8 @@ class QuestionDashboard extends Component {
         return(
             <div>
                 {/*<Spinner name="ball-spin-fade-loader" color="coral"/>*/}
+                <div className="survey-name-p">Survey Name <span className="survey-type-span">[general]</span></div>
+                {/*<div className="survey-name-p">{this.state.survey.survey_name} <span className="survey-type-span">[{this.state.survey.survey_name}]</span></div>*/}
                 {this.displayQuestionComponent()}
                 {this.getPublishandSave()}
             </div>
