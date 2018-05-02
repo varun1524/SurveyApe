@@ -4,8 +4,37 @@ import Login from './login';
 import '../stylesheets/signup.css';
 import * as API from "../api/API";
 import {Link, withRouter} from 'react-router-dom';
-import VerificationModal from './modals/verification-modal';
-import VerificationSuccessModal from './modals/verification-success-modal';
+
+import VerificationModal from 'react-modal';
+
+import InnerVerificationModal from './modals/verification-modal';
+import InnerVerificationSuccessModal from './modals/verification-success-modal';
+
+const customStyles = {
+    overlay : {
+        position          : 'fixed',
+        top               : 0,
+        left              : 0,
+        right             : 0,
+        bottom            : 0,
+        backgroundColor   : 'rgba(255, 255, 255, 0.4)'
+    },
+    content : {
+        top                   : '50%',
+        left                  : '50%',
+        right                 : 'auto',
+        bottom                : 'auto',
+        marginRight           : '-50%',
+        transform             : 'translate(-50%, -50%)',
+        color                 : 'black',
+        padding               : '0px',
+        alignContent          : 'center',
+        width                 : '50%',
+        height                : '50%'
+    }
+
+
+};
 
 class SignUp extends Component {
 
@@ -18,15 +47,23 @@ class SignUp extends Component {
             password: "",
             isLoggedIn: false,
             message: "",
-            showVerificationModal:false,
-            showVerificationSuccessModal:false,
+            verificationModalOpen:false,
+            verificationSuccessModalOpen:false,
             emailColor:"",
         };
+
+        this.openVerificationModal = this.openVerificationModal.bind(this);
+        // this.openSuccessVerificationModal= this.openSuccessVerificationModal.bind(this);
+
     }
 
     handleSignUp = (() => {
         console.log("[Signup Component] handleSignUp() userdetail: " );
         console.log(this.state);
+
+        //remove after verification
+        this.openVerificationModal();
+
 
         var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
 
@@ -88,21 +125,20 @@ class SignUp extends Component {
         }
     });
 
-    changeVerificationModalVisibility = ()=>{
-        console.log("changeVerificationModalVisibility: "+this.state.showVerificationModal);
+    openVerificationModal() {
         this.setState({
             ...this.state,
-            showVerificationModal:!this.state.showVerificationModal,
-        });
+            verificationModalOpen : true
+        })
     }
 
-    changeSuccessVerificationModalVisibility = ()=>{
-        console.log("changeSuccessVerificationModalVisibility: "+this.state.showVerificationSuccessModal);
+    closeVerificationModal() {
         this.setState({
             ...this.state,
-            showVerificationSuccessModal:!this.state.showVerificationSuccessModal,
-        });
+            verificationModalOpen : false
+        })
     }
+
 
     verifyAccount =()=>{
         this.setState({
@@ -121,16 +157,37 @@ class SignUp extends Component {
             <div className="DemoSignUp">
                 <HeaderComponent/>
 
-                <VerificationModal showVerification={this.state.showVerificationModal}
-                                   onClose={this.changeVerificationModalVisibility}
-                                   verifyAccount={this.verifyAccount}>
+                {/*<VerificationModal showVerification={this.state.showVerificationModal}*/}
+                                   {/*onClose={this.changeVerificationModalVisibility}*/}
+                                   {/*verifyAccount={this.verifyAccount}>*/}
+                {/*</VerificationModal>*/}
+                {/*<VerificationSuccessModal showVerificationSuccessModal= {this.state.showVerificationSuccessModal}*/}
+                                          {/*onClose={this.changeSuccessVerificationModalVisibility}/>*/}
+
+                <VerificationModal
+                    isOpen={this.state.verificationModalOpen}
+                    onAfterOpen={this.openVerificationModal}
+                    onRequestClose={this.closeVerificationModal}
+                    style={customStyles}
+                >
+                    <div className="modal-header">
+                        <span className="close" onClick={() => {this.closeVerificationModal()}}>&times;</span>
+                        <h3>VERIFICATION MODAL</h3>
+                    </div>
+                    <div className="modal-body">
+
+                        <InnerVerificationModal />
+
+                    </div>
                 </VerificationModal>
-                <VerificationSuccessModal showVerificationSuccessModal= {this.state.showVerificationSuccessModal}
-                                          onClose={this.changeSuccessVerificationModalVisibility}/>
 
                 <div className="sign-up-form">
                     <form>
                         <div className="sign-up-container">
+
+                            <label className="sign-up-label">SIGN UP</label>
+                            <hr/>
+
                             <input className = "signup-input-text" type="text" placeholder="Enter Username" name="email" style={{color:this.state.emailColor}}
                                    onChange={(event) => {
                                        this.setState({

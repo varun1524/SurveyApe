@@ -35,9 +35,12 @@ class surveyordashboard extends Component {
     render() {
         return (
             <div className="surveyordashboard">
-                <h3>Surveys created by me</h3>
+                <div className="surveys-created-by-me">Surveys created by me</div>
 
-                {this.displayAllSurveys()}
+                <div>
+                    {this.displayAllSurveys()}
+                </div>
+
 
             </div>
         )

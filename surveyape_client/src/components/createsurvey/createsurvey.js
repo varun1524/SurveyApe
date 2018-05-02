@@ -23,8 +23,6 @@ class createsurvey extends Component {
         console.log("render createsurvey");
         return (
             <div className="createsurvey">
-                <div className="welcome-user">
-                </div>
                 <div className="user_body">
                     <div className="user_body_navbar">
                         <QuestionSidebar handlePageChange={this.props.handlePageChange}/>
