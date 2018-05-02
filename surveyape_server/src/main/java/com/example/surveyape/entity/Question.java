@@ -1,6 +1,7 @@
 package com.example.surveyape.entity;
 
-import com.example.surveyape.view.SurveyView;
+
+import com.example.surveyape.view.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -11,7 +12,7 @@ import java.util.List;
 public class Question {
 
     @JsonProperty("question_id")
-    @JsonView({SurveyView.summary.class})
+	@JsonView({ SurveyView.summary.class, ResponseView.summary.class })
     @Id
     private String questionId;
 

@@ -4,7 +4,7 @@ import QuestionComponent from './questioncomponent';
 import * as API from './../../api/API';
 import {bindActionCreators} from 'redux';
 import {updateSurvey} from './../../actions/survey';
-
+import Spinner from 'react-spinkit';
 
 class QuestionDashboard extends Component {
 
@@ -36,6 +36,7 @@ class QuestionDashboard extends Component {
     }
 
     saveSurvey(){
+
         console.log("saveSurvey() Survey Data: ",this.props.survey);
         console.log(JSON.stringify(this.props.survey));
         API.updateSurvey(this.props.survey).then((response)=>{
@@ -81,6 +82,7 @@ class QuestionDashboard extends Component {
         // }
         return(
             <div>
+                {/*<Spinner name="ball-spin-fade-loader" color="coral"/>*/}
                 {this.displayQuestionComponent()}
                 {this.getPublishandSave()}
             </div>

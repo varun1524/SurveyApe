@@ -2,29 +2,47 @@ package com.example.surveyape.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.example.surveyape.view.ResponseView;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 public class SurveyResponse {
-
+	@JsonProperty("response_id")
+	@JsonView({ ResponseView.summary.class })
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String responseId;
-
+	
+	@JsonProperty("survey_id")
+    @JsonView({ ResponseView.summary.class })
     @ManyToOne
     @JoinColumn(name = "surveyId", nullable = false)
     private Survey survey;
 
     @ManyToOne
-    @JoinColumn(name = "userId", nullable = false)
-    private User user;
+    @JoinColumn(name = "userId", nullable = true)
+   private User user;
 
+    @JsonProperty("responses")
+    @JsonView({ ResponseView.summary.class })
     @OneToMany(mappedBy = "surveyResponse", cascade = {CascadeType.ALL})
     private List<ResponseAnswers> responseAnswers;
+    
+    @JsonView({ ResponseView.summary.class })
+    private String email;
+    
+    public String getEmail() {
+		return email;
+	}
 
-    public String getResponseId() {
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getResponseId() {
         return responseId;
     }
 
@@ -40,7 +58,7 @@ public class SurveyResponse {
         this.survey = survey;
     }
 
-    public User getUser() {
+   public User getUser() {
         return user;
     }
 

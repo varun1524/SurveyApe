@@ -69,7 +69,7 @@ public class SurveyController {
     }
 
     @JsonView({SurveyView.summary.class})
-    @RequestMapping(value = "/survey/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{surveyId}", method = RequestMethod.GET)
     public ResponseEntity fetchSurvey(@PathVariable String surveyId, HttpSession session){
         ResponseEntity responseEntity = new ResponseEntity(null, HttpStatus.BAD_REQUEST);
         try {
