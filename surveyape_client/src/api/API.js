@@ -154,18 +154,34 @@ export const deleteOption = (optionId, surveyId) =>
         return error;
     });
 
-    export const getSurveyById = (surveyId) =>
-        fetch(`${api}/survey/${surveyId}`, {
-            method: 'GET',
-            headers: {
-                ...headers,
-                'Content-Type': 'application/json'
-            },
-            credentials:'include'
-        }).then(res => {
-            return res;
-        }).catch(error => {
-            console.log("This is error");
-            console.log(error);
-            return error;
-        });
+export const getSurveyById = (surveyId) =>
+    fetch(`${api}/survey?survey_id=${surveyId}`, {
+        method: 'GET',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        credentials:'include'
+    }).then(res => {
+        return res;
+    }).catch(error => {
+        console.log("This is error");
+        console.log(error);
+        return error;
+    });
+
+export const getSurveyList = () =>
+    fetch(`${api}/user/surveylist`, {
+        method: 'GET',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        credentials:'include'
+    }).then(res => {
+        return res;
+    }).catch(error => {
+        console.log("This is error");
+        console.log(error);
+        return error;
+    });

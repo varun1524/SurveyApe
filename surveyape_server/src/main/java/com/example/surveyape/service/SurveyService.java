@@ -5,7 +5,6 @@ import com.example.surveyape.entity.Question;
 import com.example.surveyape.entity.Survey;
 import com.example.surveyape.entity.User;
 import com.example.surveyape.repository.SurveyRepository;
-import com.example.surveyape.repository.UserRepository;
 import com.example.surveyape.utils.QuestionUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -80,6 +79,16 @@ public class SurveyService {
                 List<Map> answerMapList = (List)map.get("options");
                 question.setOptions(generateAnswersOptions(answerMapList, question));
             }
+            else if(questionType.equals(QuestionUtility.RATING)
+                    ||
+                    questionType.equals(QuestionUtility.SHORTANSWER)
+                    ||
+                    questionType.equals(QuestionUtility.DateTime)
+                    ||
+                    questionType.equals(QuestionUtility.YESNO)
+            ){
+                System.out.println("Question Type: " + questionType);
+            }
             questionList.add(question);
         }
         return questionList;
@@ -108,6 +117,4 @@ public class SurveyService {
 		}
 		return survey;
 	}
-
-
 }

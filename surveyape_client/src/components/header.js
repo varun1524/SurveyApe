@@ -71,7 +71,7 @@ class Header extends Component {
         API.createSurvey({
                 survey_name:this.state.survey_name,
                 survey_type:this.state.survey_type
-        }
+            }
         ).then((response)=>{
             if(response.status === 200){
                 console.log("Survey created successfully : survey - ");
@@ -85,15 +85,27 @@ class Header extends Component {
         });
     }
 
+    showLoggedInHeader = (()=>{
+        console.log("Header: ", this.props);
+        console.log(this.props.loggedIn);
+        if(this.props.hasOwnProperty("loggedIn")){
+            if(this.props.loggedIn){
+                return(<div>
+                    <div className="header-child-right">
+                        <input type="button" className="create-survey-button" onClick={() => {this.openCreateSurveyModal()}} value="Create Survey"/>
+                        <input type="button" className="logout-button" onClick={()=>{this.handleLogout()}} value="Logout"/>
+                    </div>
+                </div>)
+            }
+        }
+    });
+
     render() {
         return(
             <div className="Header">
                 <div className="header-child">
                     <a href="#" className="logo">SURVEYape</a>
-                    <div className="header-child-right">
-                        <input type="button" className="create-survey-button" onClick={() => {this.openCreateSurveyModal()}} value="Create Survey"/>
-                        <input type="button" className="logout-button" onClick={()=>{this.handleLogout()}} value="Logout"/>
-                    </div>
+                    {this.showLoggedInHeader()}
                 </div>
 
                 <CreateSurveyModal
