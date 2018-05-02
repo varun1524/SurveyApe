@@ -51,7 +51,6 @@ class QuestionComponent extends Component {
                 <div>
                     <button type="button" className="add-option-button" onClick={()=>{this.addOptionView()}}>Add Option</button>
                 </div>
-
            );
         }
         else {
@@ -67,15 +66,15 @@ class QuestionComponent extends Component {
     getQuestionView(){
         return (
             <div className="get-question-view-div">
-                    <input className="question-input-box" type="text" placeholder="Type your question here" onChange={(event) => {
-                        this.editQuestionText(event.target.value);
-                    }} defaultValue={this.props.questions[this.props.index_id].question_text}/>
+                <input className="question-input-box" type="text" placeholder="Type your question here" onChange={(event) => {
+                    this.editQuestionText(event.target.value);
+                }} defaultValue={this.props.questions[this.props.index_id].question_text}/>
 
-                    <div className="remove-glyphicon-question">
-                        <span onClick={() => {console.log("cross")}}><Glyphicon glyph="remove"/></span>
-                    </div>
+                <div className="remove-glyphicon-question">
+                    <span onClick={() => {console.log("cross")}}><Glyphicon glyph="remove"/></span>
+                </div>
 
-                    {this.getAddButtonView()}
+                {this.getAddButtonView()}
             </div>
         );
     }
@@ -83,52 +82,52 @@ class QuestionComponent extends Component {
     getOptionView(){
         if(this.props.question_type === "CheckBox"){
            return(
-                <div>
-                {
-                    this.props.questions[this.props.index_id].options.map((option, id) => {
-                        return(
-                            <div className="option-input-box">
-                                <input type="checkbox" className="option-type"/>
-                                <input type="text"
-                                       className="option-text-box"
-                                       placeholder="Enter option here"
-                                       defaultValue={option.value}
-                                       onChange={(event)=>{this.editOptionText(event.target.value, id)}}
-                                />
-                                <div className="remove-glyphicon-option">
-                                    <span onClick={() => {console.log("cross")}}><Glyphicon glyph="remove"/></span>
-                                </div>
-                            </div>
-                        )
-                    })
-                }
-                </div>);
+               <div>
+                   {
+                       this.props.questions[this.props.index_id].options.map((option, id) => {
+                           return(
+                               <div className="option-input-box">
+                                   <input type="checkbox" className="option-type"/>
+                                   <input type="text"
+                                          className="option-text-box"
+                                          placeholder="Enter option here"
+                                          defaultValue={option.value}
+                                          onChange={(event)=>{this.editOptionText(event.target.value, id)}}
+                                   />
+                                   <div className="remove-glyphicon-option">
+                                       <span onClick={() => {console.log("cross")}}><Glyphicon glyph="remove"/></span>
+                                   </div>
+                               </div>
+                           )
+                       })
+                   }
+               </div>);
         }
         else if(this.props.question_type === "RadioGroup"){
             return(
                 <div>
-                {
-                    this.props.questions[this.props.index_id].options.map((option, id) => {
+                    {
+                        this.props.questions[this.props.index_id].options.map((option, id) => {
 
-                        return(
-                            <div className="option-input-box">
-                                <input type="radio" className="option-type"/>
-                                <input type="text"
-                                       className="option-text-box"
-                                       placeholder="Enter option here"
-                                       defaultValue={option.option_text}
-                                       onChange={(event)=>{this.editOptionText(event.target.value, id)}}
-                                />
-                                <div className="remove-glyphicon-option">
-                                    <span onClick={() => {console.log("cross")}}><Glyphicon glyph="remove"/></span>
+                            return(
+                                <div className="option-input-box">
+                                    <input type="radio" className="option-type"/>
+                                    <input type="text"
+                                           className="option-text-box"
+                                           placeholder="Enter option here"
+                                           defaultValue={option.option_text}
+                                           onChange={(event)=>{this.editOptionText(event.target.value, id)}}
+                                    />
+                                    <div className="remove-glyphicon-option">
+                                        <span onClick={() => {console.log("cross")}}><Glyphicon glyph="remove"/></span>
+                                    </div>
                                 </div>
-                            </div>
-                        )
-                    })
+                            )
+                        })
 
-                }
+                    }
 
-            </div>);
+                </div>);
 
         }
         else if(this.props.question_type === "DropDown"){
@@ -242,13 +241,13 @@ class QuestionComponent extends Component {
                                 <div className="option-input-box">
                                     <label className="option-type-dropdown">Rating</label>
                                     {/*<input type="number"*/}
-                                           {/*className="option-text-box-dropdown"*/}
-                                           {/*placeholder="Enter your rating here"*/}
-                                           {/*defaultValue={option.value}*/}
-                                           {/*onChange={(event)=>{this.editOptionText(event.target.value, id)}}*/}
+                                    {/*className="option-text-box-dropdown"*/}
+                                    {/*placeholder="Enter your rating here"*/}
+                                    {/*defaultValue={option.value}*/}
+                                    {/*onChange={(event)=>{this.editOptionText(event.target.value, id)}}*/}
                                     {/*/>*/}
                                     {/*<div className="remove-glyphicon-option">*/}
-                                        {/*<span onClick={() => {console.log("cross")}}><Glyphicon glyph="remove"/></span>*/}
+                                    {/*<span onClick={() => {console.log("cross")}}><Glyphicon glyph="remove"/></span>*/}
                                     {/*</div>*/}
                                     <div className="option-type-star">
                                         <StarRatingComponent
@@ -276,24 +275,24 @@ class QuestionComponent extends Component {
         console.log("this.props.questions[this.props.index_id].options",this.props.questions[this.props.index_id].options)
 
         console.log("rating", this.state.rating);
-            return(
-                <div className="QuestionComponent">
-                    <div className="component_div">
+        return(
+            <div className="QuestionComponent">
+                <div className="component_div">
 
-                            <div className="question-div">
-                                <div className="question-label">Question:</div>
-                                <hr className="question-hr"/>
-                                {this.getQuestionView()}
-
-                            </div>
-
-                            <div className="option-div">
-                                {this.getOptionView()}
-                            </div>
+                    <div className="question-div">
+                        <div className="question-label">Question:</div>
+                        <hr className="question-hr"/>
+                        {this.getQuestionView()}
 
                     </div>
+
+                    <div className="option-div">
+                        {this.getOptionView()}
+                    </div>
+
                 </div>
-            );
+            </div>
+        );
 
 
     }

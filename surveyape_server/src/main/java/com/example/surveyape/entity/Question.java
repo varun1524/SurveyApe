@@ -1,17 +1,20 @@
 package com.example.surveyape.entity;
 
-import com.example.surveyape.view.SurveyView;
+
+import com.example.surveyape.view.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
 public class Question {
 
     @JsonProperty("question_id")
-    @JsonView({SurveyView.summary.class})
+	@JsonView({ SurveyView.summary.class, ResponseView.summary.class })
     @Id
     private String questionId;
 
@@ -70,6 +73,9 @@ public class Question {
     }
 
     public List<OptionAns> getOptions() {
+        if(this.options==null){
+            return Collections.emptyList();
+        }
         return options;
     }
 
@@ -78,6 +84,9 @@ public class Question {
     }
 
     public List<ResponseAnswers> getResponseAnswers() {
+        if(this.responseAnswers==null){
+            return Collections.emptyList();
+        }
         return responseAnswers;
     }
 

@@ -1,19 +1,20 @@
 package com.example.surveyape.entity;
 
 import com.example.surveyape.view.*;
-import com.example.surveyape.view.SurveyView;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
+import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
 public class Survey {
 
-
-    @JsonView({SurveyView.summary.class, SurveyListView.summary.class})
+	
+    @JsonView({SurveyView.summary.class, SurveyListView.summary.class, ResponseView.summary.class})
     @JsonProperty("survey_id")
     @Id
     @GeneratedValue(generator = "uuid")
@@ -129,6 +130,9 @@ public class Survey {
     }
 
     public List<Question> getQuestions() {
+        if(this.questions==null){
+            return Collections.emptyList();
+        }
         return questions;
     }
 
@@ -137,6 +141,9 @@ public class Survey {
     }
 
     public List<SurveyResponse> getSurveyResponses() {
+        if(this.surveyResponses==null){
+            return Collections.emptyList();
+        }
         return surveyResponses;
     }
 

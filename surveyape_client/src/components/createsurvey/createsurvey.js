@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import QuestionSidebar from "./questionsidebar";
 import QuestionDashboard from "./questiondashboard";
-import Header from "../header";
-
+import {withRouter} from "react-router-dom";
 import '../../stylesheets/createsurvey/createsurvey.css';
 
 class createsurvey extends Component {
@@ -15,8 +14,12 @@ class createsurvey extends Component {
     }
 
     componentDidMount() {
-        console.log("match", this.props);
-        console.log("context", this.props.context);
+        if(this.props.match.params.hasOwnProperty("survey_id")){
+            console.log("craete survey -> survey_id: ", this.props.match.params.survey_id);
+        }
+        else {
+            console.log("props", this.props);
+        }
     }
 
     render() {
@@ -29,7 +32,9 @@ class createsurvey extends Component {
                     </div>
 
                     <div className="user_body_dashboard">
-                        <QuestionDashboard/>
+                        <QuestionDashboard
+                            param = {this.props.match.params}
+                        />
                     </div>
 
                 </div>
@@ -37,7 +42,6 @@ class createsurvey extends Component {
             </div>
         )
     }
-
 }
 
-export default createsurvey;
+export default withRouter(createsurvey);

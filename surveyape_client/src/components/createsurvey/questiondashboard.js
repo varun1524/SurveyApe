@@ -4,6 +4,7 @@ import QuestionComponent from './questioncomponent';
 import * as API from './../../api/API';
 import {bindActionCreators} from 'redux';
 import {updateSurvey} from './../../actions/survey';
+import Spinner from 'react-spinkit';
 
 import './../../stylesheets/createsurvey/questiondashboard.css';
 
@@ -37,12 +38,13 @@ class QuestionDashboard extends Component {
     }
 
     saveSurvey(){
+
         console.log("saveSurvey() Survey Data: ",this.props.survey);
         console.log(JSON.stringify(this.props.survey));
         API.updateSurvey(this.props.survey).then((response)=>{
             console.log(response.status);
             response.json().then((data)=>{
-               console.log(data);
+                console.log(data);
                 this.props.updateSurvey(data);
             });
         });
@@ -67,9 +69,28 @@ class QuestionDashboard extends Component {
         }
     }
 
+    componentDidMount(){
+        console.log(this.props.param);
+        if(this.props.param.hasOwnProperty("survey_id")){
+            API.getSurveyById(this.props.param.survey_id).then((response)=>{
+                console.log("fetch survey by id status: ", response.status);
+                if(response.status===200){
+                    response.json().then((data)=>{
+                        this.props.updateSurvey(data);
+                    });
+                }
+                else if(response.status===404){
+                    alert("Survey not found for given id");
+                }
+                else if(response.status===400) {
+                    alert("Error while fetching survey by id");
+                }
+            });
+        }
+    }
+
     render () {
-        console.log("render questiondashboard");
-        console.log(this.props.survey);
+        console.log("render questiondashboard")
         // if(!this.props.state.questionReducer) {
         //     console.log("questionReducer null");
         //     return (
@@ -78,6 +99,7 @@ class QuestionDashboard extends Component {
         // }
         return(
             <div>
+                {/*<Spinner name="ball-spin-fade-loader" color="coral"/>*/}
                 <div className="survey-name-p">Survey Name <span className="survey-type-span">[general]</span></div>
                 {/*<div className="survey-name-p">{this.state.survey.survey_name} <span className="survey-type-span">[{this.state.survey.survey_name}]</span></div>*/}
                 {this.displayQuestionComponent()}

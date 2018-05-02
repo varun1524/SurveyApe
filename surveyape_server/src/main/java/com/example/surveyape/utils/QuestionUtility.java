@@ -7,4 +7,5 @@ public class QuestionUtility {
     public static final String YESNO = "yesno";
     public static final String SHORTANSWER = "shortanswer";
     public static final String RATING = "rating";
+    public static final String DateTime = "datetime";
 }
