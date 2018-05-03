@@ -1,11 +1,11 @@
 package com.example.surveyape.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import com.example.surveyape.entity.Survey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -95,6 +95,46 @@ public class SurveyResponseController {
 		}
 		return new ResponseEntity<>(surveyResponse, null, status);
 	}
-	
+
+
+	@JsonView({SurveyAndResponseView.summary.class})
+	@RequestMapping(value = "/surveyandresponse", method = RequestMethod.GET)
+	public ResponseEntity getSurveyAndResponseByResponseId(@RequestParam(value = "response_id") String responseId, HttpSession session){
+		ResponseEntity responseEntity = new ResponseEntity(null, HttpStatus.BAD_REQUEST);
+		try {
+			System.out.println("getSurveyAndResponseByResponseId:	" + responseId);
+			SurveyResponse surveyResponse = surveyResService.getSurveyResponseById(responseId);
+			if(surveyResponse!=null){
+				responseEntity = new ResponseEntity(surveyResponse, HttpStatus.OK);
+			}
+			else {
+				responseEntity = new ResponseEntity(null, HttpStatus.NOT_FOUND);
+			}
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
+		return responseEntity;
+	}
+
+	@JsonView({ResponseView.summary.class})
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	public ResponseEntity getSurveyResponseByResponseId(@RequestParam(value = "response_id") String responseId, HttpSession session){
+		ResponseEntity responseEntity = new ResponseEntity(null, HttpStatus.BAD_REQUEST);
+		try {
+			System.out.println("getSurveyResponseByResponseId:	" + responseId);
+			SurveyResponse surveyResponse = surveyResService.getSurveyResponseById(responseId);
+			if(surveyResponse!=null){
+				responseEntity = new ResponseEntity(surveyResponse, HttpStatus.OK);
+			}
+			else {
+				responseEntity = new ResponseEntity(null, HttpStatus.NOT_FOUND);
+			}
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
+		return responseEntity;
+	}
 
 }

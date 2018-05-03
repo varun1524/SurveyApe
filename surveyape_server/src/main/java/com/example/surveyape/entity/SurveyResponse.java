@@ -1,5 +1,6 @@
 package com.example.surveyape.entity;
 
+import com.example.surveyape.view.SurveyAndResponseView;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.example.surveyape.view.ResponseView;
@@ -14,12 +15,12 @@ import java.util.List;
 @Entity
 public class SurveyResponse {
     @JsonProperty("response_id")
-    @JsonView({ ResponseView.summary.class })
+    @JsonView({ ResponseView.summary.class, SurveyAndResponseView.summary.class})
     @Id
     private String responseId;
 
     @JsonProperty("survey")
-    @JsonView({ ResponseView.summary.class })
+    @JsonView({ ResponseView.summary.class , SurveyAndResponseView.summary.class})
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "surveyId", nullable = false)
     private Survey survey;
@@ -29,11 +30,11 @@ public class SurveyResponse {
     private User user;
 
     @JsonProperty("responses")
-    @JsonView({ ResponseView.summary.class })
+    @JsonView({ ResponseView.summary.class, SurveyAndResponseView.summary.class })
     @OneToMany(mappedBy = "surveyResponse", cascade = {CascadeType.ALL})
     private List<ResponseAnswers> responseAnswers;
 
-    @JsonView({ ResponseView.summary.class })
+    @JsonView({ ResponseView.summary.class, SurveyAndResponseView.summary.class })
     private String email;
 
     public String getEmail() {

@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,12 +13,12 @@ import java.util.List;
 public class Question {
 
     @JsonProperty("question_id")
-	@JsonView({ SurveyView.summary.class, ResponseView.summary.class })
+	@JsonView({ SurveyView.summary.class, ResponseView.summary.class , SurveyAndResponseView.summary.class})
     @Id
     private String questionId;
 
     @JsonProperty("question_type")
-    @JsonView({SurveyView.summary.class})
+    @JsonView({SurveyView.summary.class, SurveyAndResponseView.summary.class})
     private String questionType;
 
     @ManyToOne(targetEntity = Survey.class, cascade = CascadeType.PERSIST)
@@ -27,13 +26,13 @@ public class Question {
     private Survey survey;
 
     @JsonProperty("question_text")
-    @JsonView({SurveyView.summary.class})
+    @JsonView({SurveyView.summary.class, SurveyAndResponseView.summary.class})
     private String questionText;
 
-    @JsonView({SurveyView.summary.class})
+    @JsonView({SurveyView.summary.class, SurveyAndResponseView.summary.class})
     private Boolean isMultipleChoice;
 
-    @JsonView({SurveyView.summary.class})
+    @JsonView({SurveyView.summary.class, SurveyAndResponseView.summary.class})
     @OneToMany(mappedBy = "question", cascade = {CascadeType.ALL})
     private List<OptionAns> options;
 

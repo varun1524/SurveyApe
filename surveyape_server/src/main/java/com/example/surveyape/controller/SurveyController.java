@@ -133,6 +133,7 @@ public class SurveyController {
         }
         return responseEntity;
     }
+
     @JsonView({SurveyView.summary.class})
     @RequestMapping(value = "/deletesurvey", method = RequestMethod.DELETE)
     public ResponseEntity deleteSurvey(@RequestParam(value = "survey_id") String surveyId, HttpSession session){
