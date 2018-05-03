@@ -165,4 +165,21 @@ public class SurveyController {
         }
         return new ResponseEntity(responseMap,status);
     }
+
+    @JsonView({SurveyView.summary.class})
+    @RequestMapping(value = "/share", method = RequestMethod.POST)
+    public ResponseEntity shareSurvey(@RequestBody Map<String, String> map, HttpSession session){
+        HttpStatus status = HttpStatus.BAD_REQUEST;Map resMap = new HashMap();
+        try {
+            surveyService.shareSurvey(map);
+            status = HttpStatus.OK;
+            resMap.put("message","Survey shared successfully !!!");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(resMap,status);
+    }
+
+
 }
