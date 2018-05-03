@@ -1,10 +1,10 @@
 package com.example.surveyape.service;
 
-import com.example.surveyape.entity.OptionAns;
-import com.example.surveyape.entity.Question;
-import com.example.surveyape.entity.Survey;
-import com.example.surveyape.entity.User;
+import com.example.surveyape.entity.*;
+import com.example.surveyape.repository.InviteeRepository;
 import com.example.surveyape.repository.SurveyRepository;
+import com.example.surveyape.repository.SurveyResponseRepository;
+import com.example.surveyape.utils.MailUtility;
 import com.example.surveyape.utils.QuestionUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +19,14 @@ public class SurveyService {
 
 	@Autowired
 	UserService userService;
+
+	@Autowired
+	InviteeRepository inviteeRepository;
+	@Autowired
+	SurveyResponseRepository surveyResponseRepository;
+
+	@Autowired
+	MailService mailService;
 
 	public Survey createSurvey(Map map, User user) {
 		Survey survey = null;
@@ -121,5 +129,49 @@ public class SurveyService {
 	public int deleteSurvey(String surveyId){
 		int deleteStatus = surveyRepository.deleteBySurveyId(surveyId);
 		return deleteStatus;
+	}
+
+
+	public void shareSurvey(Map shareMap){
+		String surveyId = shareMap.get("survey_id").toString().trim();
+		String emailIds = shareMap.get("emailIds").toString().trim();
+		Survey survey = surveyRepository.findBySurveyId(surveyId);
+		SurveyResponse surveyResponse = null;
+		if(survey != null){
+			String emails[] = emailIds.split(",");
+			for(String email:emails){
+				String responseId = UUID.randomUUID().toString();
+				surveyResponse = new SurveyResponse();
+				surveyResponse.setEmail(email);
+				surveyResponse.setResponseId(responseId);
+				surveyResponse.setSurvey(survey);
+				surveyResponseRepository.save(surveyResponse);
+				Invitees invitees = new Invitees();
+				invitees.setEmail(email);
+				invitees.setSurvey(survey);
+				invitees.setSurveyToken(responseId);
+				inviteeRepository.save(invitees);
+				String msgBody = "";
+				String subject = "";
+				if(survey.getSurveyType()=="open"){
+					msgBody = MailUtility.general_survey_body;
+					subject = MailUtility.general_survey_subject;
+				}else if(survey.getSurveyType()=="close"){
+					msgBody = MailUtility.general_survey_body;
+					subject = MailUtility.general_survey_subject;
+				}else{
+					msgBody = MailUtility.general_survey_body+surveyId;
+					subject = MailUtility.general_survey_subject;
+				}
+				try{
+					mailService.sendEmail(email,msgBody,subject);
+				}catch(Exception exp){
+					System.out.println("[SurveyService] mail to send mail exception: "+exp.getMessage());
+				}
+
+			}
+
+		}
+
 	}
 }

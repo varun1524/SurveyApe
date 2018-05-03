@@ -13,39 +13,39 @@ import java.util.List;
 public class Survey {
 
 	
-    @JsonView({SurveyView.summary.class, SurveyListView.summary.class, ResponseView.summary.class})
+    @JsonView({SurveyView.summary.class, SurveyListView.summary.class, ResponseView.summary.class, SurveyAndResponseView.summary.class})
     @JsonProperty("survey_id")
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String surveyId;
 
-    @JsonView({SurveyView.summary.class,SurveyListView.summary.class})
+    @JsonView({SurveyView.summary.class,SurveyListView.summary.class, SurveyAndResponseView.summary.class})
     @JsonProperty("survey_name")
     private String surveyName;
 
     @JsonProperty("survey_type")
-    @JsonView({SurveyView.summary.class,SurveyListView.summary.class})
+    @JsonView({SurveyView.summary.class,SurveyListView.summary.class, SurveyAndResponseView.summary.class})
     private String surveyType;
 
     @JsonProperty("creation_date")
-    @JsonView({SurveyView.summary.class})
+    @JsonView({SurveyView.summary.class, SurveyAndResponseView.summary.class})
     private Date creationDate;
 
     @JsonProperty("update_date")
-    @JsonView({SurveyView.summary.class})
+    @JsonView({SurveyView.summary.class, SurveyAndResponseView.summary.class})
     private Date updateDate;
 
     @JsonProperty("publish_date")
-    @JsonView({SurveyView.summary.class})
+    @JsonView({SurveyView.summary.class, SurveyAndResponseView.summary.class})
     private Date publishDate;
 
     @JsonProperty("ispublished")
-    @JsonView({SurveyView.summary.class,SurveyListView.summary.class})
+    @JsonView({SurveyView.summary.class,SurveyListView.summary.class, SurveyAndResponseView.summary.class})
     private Boolean isPublished;
 
     @JsonProperty("end_date")
-    @JsonView({SurveyView.summary.class})
+    @JsonView({SurveyView.summary.class, SurveyAndResponseView.summary.class})
     private Date surveyEndDate;
 
     @JsonView({SurveyView.summary.class})
@@ -55,7 +55,7 @@ public class Survey {
     private User user;
 
     @JsonProperty("questions")
-    @JsonView({SurveyView.summary.class})
+    @JsonView({SurveyView.summary.class, SurveyAndResponseView.summary.class})
     @OneToMany(mappedBy = "survey", cascade = {CascadeType.ALL})
     private List<Question> questions;
 

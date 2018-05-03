@@ -69,10 +69,10 @@ class App extends Component {
                             validateSession = {this.validateSession}
                         />)}
                     />
-                    <Route path= "/verifyaccount/:token" render = {(...match) => (
+                    <Route path= "/verifyaccount/:token" render = {(match) => (
                         <VerifyAccount
                             handlePageChange = {this.handlePageChange}
-                            context={match}
+                            {...match}
                         />)}
                     />
                     <Route path= "/survey/:survey_id" render = {(match) => (
@@ -81,7 +81,7 @@ class App extends Component {
                             {...match}
                         />)}
                     />
-                    <Route path= "/survey/:survey_id/:response_id" render = {(match) => (
+                    <Route path= "/surveyresponse/:response_id" render = {(match) => (
                         <SurveyResponse
                             handlePageChange = {this.handlePageChange}
                             {...match}

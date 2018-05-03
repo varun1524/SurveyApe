@@ -59,8 +59,7 @@ public class SurveyResponseServices {
     }
 
     public SurveyResponse getSurveyResponseById(String surveyResId){
-        SurveyResponse surveyRes = surveyResRepo.findByResponseId(surveyResId);
-        return surveyRes;
+        return surveyResRepo.findByResponseId(surveyResId);
     }
 
     public SurveyResponse saveResponseAnswer(Map map, SurveyResponse surveyResponse){

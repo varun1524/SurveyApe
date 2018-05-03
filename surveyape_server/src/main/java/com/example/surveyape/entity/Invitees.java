@@ -13,9 +13,9 @@ public class Invitees {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String inviteId;
 
-    @ManyToOne(targetEntity = User.class, cascade = {CascadeType.ALL})
+    /*@ManyToOne(targetEntity = User.class, cascade = {CascadeType.ALL})
     @JoinColumn(name = "userId", nullable = false)
-    private User user;
+    private User user;*/
 
     @ManyToOne(targetEntity = Survey.class, cascade = {CascadeType.ALL})
     @JoinColumn(name = "surveyId", nullable = false)
@@ -25,6 +25,16 @@ public class Invitees {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String surveyToken;
 
+    private String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getInviteId() {
         return inviteId;
     }
@@ -33,13 +43,13 @@ public class Invitees {
         this.inviteId = inviteId;
     }
 
-    public User getUser() {
+    /*public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
-    }
+    }*/
 
     public Survey getSurvey() {
         return survey;
