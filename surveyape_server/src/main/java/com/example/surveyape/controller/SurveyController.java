@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -131,5 +132,37 @@ public class SurveyController {
             e.printStackTrace();
         }
         return responseEntity;
+    }
+    @JsonView({SurveyView.summary.class})
+    @RequestMapping(value = "/deletesurvey", method = RequestMethod.DELETE)
+    public ResponseEntity deleteSurvey(@RequestParam(value = "survey_id") String surveyId, HttpSession session){
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        Map responseMap = new HashMap();
+        String resMsg = "";
+        System.out.println("[SurveyController] delete survey surveyID:"+surveyId);
+        try {
+            int result = surveyService.deleteSurvey(surveyId);
+
+            if(result==1){
+                List<Survey> createdSurveys = userService.getAllUserSurvey("rutvik.pensionwar@gmail.com"/*session.getAttribute("email").toString()*/);
+                System.out.println("[SurveyController] created" + createdSurveys);
+                responseMap.put("created_surveys", createdSurveys);
+                responseMap.put("requested_surveys", createdSurveys);
+                status = HttpStatus.OK;
+                resMsg = "Survey id: "+surveyId+" deleted succcessfully :)";
+                responseMap.put("message",resMsg);
+            }
+            else {
+                status = HttpStatus.INTERNAL_SERVER_ERROR;
+                resMsg = "Failed to delte survey id: "+surveyId+" due internal server error !!!";
+                responseMap.put("error",resMsg);
+            }
+
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(responseMap,status);
     }
 }

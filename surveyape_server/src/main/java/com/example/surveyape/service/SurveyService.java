@@ -117,4 +117,9 @@ public class SurveyService {
 		}
 		return survey;
 	}
+
+	public int deleteSurvey(String surveyId){
+		int deleteStatus = surveyRepository.deleteBySurveyId(surveyId);
+		return deleteStatus;
+	}
 }

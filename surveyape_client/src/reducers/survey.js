@@ -2,6 +2,7 @@ import {actionTypes} from "../actions/actionTypes";
 import uuidv4 from "uuid";
 
 const survey_data = {
+    survey_id:"",
     survey_name: "",
     survey_type:"",
     questions:[]
@@ -11,12 +12,13 @@ const survey = (state = survey_data, action)=>
 {
     switch (action.type) {
         case actionTypes.CREATE_SURVEY :
-            console.log("CREATE_SURVEY reducer");
+            console.log("CREATE_SURVEY reducer", action.data);
             return Object.assign({},state,{
                 survey_id:action.data.survey_id,
                 survey_name:action.data.survey_name,
                 survey_type:action.data.survey_type,
-                create_date:action.create_date
+                create_date:action.create_date,
+                questions:action.data.questions
             });
         case actionTypes.ADD_QUESTION :
             console.log("ADD_QUESTION reducer",action.question_type);
@@ -58,7 +60,7 @@ const survey = (state = survey_data, action)=>
             });
 
         case actionTypes.UPDATE_SURVEY:
-            console.log("Update Survey", action.data);
+            console.log("Update Survey Reducer Action UPDATE_SURVEY ", action.data);
             state = action.data;
             return Object.assign({},state,{
                 survey:action.data

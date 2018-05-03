@@ -64,26 +64,26 @@ class VerificationModal extends Component {
         <div className="modal" style={modalStyle}>
           <label className="verify-modal-text">Enter the code to verify your account:</label>
           <div className="verify-code-box">
-          <input type ="text" className="verify-input-text" maxLength="1"
-          onChange={(event) => {this.state.code[0]=event.target.value}}/>
-          <input type ="text" className="verify-input-text" maxLength="1"
-          onChange={(event) => {this.state.code[1]=event.target.value}}/>
-          <input type ="text" className="verify-input-text" maxLength="1"
-          onChange={(event) => {this.state.code[2]=event.target.value}}/>
-          <input type ="text" className="verify-input-text" maxLength="1"
-          onChange={(event) => {this.state.code[3]=event.target.value}}/>
-          <input type ="text" className="verify-input-text" maxLength="1"
-          onChange={(event) => {this.state.code[4]=event.target.value}}/>
-          <input type ="text" className="verify-input-text" maxLength="1"
-          onChange={(event) => {this.state.code[5]=event.target.value}}/>
+            <input type ="text" className="verify-input-text" maxLength="1"
+            onChange={(event) => {this.state.code[0]=event.target.value}}/>
+            <input type ="text" className="verify-input-text" maxLength="1"
+            onChange={(event) => {this.state.code[1]=event.target.value}}/>
+            <input type ="text" className="verify-input-text" maxLength="1"
+            onChange={(event) => {this.state.code[2]=event.target.value}}/>
+            <input type ="text" className="verify-input-text" maxLength="1"
+            onChange={(event) => {this.state.code[3]=event.target.value}}/>
+            <input type ="text" className="verify-input-text" maxLength="1"
+            onChange={(event) => {this.state.code[4]=event.target.value}}/>
+            <input type ="text" className="verify-input-text" maxLength="1"
+            onChange={(event) => {this.state.code[5]=event.target.value}}/>
           </div>
 
           <div className="verify-modal-footer">
-          <button className ="verify-modal-button" onClick={this.props.onClose}>
-            Close
-          </button>
-          <button className ="verify-modal-button" onClick={()=>{this.handleVerification()}}>
-              Submit
+            <button className ="verify-modal-button" onClick={this.props.onClose}>
+              Close
+            </button>
+            <button className ="verify-modal-button" onClick={()=>{this.handleVerification()}}>
+                Submit
             </button>
           </div>
         </div>

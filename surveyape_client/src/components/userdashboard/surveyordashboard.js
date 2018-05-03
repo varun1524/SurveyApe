@@ -2,26 +2,16 @@ import React, {Component} from 'react';
 import MySurvey from './mysurvey';
 
 import '../../stylesheets/userdashboard/surveyordashboard.css';
+import {withRouter} from "react-router-dom";
+import {connect} from "react-redux";
 
 class surveyordashboard extends Component {
 
-    constructor() {
-        super();
-        this.state = {
-            created_surveys : []
-        }
-    }
 
-    componentDidMount() {
-        this.setState({
-            ...this.state,
-            created_surveys : this.props.created_surveys
-        });
-    }
 
     displayAllSurveys() {
-        console.log("surveyordash - displayAllSurveys : ", this.props.created_surveys);
-        return this.props.created_surveys.map((survey) => {
+        console.log("[surveyordashboard] - displayAllSurveys : ", this.props.userdashboardDetail.created_surveys);
+        return this.props.userdashboardDetail.created_surveys.map((survey) => {
             return (
                 <MySurvey
                     survey_json = {survey}
@@ -47,4 +37,13 @@ class surveyordashboard extends Component {
 
 }
 
-export default surveyordashboard;
+function mapStateToProps(state) {
+    console.log("[surveyordashboard mapstoProps() state:",state.user);
+    return {
+        userdashboardDetail:state.user
+    };
+}
+
+
+export default withRouter(connect(mapStateToProps, null)(surveyordashboard));
+

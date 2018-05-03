@@ -30,7 +30,7 @@ const customStyles = {
         padding               : '0px',
         alignContent          : 'center',
         width                 : '50%',
-        height                : '50%'
+        height                : '60%'
     }
 
 
@@ -175,10 +175,35 @@ class SignUp extends Component {
                     </div>
                     <div className="modal-body">
 
-                        <InnerVerificationModal />
+                        <label className="verify-modal-text">Enter the code to verify your account</label>
+                        <div className="verify-code-box">
+                            <input type ="text" className="verify-input-text" maxLength="1"
+                                   onChange={(event) => {this.state.code[0]=event.target.value}}/>-
+                            <input type ="text" className="verify-input-text" maxLength="1"
+                                   onChange={(event) => {this.state.code[1]=event.target.value}}/>-
+                            <input type ="text" className="verify-input-text" maxLength="1"
+                                   onChange={(event) => {this.state.code[2]=event.target.value}}/>-
+                            <input type ="text" className="verify-input-text" maxLength="1"
+                                   onChange={(event) => {this.state.code[3]=event.target.value}}/>-
+                            <input type ="text" className="verify-input-text" maxLength="1"
+                                   onChange={(event) => {this.state.code[4]=event.target.value}}/>-
+                            <input type ="text" className="verify-input-text" maxLength="1"
+                                   onChange={(event) => {this.state.code[5]=event.target.value}}/>
+                        </div>
+
+                        <div className="verify-modal-footer">
+                            <button className ="verify-modal-button-close" onClick={this.props.onClose}>
+                                Close
+                            </button>
+                            <button className ="verify-modal-button-submit" onClick={()=>{this.handleVerification()}}>
+                                Submit
+                            </button>
+                        </div>
 
                     </div>
                 </VerificationModal>
+
+
 
                 <div className="sign-up-form">
                     <form>

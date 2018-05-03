@@ -160,19 +160,18 @@ class QuestionComponent extends Component {
 
             return(
                 <div>
-                    {
-                        this.props.questions[this.props.index_id].options.map((option, id) => {
 
-                            return(
-                                <div className="option-input-box">
-                                    <input type="radio" className="option-type"/>
-                                    <label className="option-text-box-radio">{option.option_text}</label>
-                                </div>
 
-                            )
-                        })
 
-                    }
+
+                        <div className="option-input-box">
+                            <input type="radio" className="option-type"/>
+                            <label className="option-text-box-radio">YES</label>
+                        </div>
+                        <div className="option-input-box">
+                            <input type="radio" className="option-type"/>
+                            <label className="option-text-box-radio">NO</label>
+                        </div>
 
                 </div>
             );
@@ -184,23 +183,23 @@ class QuestionComponent extends Component {
             return(
                 <div>
                     {
-                        this.props.questions[this.props.index_id].options.map((option, id) => {
+                        //this.props.questions[this.props.index_id].options.map((option, id) => {
 
-                            return(
+                          //  return(
                                 <div className="option-input-box">
                                     <label className="option-type-dropdown">Option</label>
                                     <input type="text"
                                            className="option-text-box-dropdown"
                                            placeholder="Enter option here"
-                                           defaultValue={option.value}
-                                           onChange={(event)=>{this.editOptionText(event.target.value, id)}}
+                                           value=""
+
                                     />
                                     <div className="remove-glyphicon-option">
                                         <span onClick={() => {console.log("cross")}}><Glyphicon glyph="remove"/></span>
                                     </div>
                                 </div>
-                            )
-                        })
+                            //)
+                        //})
 
                     }
 
@@ -212,20 +211,16 @@ class QuestionComponent extends Component {
 
             return(
                 <div className="option-input-box">
-                    {
-                        this.props.questions[this.props.index_id].options.map((option, id) => {
 
-                            return(
                                 <div>
-                                    <input type="date" className="option-text-box"/>
+                                    <input type="date" className="option-text-box" value=""/>
                                     <div className="remove-glyphicon-option">
-                                        <span onClick={() => {console.log("cross")}}></span>
+                                        <span></span>
                                     </div>
                                 </div>
-                            )
-                        })
 
-                    }
+
+
 
                 </div>
             );
@@ -235,9 +230,9 @@ class QuestionComponent extends Component {
             return(
                 <div className="option-input-box">
                     {
-                        this.props.questions[this.props.index_id].options.map((option, id) => {
+                        // this.props.questions[this.props.index_id].options.map((option, id) => {
 
-                            return(
+                            // return(
                                 <div className="option-input-box">
                                     <label className="option-type-dropdown">Rating</label>
                                     {/*<input type="number"*/}
@@ -254,14 +249,14 @@ class QuestionComponent extends Component {
                                             name="rate1"
                                             starCount={5}
                                             value={this.state.rating}
-                                            onStarClick={this.onStarClick.bind(this)}
+                                            // onStarClick={this.onStarClick.bind(this)}
                                         />
                                     </div>
 
 
                                 </div>
-                            )
-                        })
+                            // )
+                        // })
 
                     }
                 </div>);
