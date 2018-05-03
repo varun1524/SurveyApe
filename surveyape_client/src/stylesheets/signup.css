@@ -121,4 +121,36 @@ button:hover {
     /*display: inline;*/
 }
 
+.glyphicon-ok {
+    margin-top: 5%;
+    font-size: 140px !important;
+}
 
+.glyphicon-remove {
+    margin-top: 5%;
+    font-size: 140px !important;
+}
+
+.account-verified-ok {
+    margin: 40%;
+    color: #4CAF50;
+}
+
+.account-verified-remove{
+    margin: 40%;
+    color: #FF5B38;
+}
+
+.verify-success-modal-button-close, .verify-fail-modal-button-close {
+    text-align: center;
+}
+
+.verify-fail-modal-button-try-again {
+    width:45%;
+    float: right;
+}
+
+.verify-fail-modal-button-cancel {
+    width:45%;
+    float: left;
+}

@@ -36,8 +36,8 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL })
     private List<Survey> surveyList;
 
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL})
-    private List<Invitees> invitees;
+    /*@OneToMany(mappedBy = "user", cascade = {CascadeType.ALL})
+    private List<Invitees> invitees;*/
 
     @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL})
     private List<SurveyResponse> surveyResponses;
@@ -124,13 +124,13 @@ public class User {
         this.surveyList = surveyList;
     }
 
-    public List<Invitees> getInvitees() {
+    /*public List<Invitees> getInvitees() {
         return invitees;
     }
 
     public void setInvitees(List<Invitees> invitees) {
         this.invitees = invitees;
-    }
+    }*/
 
     public List<SurveyResponse> getSurveyResponses() {
         return surveyResponses;
