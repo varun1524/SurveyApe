@@ -11,9 +11,6 @@ class QuestionComponent extends Component {
 
     constructor(){
         super();
-        this.state = {
-            short_answer : "empty"
-        }
     }
 
     response = {
@@ -54,11 +51,6 @@ class QuestionComponent extends Component {
                 for (let i = 0; i < responses.length; i++) {
                     if (responses[i].question.question_id === question_id) {
                         console.log("question_type: ", responses[i].answer_value);
-                        // this.setState({
-                        //     ...this.state,
-                        //     answer_value : responses[i].answer_value
-                        // });
-                        this.response.answer_value = responses[i].answer_value;
                         return  responses[i].answer_value
                     }
                 }
