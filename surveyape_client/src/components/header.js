@@ -6,6 +6,7 @@ import CreateSurveyModal from 'react-modal';
 import '../stylesheets/header.css';
 import {connect} from "react-redux";
 import {bindActionCreators} from 'redux';
+import {update_surveyor_dashboard} from "../actions/login";
 
 const customStyles = {
     overlay : {
@@ -41,7 +42,7 @@ class Header extends Component {
             createSurveyModalOpen : false,
             survey_name:"",
             survey_type:""
-        }
+        };
 
         this.openCreateSurveyModal = this.openCreateSurveyModal.bind(this);
     }
@@ -68,15 +69,41 @@ class Header extends Component {
         });
     });
 
+    handleHomeButtonClick(){
+            console.log("[Header] - handleHomeButtonClick() server request");
+        this.props.handlePageChange("/home");
+            API.getSurveyList().then((response) => {
+                console.log(response.status);
+                if(response.status === 200){
+                    response.json().then((data) => {
+                        console.log("[Header] - handleHomeButtonClick created_surveys", data.created_surveys);
+
+                        this.props.update_surveyor_dashboard(data.created_surveys,data.requested_surveys);
+                    });
+
+                }
+                else if(response.status === 404) {
+
+
+                }
+                else {
+
+                }
+            });
+
+
+    }
+
 
     createSurvey(){
+        console.log("[Header] BEfore API call creater survey data:",this.state);
         API.createSurvey({
                 survey_name:this.state.survey_name,
                 survey_type:this.state.survey_type
             }
         ).then((response)=>{
             if(response.status === 200){
-                console.log("Survey created successfully : survey - ");
+                console.log("[Header] Survey created successfully status 200: survey - ");
                 response.json().then((data)=>{
                     console.log(data);
                     this.props.createSurvey(data);
@@ -103,10 +130,14 @@ class Header extends Component {
     });
 
     render() {
+        console.log("[Header] render")
         return(
             <div className="Header">
                 <div className="header-child">
-                    <a href="#" className="logo">SURVEYape</a>
+                    <a className="logo" onClick={() => {
+
+                        this.handleHomeButtonClick()
+                    }}>SURVEYape</a>
                     {this.showLoggedInHeader()}
                 </div>
 
@@ -161,12 +192,14 @@ class Header extends Component {
 }
 
 function mapStateToProps(state) {
+    console.log("[Header] mapStateToProps")
     return {state : state};
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        createSurvey: createSurvey
+        createSurvey: createSurvey,
+        update_surveyor_dashboard:update_surveyor_dashboard
     }, dispatch)
 }
 

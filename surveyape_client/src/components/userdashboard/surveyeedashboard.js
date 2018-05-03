@@ -2,22 +2,15 @@ import React, {Component} from 'react';
 import MyResponse from './myresponse';
 
 import '../../stylesheets/userdashboard/surveyeedashboard.css';
+import {withRouter} from "react-router-dom";
+import {connect} from "react-redux";
 
 class surveyeedashboard extends Component {
 
-    constructor() {
-        super();
-        this.state = {
-            survey_list: [
-                {"survey_name" : "Survey_1", "creation_date" : "04/22/2018"},
-                {"survey_name" : "Survey_2", "creation_date" : "04/21/2018"},
-                {"survey_name" : "Survey_3", "creation_date" : "04/20/2018"}
-            ]
-        }
-    }
+
 
     displayAllSurveys() {
-        return this.state.survey_list.map((survey) => {
+        return this.props.userdashboardDetail.requested_surveys.map((survey) => {
             return (
                 <MyResponse survey_json = {survey}/>
             )
@@ -36,4 +29,14 @@ class surveyeedashboard extends Component {
 
 }
 
-export default surveyeedashboard;
+
+function mapStateToProps(state) {
+    console.log("[SurveyDashboard mapstoProps() state:",state.user);
+    return {
+        userdashboardDetail:state.user
+    };
+}
+
+
+export default withRouter(connect(mapStateToProps, null)(surveyeedashboard));
+

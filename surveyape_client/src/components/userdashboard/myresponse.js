@@ -14,7 +14,7 @@ class myresponse extends Component {
     render() {
         return (
             <div className="myresponse">
-                <h3>Response 1</h3>
+                <h3>{this.props.survey_json.survey_name}</h3>
             </div>
         )
     }

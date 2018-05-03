@@ -32,19 +32,19 @@ class QuestionDashboard extends Component {
     }
 
     publishSurvey(){
-        console.log("publishSurvey() Survey Data: ",this.props.survey);
+        console.log("[QuestionDashboard] publishSurvey() Survey Data: ",this.props.survey);
         console.log(JSON.stringify(this.props.survey));
 
     }
 
     saveSurvey(){
 
-        console.log("saveSurvey() Survey Data: ",this.props.survey);
-        console.log(JSON.stringify(this.props.survey));
+        console.log("[QuestionDashboard] saveSurvey() Survey Data: ",this.props.survey);
+        //console.log(JSON.stringify(this.props.survey));
         API.updateSurvey(this.props.survey).then((response)=>{
             console.log(response.status);
             response.json().then((data)=>{
-                console.log(data);
+                console.log("[QuestionDashboard] Save Survey to database after api call",data);
                 this.props.updateSurvey(data);
             });
         });
@@ -70,10 +70,10 @@ class QuestionDashboard extends Component {
     }
 
     componentDidMount(){
-        console.log(this.props.param);
+        console.log("componentDidMount question dashboard",this.props.param);
         if(this.props.param.hasOwnProperty("survey_id")){
             API.getSurveyById(this.props.param.survey_id).then((response)=>{
-                console.log("fetch survey by id status: ", response.status);
+                console.log("componentDidMount fetch survey by id status: ", response.status);
                 if(response.status===200){
                     response.json().then((data)=>{
                         this.props.updateSurvey(data);
@@ -90,17 +90,12 @@ class QuestionDashboard extends Component {
     }
 
     render () {
-        console.log("render questiondashboard")
-        // if(!this.props.state.questionReducer) {
-        //     console.log("questionReducer null");
-        //     return (
-        //         <div>Empty div</div>
-        //     )
-        // }
+        console.log("render questiondashboard data ",this.props.survey)
+
         return(
             <div>
                 {/*<Spinner name="ball-spin-fade-loader" color="coral"/>*/}
-                <div className="survey-name-p">Survey Name <span className="survey-type-span">[general]</span></div>
+                <div className="survey-name-p">Survey Name: {this.props.survey.survey_name}<span className="survey-type-span">[{this.props.survey.survey_type}]</span></div>
                 {/*<div className="survey-name-p">{this.state.survey.survey_name} <span className="survey-type-span">[{this.state.survey.survey_name}]</span></div>*/}
                 {this.displayQuestionComponent()}
                 {this.getPublishandSave()}

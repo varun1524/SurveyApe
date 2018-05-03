@@ -37,6 +37,7 @@ input[type = button]:hover{
 .header-child a.logo {
     font-size: 25px;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .header-child-right {

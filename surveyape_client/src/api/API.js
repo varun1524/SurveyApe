@@ -185,3 +185,19 @@ export const getSurveyList = () =>
         console.log(error);
         return error;
     });
+
+export const deleteSurvey = (surveyId) =>
+    fetch(`${api}/survey/deletesurvey?survey_id=${surveyId}`, {
+        method: 'DELETE',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        credentials:'include'
+    }).then(res => {
+        return res;
+    }).catch(error => {
+        console.log("This is error");
+        console.log(error);
+        return error;
+    });
