@@ -8,6 +8,7 @@ import {updateSurveyResponse, updateQuestionsInSurveyResponse, createSurveyRespo
 import uuidv4 from "uuid";
 import QuestionComponent from './questioncomponent';
 import Header from './../header';
+import '/Users/rutvik/Desktop/Study/275/Projects/SurveyApe/surveyape_client/src/stylesheets/surveyresponse/surveyresponse.css'
 
 class SurveyResponse extends Component {
 
@@ -37,6 +38,9 @@ class SurveyResponse extends Component {
             });*/
         }
         else if(this.props.match.params.hasOwnProperty("survey_id")){
+            console.log(this.props.match.params);
+            console.log("[surveyresponse] param hasProperty survey_id :", this.props.match.params.hasOwnProperty("survey_id"));
+
             API.getSurveyById(this.props.match.params.survey_id).then((response)=>{
                 console.log(response.status);
                 if(response.status===200){
@@ -104,7 +108,7 @@ class SurveyResponse extends Component {
                 <Header
                     // loggedIn = {true}
                 />
-                <div>
+                <div className="survey-response-main-div">
                     Survey ID: {this.props.survey_response.survey.survey_id}<br/>
                     Survey Name: {this.props.survey.survey_name}
                     {this.generateSurveyForm()}

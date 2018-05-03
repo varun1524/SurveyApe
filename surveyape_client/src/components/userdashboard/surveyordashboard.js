@@ -5,9 +5,15 @@ import '../../stylesheets/userdashboard/surveyordashboard.css';
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 
+
 class surveyordashboard extends Component {
 
+    constructor() {
+        super();
+        this.state = {
 
+        };
+    }
 
     displayAllSurveys() {
         console.log("[surveyordashboard] - displayAllSurveys : ", this.props.userdashboardDetail.created_surveys);
@@ -29,8 +35,6 @@ class surveyordashboard extends Component {
                 <div>
                     {this.displayAllSurveys()}
                 </div>
-
-
             </div>
         )
     }

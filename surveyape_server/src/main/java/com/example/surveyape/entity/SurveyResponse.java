@@ -25,7 +25,7 @@ public class SurveyResponse {
     private Survey survey;
 
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "userId",nullable = true)
     private User user;
 
     @JsonProperty("responses")

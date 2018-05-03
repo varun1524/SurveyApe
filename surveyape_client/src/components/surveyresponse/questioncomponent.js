@@ -6,6 +6,7 @@ import {updateAnswer, createSurveyResponse} from './../../actions/surveyresponse
 import uuidv4 from "uuid";
 import * as API from './../../api/API';
 import {question_types} from './../../config/question_types';
+import '/Users/rutvik/Desktop/Study/275/Projects/SurveyApe/surveyape_client/src/stylesheets/surveyresponse/surveyquestioncomponent.css'
 
 class QuestionComponent extends Component {
 
@@ -403,12 +404,12 @@ class QuestionComponent extends Component {
         // console.log("Questions: ",this.props.questions);
         return(
             <div className="QuestionComponent">
-                <div className="component_div">
-                    <div className="question-div">
+                <div className="survey-component_div">
+                    <div className="survey-question-div">
                         Question:
                         {this.getQuestionView()}
                     </div>
-                    <div className="option-div">
+                    <div className="survey-option-div">
                         {this.getOptionView()}
                     </div>
                 </div>
