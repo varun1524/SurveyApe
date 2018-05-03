@@ -24,37 +24,70 @@ public class SurveyResponseController {
 	@Autowired
 	SurveyResponseServices surveyResService;
 	
-	@JsonView({ ResponseView.summary.class })
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public ResponseEntity<?> saveSurveyResponse(@RequestBody Map map, HttpSession session) {
-		HttpStatus status = HttpStatus.BAD_REQUEST;
-		SurveyResponse surveyResponse  = null;
-		try {
-			surveyResponse = surveyResService.saveSurveyResponse(map);
-			if(surveyResponse != null) {
-				status = HttpStatus.OK;
-			}			
+//	@JsonView({ ResponseView.summary.class })
+//	@RequestMapping(value = "/save", method = RequestMethod.POST)
+//	public ResponseEntity<?> saveSurveyResponse(@RequestBody Map map, HttpSession session) {
+//		HttpStatus status = HttpStatus.BAD_REQUEST;
+//		SurveyResponse surveyResponse  = null;
+//		try {
+//			surveyResponse = surveyResService.saveSurveyResponse(map);
+//			if(surveyResponse != null) {
+//				status = HttpStatus.OK;
+//			}
+//
+//		} catch (Exception exp) {
+//			System.out.println("[SurveyResponse Controller] saveSurveyResponse() exception : " + exp.getMessage());
+//			exp.printStackTrace();
+//		}
+//		return new ResponseEntity<>(surveyResponse, null, status);
+//	}
 
-		} catch (Exception exp) {
-			System.out.println("[SurveyResponse Controller] saveSurveyResponse() exception : " + exp.getMessage());
-			exp.printStackTrace();
-		}
-		return new ResponseEntity<>(surveyResponse, null, status);
-	}
-
-	@JsonView({ ResponseView.summary.class })
+	@JsonView({ResponseView.summary.class})
 	@RequestMapping(value = "/save/checkbox", method = RequestMethod.POST)
 	public ResponseEntity<?> saveSurveyResponseCheckbox(@RequestBody Map map, HttpSession session) {
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		SurveyResponse surveyResponse  = null;
 		try {
-			surveyResService.saveCheckResponse(map);
-			surveyResponse = surveyResService.getSurveyResponseById(map.get("survey_id").toString().trim());
+			surveyResponse = surveyResService.getSurveyResponseById(map.get("response_id").toString().trim());
+			if(surveyResponse==null){
+                surveyResponse = surveyResService.createSurveyResponse(map);
+            }
+			surveyResponse = surveyResService.saveCheckResponse(map, surveyResponse);
+//			surveyResponse = surveyResService.getSurveyResponseById(map.get("response_id").toString().trim());
 			if(surveyResponse != null) {
 				status = HttpStatus.OK;
+
 			}else{
 				status = HttpStatus.NOT_FOUND;
 			}
+
+
+		} catch (Exception exp) {
+			System.out.println("[SurveyResponse Controller] saveSurveyResponseCheckbox() exception : " + exp.getMessage());
+			exp.printStackTrace();
+		}
+		return new ResponseEntity<>(surveyResponse, null, status);
+	}
+
+	@JsonView({ResponseView.summary.class})
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	public ResponseEntity<?> saveResponseAnswers(@RequestBody Map map, HttpSession session) {
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		SurveyResponse surveyResponse  = null;
+		try {
+			surveyResponse = surveyResService.getSurveyResponseById(map.get("response_id").toString().trim());
+			if(surveyResponse==null){
+				surveyResponse = surveyResService.createSurveyResponse(map);
+			}
+			surveyResponse = surveyResService.saveResponseAnswer(map, surveyResponse);
+//			surveyResponse = surveyResService.getSurveyResponseById(map.get("response_id").toString().trim());
+			if(surveyResponse != null) {
+				status = HttpStatus.OK;
+
+			}else{
+				status = HttpStatus.NOT_FOUND;
+			}
+
 
 		} catch (Exception exp) {
 			System.out.println("[SurveyResponse Controller] saveSurveyResponseCheckbox() exception : " + exp.getMessage());
