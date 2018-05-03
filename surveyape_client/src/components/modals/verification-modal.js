@@ -10,10 +10,12 @@ class VerificationModal extends Component {
       code:[]
     }
   }
-  handleVerification =(()=>{
+  handleVerification = (() => {
+
     console.log("[VerificationModal] handleVerification()");
     console.log(this.props);
     console.log("[VerificationModal] code:"+this.state.code);
+
     let code ="";
     this.state.code.map((codechar)=>{
       code +=codechar;

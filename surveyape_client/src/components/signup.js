@@ -4,11 +4,14 @@ import Login from './login';
 import '../stylesheets/signup.css';
 import * as API from "../api/API";
 import {Link, withRouter} from 'react-router-dom';
+import {Glyphicon} from "react-bootstrap";
 
 import VerificationModal from 'react-modal';
+import VerificationSuccessModal from 'react-modal';
+import VerificationFailedModal from 'react-modal';
 
-import InnerVerificationModal from './modals/verification-modal';
-import InnerVerificationSuccessModal from './modals/verification-success-modal';
+// import InnerVerificationModal from './modals/verification-modal';
+// import InnerVerificationSuccessModal from './modals/verification-success-modal';
 
 const customStyles = {
     overlay : {
@@ -49,11 +52,14 @@ class SignUp extends Component {
             message: "",
             verificationModalOpen:false,
             verificationSuccessModalOpen:false,
+            verificationFailedModalOpen:false,
             emailColor:"",
+            code:[]
         };
 
         this.openVerificationModal = this.openVerificationModal.bind(this);
-        // this.openSuccessVerificationModal= this.openSuccessVerificationModal.bind(this);
+        this.openVerificationSuccessModal= this.openVerificationSuccessModal.bind(this);
+        this.openVerificationFailedModal= this.openVerificationFailedModal.bind(this);
 
     }
 
@@ -62,12 +68,12 @@ class SignUp extends Component {
         console.log(this.state);
 
         //remove after verification
-        this.openVerificationModal();
+        //this.openVerificationModal();
 
 
-        var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
+        let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
 
-        if(this.state.email.length == 0){
+        if(this.state.email.length === 0){
             document.getElementById('emailErr').innerHTML='Email is required';
         }
         else if(!re.test(this.state.email)){
@@ -76,15 +82,14 @@ class SignUp extends Component {
         else if (this.state.password.length < 8){
             document.getElementById('passwordErr').innerHTML = "Min length 8 required";
         }
-        else if(this.state.firstname.length == 0){
+        else if(this.state.firstname.length === 0){
             document.getElementById('firstnameErr').innerText='Firstname is required';
         }
-        else if(this.state.lastname.length == 0) {
+        else if(this.state.lastname.length === 0) {
             document.getElementById('lastnameErr').innerHTML = 'Lastname is required';
         }
         else {
-
-
+            // this.openVerificationModal();
             API.doSignUp(this.state)
                 .then((response) => {
                     console.log(response.status);
@@ -95,7 +100,8 @@ class SignUp extends Component {
                             message: "You have successfully signed up. Please login here"
                         });
                         //this.props.history.push("/login");
-                        this.changeVerificationModalVisibility();
+                        this.openVerificationModal()
+
                     } else if (response.status === 400) {
                         console.log("State");
                         this.setState({
@@ -138,30 +144,105 @@ class SignUp extends Component {
         })
     }
 
-
-    verifyAccount =()=>{
+    afterVerifiedSuccess() {
         this.setState({
             ...this.state,
-            showVerificationModal:false,
-            showVerificationSuccessModal:true,
-        });
+            verificationModalOpen : false,
+            verificationSuccessModalOpen:true
+        })
     }
 
+    afterVerifiedFailed() {
+        this.setState({
+            ...this.state,
+            verificationModalOpen : false,
+            verificationFailedModalOpen:true
+        })
+    }
+
+    tryAgain() {
+        this.setState({
+            ...this.state,
+            verificationFailedModalOpen:false,
+            verificationModalOpen : true
+        })
+    }
+
+    openVerificationSuccessModal() {
+        this.setState({
+            ...this.state,
+            verificationSuccessModalOpen : true
+        })
+    }
+
+    closeVerificationSuccessModal() {
+        console.log("[Signup]  closeVerificationSuccessModal()")
+        this.setState({
+            ...this.state,
+            verificationSuccessModalOpen : false
+        })
+    }
+
+    openVerificationFailedModal() {
+        this.setState({
+            ...this.state,
+            verificationFailedModalOpen : true
+        })
+    }
+
+    closeVerificationFailedModal() {
+        this.setState({
+            ...this.state,
+            verificationFailedModalOpen : false
+        })
+    }
+
+
+
+    handleVerification = (() => {
+
+        console.log("[VerificationModal] handleVerification() verification code - ",this.state.code);
+
+        let code = "";
+
+        this.state.code.map((codechar)=>{
+            code += codechar;
+        });
+
+        if(code.length <6){
+            alert("Code length is less than 6 character !!!")
+        }
+
+        console.log("[Signup] code"+code);
+
+        // this.afterVerifiedSuccess();
+
+        API.verifyAccount(code)
+            .then((response)=>{
+                if(response.status === 200){
+                    console.log("[signup] handleVerification status : ", response.status);
+                    this.afterVerifiedSuccess();
+                }else{
+                    response.json().then((data) => {
+
+                        this.state.message = data.message;
+                        this.afterVerifiedFailed();
+                    });
+                }
+
+            }).catch((error)=>{
+                console.log("[Signup] Error while verify",error);
+        })
+    });
+
     render() {
+        console.log("[Signupo] render state: ",this.state);
         var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
         var checknum =/\d/ ;
         var checkspl = /[~`!#$%\^&*+=\-\[\]\\';,/(){}|\\":<>\?]/g;
-        console.log("this.state.showVerificationModal",this.state.showVerificationModal);
         return (
             <div className="DemoSignUp">
                 <HeaderComponent/>
-
-                {/*<VerificationModal showVerification={this.state.showVerificationModal}*/}
-                                   {/*onClose={this.changeVerificationModalVisibility}*/}
-                                   {/*verifyAccount={this.verifyAccount}>*/}
-                {/*</VerificationModal>*/}
-                {/*<VerificationSuccessModal showVerificationSuccessModal= {this.state.showVerificationSuccessModal}*/}
-                                          {/*onClose={this.changeSuccessVerificationModalVisibility}/>*/}
 
                 <VerificationModal
                     isOpen={this.state.verificationModalOpen}
@@ -192,7 +273,7 @@ class SignUp extends Component {
                         </div>
 
                         <div className="verify-modal-footer">
-                            <button className ="verify-modal-button-close" onClick={this.props.onClose}>
+                            <button className ="verify-modal-button-close" onClick={() => {}}>
                                 Close
                             </button>
                             <button className ="verify-modal-button-submit" onClick={()=>{this.handleVerification()}}>
@@ -203,7 +284,56 @@ class SignUp extends Component {
                     </div>
                 </VerificationModal>
 
+                <VerificationSuccessModal
+                    isOpen={this.state.verificationSuccessModalOpen}
+                    onAfterOpen={this.openVerificationSuccessModal}
+                    onRequestClose={this.closeVerificationSuccessModal}
+                    style={customStyles}
+                >
+                    <div className="modal-header">
 
+                        <h3>VERIFICATION SUCCESS</h3>
+                    </div>
+                    <div className="modal-body">
+                        <span className="account-verified-ok"><Glyphicon glyph="ok"/></span>
+                        <div className="verify-modal-footer">
+                            <button className ="verify-success-modal-button-close" onClick={() => {
+                                this.closeVerificationSuccessModal();
+                                this.props.handlePageChange('/login');
+                            }}>
+                                Close
+                            </button>
+                        </div>
+
+                    </div>
+                </VerificationSuccessModal>
+
+                <VerificationFailedModal
+                    isOpen={this.state.verificationFailedModalOpen}
+                    onAfterOpen={this.openVerificationFailedModal}
+                    onRequestClose={this.closeVerificationFailedModal}
+                    style={customStyles}
+                >
+                    <div className="modal-header">
+                        <span className="close" onClick={() => {this.closeVerificationFailedModal()}}>&times;</span>
+                        <h3>VERIFICATION FAILED</h3>
+                    </div>
+                    <div className="modal-body">
+                        <span className="account-verified-remove"><Glyphicon glyph="remove"/></span>
+                        <div className="verify-modal-footer">
+                            <button className ="verify-fail-modal-button-try-again" onClick={() => {this.tryAgain()}}>
+                                Try Again
+                            </button>
+                            <button className ="verify-fail-modal-button-cancel" onClick={()=>{
+                                this.closeVerificationFailedModal();
+                                this.props.handlePageChange('/signup');
+                            }}>
+                                Cancel
+                            </button>
+                        </div>
+
+                    </div>
+                </VerificationFailedModal>
 
                 <div className="sign-up-form">
                     <form>
@@ -252,6 +382,7 @@ class SignUp extends Component {
                                            lastname: event.target.value
                                        })
                                    }}/><span id='lastnameErr'></span>
+
                             {<button type ="button" onClick={() => this.handleSignUp()}>Sign Up</button>}
                             {/*<input type="button" id="button" className="btn btn-primary col-sm-8 col-md-8 col-lg-8"
                                    onClick={()=>this.handleSignUp()} value="Sign Up"/>*/}
