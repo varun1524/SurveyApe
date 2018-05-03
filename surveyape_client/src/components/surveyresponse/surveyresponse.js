@@ -8,7 +8,7 @@ import {createSurveyResponse} from './../../actions/surveyresponse';
 import uuidv4 from "uuid";
 import QuestionComponent from './questioncomponent';
 import Header from './../header';
-import '/Users/rutvik/Desktop/Study/275/Projects/SurveyApe/surveyape_client/src/stylesheets/surveyresponse/surveyresponse.css'
+//import '/Users/rutvik/Desktop/Study/275/Projects/SurveyApe/surveyape_client/src/stylesheets/surveyresponse/surveyresponse.css'
 
 class SurveyResponse extends Component {
 

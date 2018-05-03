@@ -6,7 +6,7 @@ import {updateAnswer, createSurveyResponse} from './../../actions/surveyresponse
 import uuidv4 from "uuid";
 import * as API from './../../api/API';
 import {question_types} from './../../config/question_types';
-import '/Users/rutvik/Desktop/Study/275/Projects/SurveyApe/surveyape_client/src/stylesheets/surveyresponse/surveyquestioncomponent.css'
+//import '../../stylesheets/surveyresponse/surveyquestioncomponent.css'
 
 class QuestionComponent extends Component {
 
