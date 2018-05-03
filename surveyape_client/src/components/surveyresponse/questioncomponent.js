@@ -9,24 +9,67 @@ import {question_types} from './../../config/question_types';
 
 class QuestionComponent extends Component {
 
+    constructor(){
+        super();
+        this.state = {
+            short_answer : "empty"
+        }
+    }
+
     response = {
         survey_id:"",
         response_id:"",
         response_answer:""
     };
 
-    doesContainAnswer = ((question_id, option, question_type)=>{
-        console.log("doesContainAnswer: ", this.props.survey_response.responses);
+    getDefaultAnswer = ((question_id, option, question_type)=>{
         let responses = this.props.survey_response.responses;
-        for (let i = 0; i < responses.length; i++) {
-            if (responses[i].question.question_id === question_id) {
-                if (responses[i].answer_value === option.option_id) {
-                    // console.log("found answer: ", true, responses[i]);
-                    return true;
+        switch(question_type){
+            case question_types.CHECKBOX:
+            case question_types.RADIOGROUP:
+            case question_types.DROPDOWN:
+                for (let i = 0; i < responses.length; i++) {
+                    if (responses[i].question.question_id === question_id) {
+                        if (responses[i].answer_value === option.option_id) {
+                            return true;
+                        }
+                    }
                 }
-            }
+                return false;
+                break;
+            case question_types.YESNO:
+                for (let i = 0; i < responses.length; i++) {
+                    if (responses[i].question.question_id === question_id) {
+                        if (responses[i].answer_value === option) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+                break;
+            case question_types.STARRATING:
+            case question_types.SHORTANSWER:
+            case question_types.DATETIME:
+                console.log("question_type: ", question_type);
+                for (let i = 0; i < responses.length; i++) {
+                    if (responses[i].question.question_id === question_id) {
+                        console.log("question_type: ", responses[i].answer_value);
+                        // this.setState({
+                        //     ...this.state,
+                        //     answer_value : responses[i].answer_value
+                        // });
+                        this.response.answer_value = responses[i].answer_value;
+                        return  responses[i].answer_value
+                    }
+                }
+                return "Empty";
+                break;
+            default:
+                console.log("Incorrect Questino Type");
+                break
+
         }
-        return false;
+        console.log("doesContainAnswer: ", this.props.survey_response.responses);
     });
 
     findAnswer = ((question_id, option, question_type)=>{
@@ -153,7 +196,7 @@ class QuestionComponent extends Component {
                                 <div>
                                     <input type="checkbox" className="option-"
                                            value={option.option_id}
-                                           checked={this.doesContainAnswer(question_id, option)}
+                                           checked={this.getDefaultAnswer(question_id, option, question_types.CHECKBOX)}
                                            onChange={(event)=>{
                                                console.log(event.target.checked, id, question_id);
                                                this.response.check = event.target.checked;
@@ -184,7 +227,7 @@ class QuestionComponent extends Component {
                         return(
                             <div>
                                 <input type="radio" radioGroup={question_id} name={question_id}
-                                       selected={this.doesContainAnswer(question_id, option)}
+                                       checked={this.getDefaultAnswer(question_id, option, question_types.RADIOGROUP)}
                                        defaultValue={option.option_id}
                                        onChange={(event)=>{
                                            console.log(event.target.checked, id, question_id, event.target.value);
@@ -240,12 +283,7 @@ class QuestionComponent extends Component {
                                 let question_id = this.props.questions[this.props.index_id].question_id;
                                 return(
                                     <option value={option.option_id}
-                                            selected={(()=>{
-                                                let res = this.findAnswer(question_id, option);
-                                                if(res!==null && res!==undefined){
-                                                    return (res.answer_value===option.option_id)
-                                                }
-                                            })}
+                                            selected={this.getDefaultAnswer(question_id, option, question_types.DROPDOWN)}
                                     >
                                         {option.option_text}
                                     </option>
@@ -260,6 +298,7 @@ class QuestionComponent extends Component {
                 <div className="option-input-box">
                     <div>
                         <input type="radio" value="YES" name={this.props.questions[this.props.index_id].question_id}
+                               checked={this.getDefaultAnswer(question_id, "YES", question_types.YESNO)}
                                onChange={(event)=>{
                                    let res = this.findAnswer(question_id);
                                    if(res===null || res === undefined){
@@ -281,6 +320,7 @@ class QuestionComponent extends Component {
                         <label >YES</label>
                         <input type="radio" value="NO"
                                name={this.props.questions[this.props.index_id].question_id}
+                               checked={this.getDefaultAnswer(question_id, "NO", question_types.YESNO)}
                                onChange={(event)=>{
                                    let res = this.findAnswer(question_id);
                                    if(res===null || res === undefined){
@@ -305,13 +345,12 @@ class QuestionComponent extends Component {
             );
         }
         else if(this.props.question_type === "ShortAnswer"){
+            this.getDefaultAnswer(question_id, null, question_types.SHORTANSWER);
             return(
                 <div className="option-input-box" >
                     <div>
-                        Option
                         <input type="text"
-                               placeholder="Enter option here"
-                               defaultValue="TODO:"
+                               value={this.getDefaultAnswer(question_id, null, question_types.SHORTANSWER)}
                                onBlur={(event)=>{
                                    console.log("On Blur: ", event.target.value);
                                    let res = this.findAnswer(question_id);
@@ -339,23 +378,25 @@ class QuestionComponent extends Component {
             return(
                 <div className="option-input-box">
                     <div>
-                        <input type="date" onChange={(event)=>{
-                            let res = this.findAnswer(question_id);
-                            if(res===null || res === undefined){
-                                res = {
-                                    question : {
-                                        question_id : question_id
-                                    },
-                                    answer_id : uuidv4(),
-                                    answer_value : event.target.value
-                                };
-                            }
-                            else {
-                                res.answer_value = event.target.value
-                            }
-                            this.response.response_answer = res;
-                            this.sendSurveySaveRequest(this.response);
-                        }}/>
+                        <input type="date"
+                               value={this.getDefaultAnswer(question_id, null, question_types.DATETIME)}
+                               onChange={(event)=>{
+                                   let res = this.findAnswer(question_id);
+                                   if(res===null || res === undefined){
+                                       res = {
+                                           question : {
+                                               question_id : question_id
+                                           },
+                                           answer_id : uuidv4(),
+                                           answer_value : event.target.value
+                                       };
+                                   }
+                                   else {
+                                       res.answer_value = event.target.value
+                                   }
+                                   this.response.response_answer = res;
+                                   this.sendSurveySaveRequest(this.response);
+                               }}/>
                     </div>
                 </div>
             );
@@ -365,23 +406,25 @@ class QuestionComponent extends Component {
                 <div className="option-input-box">
                     <div>
                         <span className="glyphicon glyphicon-star"> *******</span>
-                        <input type="number" onChange={(event)=>{
-                            let res = this.findAnswer(question_id);
-                            if(res===null || res === undefined){
-                                res = {
-                                    question : {
-                                        question_id : question_id
-                                    },
-                                    answer_id : uuidv4(),
-                                    answer_value : event.target.value
-                                };
-                            }
-                            else {
-                                res.answer_value = event.target.value
-                            }
-                            this.response.response_answer = res;
-                            this.sendSurveySaveRequest(this.response);
-                        }}/>
+                        <input type="number"
+                               value={this.getDefaultAnswer(question_id, null, question_types.STARRATING)}
+                               onChange={(event)=>{
+                                   let res = this.findAnswer(question_id);
+                                   if(res===null || res === undefined){
+                                       res = {
+                                           question : {
+                                               question_id : question_id
+                                           },
+                                           answer_id : uuidv4(),
+                                           answer_value : event.target.value
+                                       };
+                                   }
+                                   else {
+                                       res.answer_value = event.target.value
+                                   }
+                                   this.response.response_answer = res;
+                                   this.sendSurveySaveRequest(this.response);
+                               }}/>
                     </div>
                 </div>);
         }

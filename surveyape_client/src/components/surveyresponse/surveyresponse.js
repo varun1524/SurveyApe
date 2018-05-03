@@ -4,7 +4,7 @@ import { Route, withRouter, Switch } from 'react-router-dom';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {updateSurvey} from './../../actions/survey';
-import {updateSurveyResponse, updateQuestionsInSurveyResponse, createSurveyResponse} from './../../actions/surveyresponse';
+import {createSurveyResponse} from './../../actions/surveyresponse';
 import uuidv4 from "uuid";
 import QuestionComponent from './questioncomponent';
 import Header from './../header';
@@ -13,28 +13,24 @@ class SurveyResponse extends Component {
 
     componentDidMount(){
         console.log("SurveyResponse params: ", this.props.match.params);
-        if(this.props.match.params.hasOwnProperty("survey_id") && this.props.match.params.hasOwnProperty("response_id")){
+        if(this.props.match.params.hasOwnProperty("response_id")){
             //TODO: save response and survey using one API Call to server
-            /*API.getSurveyAndResponseById({
-                survey_id : this.props.match.params.survey_id,
-                response_id : this.props.match.params.response_id
-            }).then((response)=>{
+            API.getSurveyAndResponseByResponseId(this.props.match.params.response_id).then((response)=>{
                 console.log(response.status);
                 if(response.status===200){
                     response.json().then((data)=>{
-                        console.log(data);
-                        // this.props.updateSurvey(data);
+                        console.log("getSurveyAndResponseByResponseId: ", data);
                         this.props.updateSurvey(data.survey);
-                        this.props.updateSurveyResponse(data.survey_response);
+                        this.props.createSurveyResponse(data)
                     });
                 }
                 else if(response.status===404){
-
+                    alert("Error 404 in getSurveyAndResponseByResponseId")
                 }
                 else if(response.status===400){
-
+                    alert("Error 400 in getSurveyAndResponseByResponseId")
                 }
-            });*/
+            });
         }
         else if(this.props.match.params.hasOwnProperty("survey_id")){
             API.getSurveyById(this.props.match.params.survey_id).then((response)=>{
@@ -43,16 +39,14 @@ class SurveyResponse extends Component {
                     response.json().then((data)=>{
                         console.log(data);
                         this.props.updateSurvey(data);
-                        // this.props.updateSurvey(data.survey);
-                        // this.props.updateSurveyResponse(data.survey_response);
                         this.createSurveyResponse()
                     });
                 }
                 else if(response.status===404){
-
+                    alert("Error 404 in getSurveyById")
                 }
                 else if(response.status===400){
-
+                    alert("Error 400 in getSurveyById")
                 }
             });
         }
@@ -128,8 +122,6 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators(
         {
             updateSurvey: updateSurvey,
-            updateSurveyResponse : updateSurveyResponse,
-            updateQuestionsInSurveyResponse : updateQuestionsInSurveyResponse,
             createSurveyResponse : createSurveyResponse
         }, dispatch)
 }
