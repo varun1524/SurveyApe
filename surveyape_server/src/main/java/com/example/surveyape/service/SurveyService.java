@@ -9,6 +9,7 @@ import com.example.surveyape.utils.QuestionUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -172,6 +173,20 @@ public class SurveyService {
 			}
 
 		}
+
+	}
+
+
+	public Boolean publishSurvey(String survey_id){
+
+		Survey survey = surveyRepository.findBySurveyId(survey_id);
+		if(survey != null && survey.getPublished()!=true){
+			survey.setPublished(true);
+			survey.setPublishDate(new Date());
+			surveyRepository.save(survey);
+			return true;
+		}
+		return false;
 
 	}
 }

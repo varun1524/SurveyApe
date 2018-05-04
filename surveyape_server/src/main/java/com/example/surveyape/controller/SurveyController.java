@@ -167,7 +167,7 @@ public class SurveyController {
         return new ResponseEntity(responseMap,status);
     }
 
-    @JsonView({SurveyView.summary.class})
+
     @RequestMapping(value = "/share", method = RequestMethod.POST)
     public ResponseEntity shareSurvey(@RequestBody Map<String, String> map, HttpSession session){
         HttpStatus status = HttpStatus.BAD_REQUEST;Map resMap = new HashMap();
@@ -175,6 +175,28 @@ public class SurveyController {
             surveyService.shareSurvey(map);
             status = HttpStatus.OK;
             resMap.put("message","Survey shared successfully !!!");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(resMap,status);
+    }
+
+    @RequestMapping(value = "/publish", method = RequestMethod.POST)
+    public ResponseEntity publishSurvey(@RequestBody Map<String, String> map, HttpSession session){
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        Map resMap = new HashMap();
+        try {
+            String surveyId = map.get("survey_id");
+            if(surveyId !=null && surveyId.trim().length() > 0){
+                Boolean publishstatus = surveyService.publishSurvey(surveyId);
+                if(publishstatus){
+                    status = HttpStatus.OK;
+                    resMap.put("message","Survey published successfully !!!");
+                }
+
+            }
+
         }
         catch (Exception e){
             e.printStackTrace();

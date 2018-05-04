@@ -21,8 +21,6 @@ public class Invitees {
     @JoinColumn(name = "surveyId", nullable = false)
     private Survey survey;
 
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String surveyToken;
 
     private String email;
