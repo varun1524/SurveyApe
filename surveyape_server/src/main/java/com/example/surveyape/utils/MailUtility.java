@@ -17,4 +17,7 @@ public class MailUtility {
     public static final String verificationSuccessfulMessage = "Congratulations. You have successfully verified your account.";
     public static final String general_survey_body = "Please take the general Survey using the below link:\nURL:" + url+"/survey/";
     public static final String general_survey_subject = "General Survey request";
+
+    public static final String surveyResponseMsg = "Thank you for you response !!! ";
+    public static final String surveyResponseBody = "Survey Submitted successfully";
 }
