@@ -6,8 +6,12 @@ import {updateAnswer, createSurveyResponse} from './../../actions/surveyresponse
 import uuidv4 from "uuid";
 import * as API from './../../api/API';
 import {question_types} from './../../config/question_types';
+<<<<<<< HEAD
+//import '../../stylesheets/surveyresponse/surveyquestioncomponent.css'
+=======
 import StarRatingComponent from 'react-star-rating-component';
 import '../../stylesheets/surveyresponse/surveyquestioncomponent.css';
+>>>>>>> ff5cf4fd0490e99048c23c4adec76af9a7b69947
 
 class QuestionComponent extends Component {
 

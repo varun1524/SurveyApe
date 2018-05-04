@@ -4,6 +4,7 @@ import java.util.*;
 
 
 import com.example.surveyape.entity.*;
+import com.example.surveyape.utils.MailUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,8 @@ public class SurveyResponseServices {
     QuestionRepository questionRepo;
     @Autowired
     ResponseAnswerRepository resAnsRepo;
+    @Autowired
+    MailService mailService;
 
     public SurveyResponse saveCheckResponse(Map map, SurveyResponse surveyResponse){
         Map responseAnswerMap = (Map)map.get("response_answer");
@@ -108,5 +111,29 @@ public class SurveyResponseServices {
             return surveyResRepo.save(surveyResponse);
         }
         return null;
+    }
+
+    public Boolean submitResponse(Map map){
+
+        if(map.get("response_id")!=null ){
+            String responseId = map.get("response_id").toString().trim();
+                SurveyResponse surveyResponse = surveyResRepo.findByResponseId(responseId);
+                if(surveyResponse!=null){
+                    surveyResponse.setSubmitted(true);
+                }
+                if(map.get("sendcopy")!=null && Boolean.parseBoolean(map.get("sendcopy").toString().toLowerCase())){
+                    String email = map.get("email")!=null?map.get("email").toString():surveyResponse.getEmail();
+                    if(email!=null){
+                        String msgBody = MailUtility.surveyResponseBody;
+                        String  msgSub = MailUtility.surveyResponseMsg;
+                        surveyResponse.setEmail(email);
+                        mailService.sendEmail(email,msgBody,msgSub);
+                    }
+                }
+                surveyResRepo.save(surveyResponse);
+                return true;
+
+        }
+        return false;
     }
 }

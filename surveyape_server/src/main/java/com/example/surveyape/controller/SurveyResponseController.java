@@ -137,4 +137,22 @@ public class SurveyResponseController {
 		return responseEntity;
 	}
 
+	@RequestMapping(value = "/submit", method = RequestMethod.POST)
+	public ResponseEntity submitResponse(@RequestBody Map<String, String> map, HttpSession session){
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		Map resMap = new HashMap();
+		try {
+
+			Boolean surveyResSubmitstatus = surveyResService.submitResponse(map);
+			if(surveyResSubmitstatus){
+				status = HttpStatus.OK;
+				resMap.put("message","Survey response submitted succesfully !!!");
+			}
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
+		return new ResponseEntity(resMap,status);
+	}
+
 }
