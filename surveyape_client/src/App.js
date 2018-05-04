@@ -87,6 +87,18 @@ class App extends Component {
                             {...match}
                         />)}
                     />
+                    <Route path= "/surveyresponse/c/:cresponse_id" render = {(match) => (
+                        <SurveyResponse
+                            handlePageChange = {this.handlePageChange}
+                            {...match}
+                        />)}
+                    />
+                    <Route path= "/surveyresponse/o/:oresponse_id" render = {(match) => (
+                        <SurveyResponse
+                            handlePageChange = {this.handlePageChange}
+                            {...match}
+                        />)}
+                    />
                 </Switch>
             </div>
         );
