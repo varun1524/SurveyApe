@@ -4,8 +4,6 @@ import java.util.*;
 
 
 import com.example.surveyape.entity.*;
-import com.example.surveyape.view.ResponseView;
-import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +52,13 @@ public class SurveyResponseServices {
             System.out.println("After Answer ID: "+resAns.getAnswerId() + " :   "+ result);
         }
         SurveyResponse surveyResponse1 = surveyResRepo.findByResponseId(surveyResponse.getResponseId());
+        if(surveyResponse1.getResponseAnswers().size()>0){
+            Survey survey = surveyResponse1.getSurvey();
+            if(survey.getEditable()){
+                survey.setEditable(false);
+                surveyRepo.save(survey);
+            }
+        }
         System.out.println("Before sending response to react: "+ surveyResponse1.getResponseAnswers().size());
         return surveyResponse1;
     }
