@@ -1,7 +1,9 @@
 .survey-response-main-div {
-    width: 100%;
+    width: 60%;
+    margin: 5% 20%;
 }
 
 .survey-response-submit-button {
-    width: 50%;
+    width: 60%;
+    margin: 5% 20%;
 }
