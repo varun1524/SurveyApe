@@ -95,7 +95,14 @@ class mysurvey extends Component {
             emailIds : this.state.surveyee_emails
         };
 
-        console.log(payload);
+        console.log("[mysurvey] shareSurvey() payload : ", payload);
+
+        API.shareSurvey(payload)
+            .then((response) => {
+                response.json().then((data) => {
+                    console.log("[mysurvey] shareSurvey API message", data.message);
+                });
+        });
     }
 
     render() {

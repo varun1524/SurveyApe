@@ -6,12 +6,20 @@ import {updateAnswer, createSurveyResponse} from './../../actions/surveyresponse
 import uuidv4 from "uuid";
 import * as API from './../../api/API';
 import {question_types} from './../../config/question_types';
+<<<<<<< HEAD
 //import '../../stylesheets/surveyresponse/surveyquestioncomponent.css'
+=======
+import StarRatingComponent from 'react-star-rating-component';
+import '../../stylesheets/surveyresponse/surveyquestioncomponent.css';
+>>>>>>> ff5cf4fd0490e99048c23c4adec76af9a7b69947
 
 class QuestionComponent extends Component {
 
     constructor(){
         super();
+        this.state = {
+            rating: 0
+        }
     }
 
     response = {
@@ -98,7 +106,7 @@ class QuestionComponent extends Component {
     getQuestionView(){
         return (
             <div>
-                <input className="question-input-box" type="text"
+                <input className="survey-question-input-box" type="text"
                        placeholder="Type your question here"
                        onChange={(event) => {
                            this.editQuestionText(event.target.value);
@@ -176,13 +184,17 @@ class QuestionComponent extends Component {
         console.log("Not found answer: ", false);
     });
 
+    onStarClick(nextValue, prevValue, name) {
+        this.setState({rating: nextValue});
+    }
+
     getOptionView(){
         let question_id = this.props.questions[this.props.index_id].question_id;
         this.response.survey_id = this.props.survey.survey_id;
         this.response.response_id = this.props.survey_response.response_id;
         if(this.props.question_type === "CheckBox"){
             return(
-                <div className="option-input-box">
+                <div className="survey-option-input-box">
                     {
                         this.props.questions[this.props.index_id].options.map((option, id) => {
                             return(
@@ -214,43 +226,44 @@ class QuestionComponent extends Component {
                 </div>);
         }
         else if(this.props.question_type === "RadioGroup"){
-            return( <div className="option-input-box">
-                {
-                    this.props.questions[this.props.index_id].options.map((option, id) => {
-                        return(
-                            <div>
-                                <input type="radio" radioGroup={question_id} name={question_id}
-                                       checked={this.getDefaultAnswer(question_id, option, question_types.RADIOGROUP)}
-                                       defaultValue={option.option_id}
-                                       onChange={(event)=>{
-                                           console.log(event.target.checked, id, question_id, event.target.value);
-                                           let res = this.findAnswer(question_id);
-                                           if(res===null || res === undefined){
-                                               res = {
-                                                   question : {
-                                                       question_id : question_id
-                                                   },
-                                                   answer_id : uuidv4(),
-                                                   answer_value : option.option_id
-                                               };
-                                           }
-                                           else {
-                                               res.answer_value = option.option_id
-                                           }
-                                           this.response.response_answer = res;
-                                           this.sendSurveySaveRequest(this.response);
-                                       }}
-                                />
-                                {option.option_text}
-                            </div>
-                        )
-                    })
-                }
-            </div>);
+            return(
+                <div className="survey-option-input-box">
+                    {
+                        this.props.questions[this.props.index_id].options.map((option, id) => {
+                            return(
+                                <div>
+                                    <input type="radio" radioGroup={question_id} name={question_id}
+                                           checked={this.getDefaultAnswer(question_id, option, question_types.RADIOGROUP)}
+                                           defaultValue={option.option_id}
+                                           onChange={(event)=>{
+                                               console.log(event.target.checked, id, question_id, event.target.value);
+                                               let res = this.findAnswer(question_id);
+                                               if(res===null || res === undefined){
+                                                   res = {
+                                                       question : {
+                                                           question_id : question_id
+                                                       },
+                                                       answer_id : uuidv4(),
+                                                       answer_value : option.option_id
+                                                   };
+                                               }
+                                               else {
+                                                   res.answer_value = option.option_id
+                                               }
+                                               this.response.response_answer = res;
+                                               this.sendSurveySaveRequest(this.response);
+                                           }}
+                                    />
+                                    {option.option_text}
+                                </div>
+                            )
+                        })
+                    }
+                </div>);
         }
         else if(this.props.question_type === "DropDown"){
             return(
-                <div className="option-input-box">
+                <div className="survey-option-input-box">
                     <select onChange={(event)=>{
                         //TODO: Put Check for Select
                         console.log(event.target.value, question_id);
@@ -288,7 +301,7 @@ class QuestionComponent extends Component {
         }
         else if(this.props.question_type === "YesNo"){
             return(
-                <div className="option-input-box">
+                <div className="survey-option-input-box">
                     <div>
                         <input type="radio" value="YES" name={this.props.questions[this.props.index_id].question_id}
                                checked={this.getDefaultAnswer(question_id, "YES", question_types.YESNO)}
@@ -310,7 +323,10 @@ class QuestionComponent extends Component {
                                    this.sendSurveySaveRequest(this.response);
                                }}
                         />
-                        <label >YES</label>
+                        <label>YES</label>
+
+                        <br/>
+
                         <input type="radio" value="NO"
                                name={this.props.questions[this.props.index_id].question_id}
                                checked={this.getDefaultAnswer(question_id, "NO", question_types.YESNO)}
@@ -332,7 +348,7 @@ class QuestionComponent extends Component {
                                    this.sendSurveySaveRequest(this.response);
                                }}
                         />
-                        <label >NO</label>
+                        <label>NO</label>
                     </div>
                 </div>
             );
@@ -340,7 +356,7 @@ class QuestionComponent extends Component {
         else if(this.props.question_type === "ShortAnswer"){
             this.getDefaultAnswer(question_id, null, question_types.SHORTANSWER);
             return(
-                <div className="option-input-box" >
+                <div className="survey-option-input-box" >
                     <div>
                         <input type="text"
                                value={this.getDefaultAnswer(question_id, null, question_types.SHORTANSWER)}
@@ -369,7 +385,7 @@ class QuestionComponent extends Component {
         }
         else if(this.props.question_type === "DateTime"){
             return(
-                <div className="option-input-box">
+                <div className="survey-option-input-box">
                     <div>
                         <input type="date"
                                value={this.getDefaultAnswer(question_id, null, question_types.DATETIME)}
@@ -396,29 +412,37 @@ class QuestionComponent extends Component {
         }
         else if(this.props.question_type === "StarRating"){
             return(
-                <div className="option-input-box">
-                    <div>
-                        <span className="glyphicon glyphicon-star"> *******</span>
-                        <input type="number"
-                               value={this.getDefaultAnswer(question_id, null, question_types.STARRATING)}
-                               onChange={(event)=>{
-                                   let res = this.findAnswer(question_id);
-                                   if(res===null || res === undefined){
-                                       res = {
-                                           question : {
-                                               question_id : question_id
-                                           },
-                                           answer_id : uuidv4(),
-                                           answer_value : event.target.value
-                                       };
-                                   }
-                                   else {
-                                       res.answer_value = event.target.value
-                                   }
-                                   this.response.response_answer = res;
-                                   this.sendSurveySaveRequest(this.response);
-                               }}/>
-                    </div>
+                <div className="survey-option-input-box">
+                    {/*<div>*/}
+                        {/*<input type="number"*/}
+                               {/*value={this.getDefaultAnswer(question_id, null, question_types.STARRATING)}*/}
+                               {/*onChange={(event)=>{*/}
+                                   {/*let res = this.findAnswer(question_id);*/}
+                                   {/*if(res===null || res === undefined){*/}
+                                       {/*res = {*/}
+                                           {/*question : {*/}
+                                               {/*question_id : question_id*/}
+                                           {/*},*/}
+                                           {/*answer_id : uuidv4(),*/}
+                                           {/*answer_value : event.target.value*/}
+                                       {/*};*/}
+                                   {/*}*/}
+                                   {/*else {*/}
+                                       {/*res.answer_value = event.target.value*/}
+                                   {/*}*/}
+                                   {/*this.response.response_answer = res;*/}
+                                   {/*this.sendSurveySaveRequest(this.response);*/}
+                       {/*}}/>*/}
+
+                        {/*<div className="option-type-star">*/}
+                            <StarRatingComponent
+                                name="rate1"
+                                starCount={5}
+                                value={this.state.rating}
+                                onStarClick={this.onStarClick.bind(this)}
+                            />
+                        {/*</div>*/}
+                    {/*</div>*/}
                 </div>);
         }
     }
@@ -441,7 +465,7 @@ class QuestionComponent extends Component {
             <div className="QuestionComponent">
                 <div className="survey-component_div">
                     <div className="survey-question-div">
-                        Question:
+                        <label className="survey-response-question-label">Question:</label>
                         {this.getQuestionView()}
                     </div>
                     <div className="survey-option-div">

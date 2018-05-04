@@ -8,7 +8,7 @@ import {createSurveyResponse} from './../../actions/surveyresponse';
 import uuidv4 from "uuid";
 import QuestionComponent from './questioncomponent';
 import Header from './../header';
-//import '/Users/rutvik/Desktop/Study/275/Projects/SurveyApe/surveyape_client/src/stylesheets/surveyresponse/surveyresponse.css'
+import '../../stylesheets/surveyresponse/surveyresponse.css'
 
 class SurveyResponse extends Component {
 
@@ -79,7 +79,7 @@ class SurveyResponse extends Component {
             return(
                 <div>
                     <div>
-                        <button type="button" onClick={()=>{this.submitSurvey()}}>Submit</button>
+                        <button type="button" className="survey-response-submit-button" onClick={()=>{this.submitSurvey()}}>Submit</button>
                     </div>
                 </div>
             );

@@ -21,24 +21,25 @@ class Login extends Component {
     }
 
     handleLogin = (() => {
+        document.getElementById('emailErr').innerHTML = '';
         console.log('1',this.state.email);
         console.log('1',this.state.password);
         //Validation
         var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
-        /*if(this.state.email.length == 0){
+        if(this.state.email.length == 0){
 
             document.getElementById('emailErr').innerHTML = 'Username is required';
         }
         else if (this.state.password.length == 0){
             document.getElementById('passwordErr').innerText = 'Password is required';
         }
-        else if (this.state.password.length > 0){
-            document.getElementById('passwordErr').innerText = '';
-        }
         else if(!re.test(this.state.email)){
             document.getElementById('emailErr').innerHTML='Email is invalid';
         }
-        else {*/
+        else if (this.state.password.length > 0){
+            document.getElementById('passwordErr').innerText = '';
+
+            console.log('inside');
             API.doLogin(this.state).then((response) => {
                 console.log(response.status);
                 if (response.status === 200) {
@@ -74,7 +75,7 @@ class Login extends Component {
                     })
                 }
             });
-        // }
+         }
     });
 
     render() {

@@ -170,7 +170,9 @@ public class SurveyController {
 
     @RequestMapping(value = "/share", method = RequestMethod.POST)
     public ResponseEntity shareSurvey(@RequestBody Map<String, String> map, HttpSession session){
-        HttpStatus status = HttpStatus.BAD_REQUEST;Map resMap = new HashMap();
+        System.out.println("[SurveyController] shareSurvey");
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        Map resMap = new HashMap();
         try {
             surveyService.shareSurvey(map);
             status = HttpStatus.OK;

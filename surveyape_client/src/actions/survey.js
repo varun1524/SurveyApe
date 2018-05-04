@@ -41,3 +41,11 @@ export function updateSurvey(data) {
         data
     }
 }
+
+
+export function updateSurveyNameDate(data) {
+    return {
+        type: actionTypes.UPDATE_SURVEY_NAME_DATE,
+        data
+    }
+}
