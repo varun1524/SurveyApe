@@ -79,7 +79,7 @@ class SurveyResponse extends Component {
             return(
                 <div>
                     <div>
-                        <button type="button" onClick={()=>{this.submitSurvey()}}>Submit</button>
+                        <button type="button" className="survey-response-submit-button" onClick={()=>{this.submitSurvey()}}>Submit</button>
                     </div>
                 </div>
             );
