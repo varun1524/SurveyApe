@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import QuestionComponent from './questioncomponent';
 import * as API from './../../api/API';
 import {bindActionCreators} from 'redux';
-import {updateSurvey} from './../../actions/survey';
+import {updateSurvey,updateSurveyNameDate} from './../../actions/survey';
 import Spinner from 'react-spinkit';
 
 import './../../stylesheets/createsurvey/questiondashboard.css';
@@ -38,7 +38,6 @@ class QuestionDashboard extends Component {
     }
 
     saveSurvey(){
-
         console.log("[QuestionDashboard] saveSurvey() Survey Data: ",this.props.survey);
         //console.log(JSON.stringify(this.props.survey));
         API.updateSurvey(this.props.survey).then((response)=>{
@@ -95,7 +94,22 @@ class QuestionDashboard extends Component {
         return(
             <div>
                 {/*<Spinner name="ball-spin-fade-loader" color="coral"/>*/}
-                <div className="survey-name-p">Survey Name: {this.props.survey.survey_name}<span className="survey-type-span">[{this.props.survey.survey_type}]</span></div>
+                <div className="survey-name-p">Survey Name: {this.props.survey.survey_name}
+                    <span className="survey-type-span">[{this.props.survey.survey_type}]</span>
+
+                    <input type="date" className="end-survey-datepicker" onChange={(event)=>{
+                        let payload ={
+                            survey_name:this.props.survey.survey_name,
+                            survey_type:this.props.survey.survey_type,
+                            end_date:event.target.value
+                        }
+                        this.props.updateSurveyNameDate(payload);
+                    }}/>
+                    <span className="end-survey-date-label">{this.props.survey.end_date}</span>
+                    <span className="end-survey-date-label">Survey End Date:</span>
+
+                </div>
+                
                 {/*<div className="survey-name-p">{this.state.survey.survey_name} <span className="survey-type-span">[{this.state.survey.survey_name}]</span></div>*/}
                 {this.displayQuestionComponent()}
                 {this.getPublishandSave()}
@@ -105,7 +119,7 @@ class QuestionDashboard extends Component {
 }
 
 function mapStateToProps(state) {
-    console.log("mapstoprops questiondashboard",state.survey)
+    console.log("mapstoprops questiondashboard",state.survey);
     return{
         survey: state.survey
     }
@@ -113,7 +127,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        updateSurvey: updateSurvey
+        updateSurvey: updateSurvey,
+        updateSurveyNameDate:updateSurveyNameDate
     }, dispatch)
 }
 

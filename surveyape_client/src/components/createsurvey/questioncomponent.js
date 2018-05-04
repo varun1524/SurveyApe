@@ -66,6 +66,7 @@ class QuestionComponent extends Component {
     getQuestionView(){
         return (
             <div className="get-question-view-div">
+
                 <input className="question-input-box" type="text" placeholder="Type your question here" onChange={(event) => {
                     this.editQuestionText(event.target.value);
                 }} defaultValue={this.props.questions[this.props.index_id].question_text}/>
@@ -75,6 +76,7 @@ class QuestionComponent extends Component {
                 </div>
 
                 {this.getAddButtonView()}
+
             </div>
         );
     }
@@ -85,13 +87,14 @@ class QuestionComponent extends Component {
                <div>
                    {
                        this.props.questions[this.props.index_id].options.map((option, id) => {
+                           console.log("[QuestionComponent] getOptionView() ")
                            return(
                                <div className="option-input-box">
                                    <input type="checkbox" className="option-type"/>
                                    <input type="text"
                                           className="option-text-box"
                                           placeholder="Enter option here"
-                                          defaultValue={option.value}
+                                          defaultValue={option.option_text}
                                           onChange={(event)=>{this.editOptionText(event.target.value, id)}}
                                    />
                                    <div className="remove-glyphicon-option">
@@ -143,7 +146,7 @@ class QuestionComponent extends Component {
                                     <input type="text"
                                            className="option-text-box-dropdown"
                                            placeholder="Enter option here"
-                                           defaultValue={option.value}
+                                           defaultValue={option.option_text}
                                            onChange={(event)=>{this.editOptionText(event.target.value, id)}}
                                     />
                                     <div className="remove-glyphicon-option">
@@ -275,8 +278,7 @@ class QuestionComponent extends Component {
                 <div className="component_div">
 
                     <div className="question-div">
-                        <div className="question-label">Question:</div>
-                        <hr className="question-hr"/>
+                        {/*<div className="question-label">Question:</div>*/}
                         {this.getQuestionView()}
 
                     </div>

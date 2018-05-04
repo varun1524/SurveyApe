@@ -9,6 +9,8 @@ import com.example.surveyape.utils.QuestionUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.*;
 
 @Service
@@ -31,10 +33,17 @@ public class SurveyService {
 	public Survey createSurvey(Map map, User user) {
 		Survey survey = null;
 		try {
+			System.out.println("[SurveyService] createSurvey end_date");
+			System.out.println(map.get("end_date"));
+
 			survey = new Survey();
 			survey.setSurveyName(map.get("survey_name").toString());
 			survey.setSurveyType(map.get("survey_type").toString());
-			survey.setCreationDate(new Date());
+			if(map.get("end_date")!=null && map.get("end_date").toString().length()>0){
+				Date endDate = new SimpleDateFormat("yyyy-MM-dd").parse(map.get("end_date").toString());
+				survey.setSurveyEndDate(endDate);
+			}
+
 			survey.setUser(user);
 			// survey.setPublishDate(new SimpleDateFormat("yyyy-MM-dd-HH").parse(map.get("publish_date").toString()));
 			survey = surveyRepository.save(survey);
@@ -54,6 +63,10 @@ public class SurveyService {
 				survey.setSurveyType(map.get("survey_type").toString());
 				survey.setUpdateDate(new Date());
 				// survey.setPublishDate(new SimpleDateFormat("yyyy-MM-dd-HH").parse(map.get("publish_date").toString()));
+				if(map.get("end_date")!=null){
+					Date endDate = new SimpleDateFormat("yyyy-MM-dd").parse(map.get("end_date").toString());
+					survey.setSurveyEndDate(endDate);
+				}
 				List<Map> questionMapList = (List) map.get("questions");
 				survey.setQuestions(generateQuestionList(questionMapList, survey));
 				survey = surveyRepository.save(survey);

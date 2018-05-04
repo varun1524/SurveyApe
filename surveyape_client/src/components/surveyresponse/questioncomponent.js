@@ -409,7 +409,7 @@ class QuestionComponent extends Component {
         else if(this.props.question_type === "StarRating"){
             return(
                 <div className="survey-option-input-box">
-                    <div>
+                    {/*<div>*/}
                         {/*<input type="number"*/}
                                {/*value={this.getDefaultAnswer(question_id, null, question_types.STARRATING)}*/}
                                {/*onChange={(event)=>{*/}
@@ -430,15 +430,15 @@ class QuestionComponent extends Component {
                                    {/*this.sendSurveySaveRequest(this.response);*/}
                        {/*}}/>*/}
 
-                        <div className="option-type-star">
+                        {/*<div className="option-type-star">*/}
                             <StarRatingComponent
                                 name="rate1"
                                 starCount={5}
                                 value={this.state.rating}
                                 onStarClick={this.onStarClick.bind(this)}
                             />
-                        </div>
-                    </div>
+                        {/*</div>*/}
+                    {/*</div>*/}
                 </div>);
         }
     }
@@ -461,7 +461,7 @@ class QuestionComponent extends Component {
             <div className="QuestionComponent">
                 <div className="survey-component_div">
                     <div className="survey-question-div">
-                        Question:
+                        <label className="survey-response-question-label">Question:</label>
                         {this.getQuestionView()}
                     </div>
                     <div className="survey-option-div">

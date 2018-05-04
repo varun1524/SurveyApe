@@ -41,7 +41,8 @@ class Header extends Component {
         this.state = {
             createSurveyModalOpen : false,
             survey_name:"",
-            survey_type:""
+            survey_type:"",
+            end_date:""
         };
 
         this.openCreateSurveyModal = this.openCreateSurveyModal.bind(this);
@@ -96,10 +97,11 @@ class Header extends Component {
 
 
     createSurvey(){
-        console.log("[Header] BEfore API call creater survey data:",this.state);
+        console.log("[Header] Before API call creater survey data:",this.state);
         API.createSurvey({
                 survey_name:this.state.survey_name,
-                survey_type:this.state.survey_type
+                survey_type:this.state.survey_type,
+                end_date: this.state.end_date
             }
         ).then((response)=>{
             if(response.status === 200){
@@ -175,7 +177,7 @@ class Header extends Component {
                         {/*}}/>*/}
 
                         <label>End Date</label>
-                        <input type="date" className="survey-name-input-box" />
+                        <input type="date" className="survey-name-input-box" onChange={(event) => {this.state.end_date = event.target.value}}/>
 
                         <input type="button" className="submit-create-survey" value="Submit" onClick={()=>{
                             this.createSurvey()
