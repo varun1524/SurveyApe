@@ -34,7 +34,8 @@ public class SurveyResponse {
     @OneToMany(mappedBy = "surveyResponse", cascade = {CascadeType.ALL})
     private List<ResponseAnswers> responseAnswers;
 
-    //TODO: Set default value false
+    @JsonProperty("issubmitted")
+    @JsonView({ ResponseView.summary.class , SurveyAndResponseView.summary.class})
     private Boolean isSubmitted = false;
 
     @JsonView({ ResponseView.summary.class, SurveyAndResponseView.summary.class })
