@@ -41,8 +41,12 @@ public class Survey {
     private Date publishDate;
 
     @JsonProperty("ispublished")
-    @JsonView({SurveyView.summary.class,SurveyListView.summary.class, SurveyAndResponseView.summary.class})
-    private Boolean isPublished;
+    @JsonView({SurveyView.summary.class, SurveyListView.summary.class, SurveyAndResponseView.summary.class})
+    private Boolean isPublished = false;
+
+    @JsonProperty("iseditable")
+    @JsonView({SurveyView.summary.class, SurveyListView.summary.class, SurveyAndResponseView.summary.class})
+    private Boolean isEditable = true;
 
     @JsonProperty("end_date")
     @JsonView({SurveyView.summary.class, SurveyAndResponseView.summary.class})
@@ -156,5 +160,13 @@ public class Survey {
 
     public void setPublished(Boolean published) {
         isPublished = published;
+    }
+
+    public Boolean getEditable() {
+        return isEditable;
+    }
+
+    public void setEditable(Boolean editable) {
+        isEditable = editable;
     }
 }

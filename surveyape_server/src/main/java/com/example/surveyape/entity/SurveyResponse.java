@@ -34,6 +34,9 @@ public class SurveyResponse {
     @OneToMany(mappedBy = "surveyResponse", cascade = {CascadeType.ALL})
     private List<ResponseAnswers> responseAnswers;
 
+    //TODO: Set default value false
+    private Boolean isSubmitted = false;
+
     @JsonView({ ResponseView.summary.class, SurveyAndResponseView.summary.class })
     private String email;
 
@@ -78,5 +81,13 @@ public class SurveyResponse {
 
     public void setResponseAnswers(List<ResponseAnswers> responseAnswers) {
         this.responseAnswers = responseAnswers;
+    }
+
+    public Boolean getSubmitted() {
+        return isSubmitted;
+    }
+
+    public void setSubmitted(Boolean submitted) {
+        isSubmitted = submitted;
     }
 }
