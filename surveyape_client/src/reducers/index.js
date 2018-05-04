@@ -3,7 +3,7 @@ import getUser from './login';
 import questionTypes from './question_types';
 import questionReducer from './question_reducer';
 import survey from './survey';
-import survey_response from './survey_response';
+import survey_surveyresponse from './survey_response';
 
 const allReducers = combineReducers({
     //insert reducer name here to combine
@@ -12,7 +12,7 @@ const allReducers = combineReducers({
     questionTypes: questionTypes,
     questionReducer: questionReducer,
     survey: survey,
-    survey_response : survey_response
+    survey_surveyresponse : survey_surveyresponse
 });
 
 export default allReducers;
