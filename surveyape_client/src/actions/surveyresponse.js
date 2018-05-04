@@ -27,3 +27,10 @@ export function updateQuestionsInSurveyResponse(data) {
         data
     }
 }
+
+export function generateSurveyForm(data) {
+    return {
+        type: actionTypes.CREATE_SURVEY,
+        data
+    }
+}
