@@ -5,6 +5,7 @@ const survey_data = {
     survey_id:"",
     survey_name: "",
     survey_type:"",
+    end_date:"",
     questions:[]
 };
 
@@ -13,10 +14,12 @@ const survey = (state = survey_data, action)=>
     switch (action.type) {
         case actionTypes.CREATE_SURVEY :
             console.log("CREATE_SURVEY reducer", action.data);
+
             return Object.assign({},state,{
                 survey_id:action.data.survey_id,
                 survey_name:action.data.survey_name,
                 survey_type:action.data.survey_type,
+                end_date:action.data.end_date,
                 create_date:action.create_date,
                 questions:action.data.questions
             });
@@ -61,10 +64,23 @@ const survey = (state = survey_data, action)=>
 
         case actionTypes.UPDATE_SURVEY:
             console.log("Update Survey Reducer Action UPDATE_SURVEY ", action.data);
-            state = action.data;
+
             return Object.assign({},state,{
-                survey:action.data
+                survey_id:action.data.survey_id,
+                survey_name:action.data.survey_name,
+                survey_type:action.data.survey_type,
+                end_date:action.data.end_date?new Date(action.data.end_date).toISOString().slice(0,10):action.data.end_date,
+                create_date:action.create_date,
+                questions:action.data.questions
             });
+
+        case actionTypes.UPDATE_SURVEY_NAME_DATE:
+            console.log("UPDATE_SURVEY_NAME_DATE  survey reducer", action.data);
+            //state = action.data;
+            return Object.assign({},state,{
+                survey_name:action.data.survey_name,
+                end_date:action.data.end_date}
+            );
         default :
             return state;
     }

@@ -3,22 +3,22 @@
 }
 
 .component_div {
-    margin-top: 20px;
+    /*margin-top: 20px;*/
     /*background-color: #f1f1f1;*/
 
 }
 
 .question-div {
-    width: auto;
-    height: auto;
+    /*width: auto;*/
+    /*height: auto;*/
     /*background-color: #f1f1f1;*/
 }
 
 .question-input-box {
+    margin: 1%;
     width: 60%;
     height: 30px;
     padding: 5px 5px;
-    margin: 1%;
     float: left;
     display: inline-block;
     border: 1px solid #ccc;
@@ -153,7 +153,7 @@
 }
 
 .get-question-view-div {
-    background-color: #f1f1f1;
+    /*background-color: #f1f1f1;*/
 }
 
 .glyphicon-cross {
