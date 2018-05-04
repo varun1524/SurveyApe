@@ -6,19 +6,14 @@ import {updateAnswer, createSurveyResponse} from './../../actions/surveyresponse
 import uuidv4 from "uuid";
 import * as API from './../../api/API';
 import {question_types} from './../../config/question_types';
-<<<<<<< HEAD
-//import '../../stylesheets/surveyresponse/surveyquestioncomponent.css'
-=======
 import StarRatingComponent from 'react-star-rating-component';
 import '../../stylesheets/surveyresponse/surveyquestioncomponent.css';
->>>>>>> ff5cf4fd0490e99048c23c4adec76af9a7b69947
 
 class QuestionComponent extends Component {
 
     constructor(){
         super();
         this.state = {
-            rating: 0
         }
     }
 
@@ -53,9 +48,16 @@ class QuestionComponent extends Component {
                 }
                 return false;
                 break;
-            case question_types.STARRATING:
             case question_types.SHORTANSWER:
+                for (let i = 0; i < responses.length; i++) {
+                    if (responses[i].question.question_id === question_id) {
+                        console.log("[QuestionComponent] question_type: ", responses[i].answer_value);
+                        return  responses[i].answer_value
+                    }
+                }
+                break;
             case question_types.DATETIME:
+            case question_types.STARRATING:
                 console.log("question_type: ", question_type);
                 for (let i = 0; i < responses.length; i++) {
                     if (responses[i].question.question_id === question_id) {
@@ -63,7 +65,6 @@ class QuestionComponent extends Component {
                         return  responses[i].answer_value
                     }
                 }
-                return "";
                 break;
             default:
                 console.log("Incorrect Questino Type");
@@ -364,19 +365,17 @@ class QuestionComponent extends Component {
             );
         }
         else if(this.props.question_type === "ShortAnswer"){
-            this.getDefaultAnswer(question_id, null, question_types.SHORTANSWER);
             return(
                 <div className="survey-option-input-box" >
                     <div>
                         <input type="text"
-                               defaultValue={this.getDefaultAnswer(question_id, null, question_types.SHORTANSWER)}
+                               value={this.getDefaultAnswer(question_id, null, question_types.SHORTANSWER)}
                                disabled={this.props.readOnly}
                                onChange={(event)=>{
                                    console.log("On Change: ", event.target.value);
                                    this.response.question = this.props.questions[this.props.index_id];
                                    this.response.response_answer = event.target.value;
-                                   // this.props.updateAnswer(this.response)
-                                   // this.sendSurveySaveRequest(this.response);
+                                   this.props.updateAnswer(this.response)
                                }}
 
                                onBlur={(event)=>{
@@ -395,7 +394,7 @@ class QuestionComponent extends Component {
                                        res.answer_value = event.target.value
                                    }
                                    this.response.response_answer = res;
-                                   // this.sendSurveySaveRequest(this.response);
+                                   this.sendSurveySaveRequest(this.response);
                                }}
                         />
                     </div>

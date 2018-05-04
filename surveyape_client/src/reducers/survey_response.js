@@ -30,7 +30,7 @@ const response = (state = survey_surveyresponse, action)=>
         case actionTypes.UPDATE_ANSWER:
             console.log("Survey_Response: Update answer ", action.data);
             let sur_response = state.survey_response;
-            sur_response.responses = updateResponseAnswer(action.data, state.survey_surveyresponse.responses);
+            sur_response.responses = updateResponseAnswer(action.data, state.survey_response.responses);
             return Object.assign({},state,{
                 // ...state.survey_response,
                 survey_response : sur_response

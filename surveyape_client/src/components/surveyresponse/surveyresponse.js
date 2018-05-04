@@ -37,14 +37,14 @@ class SurveyResponse extends Component {
                 });
             }
             else if(response.status===404){
-                console.log("[SurveyResponse] User not logged In");
+                console.log("[SurveyResponse] ValidateSession user not logged in");
                 this.setState({
                     ...this.state,
                     loggedIn : false
                 });
             }
             else {
-                alert("Error while checking session existance");
+                alert("[SurveyResponse] Error while checking session existance");
             }
         });
         console.log("SurveyResponse params: ", this.props.match.params);
@@ -190,13 +190,16 @@ class SurveyResponse extends Component {
             }
             else {
                 API.submitSurveyResponse({
+                    response_id:this.props.survey_response.response_id,
                     email: this.state.email,
                     sendcopy: this.state.sendcopy
                 }).then((response) => {
                     if (response.status === 200) {
                         response.json().then((data)=>{
                             console.log("[SurveyResponse submitSurveyResponse: Succesful]", data);
-                            this.props.createSurveyResponse(data);
+                            // this.props.createSurveyResponse(data);
+                            alert("Survey Submission Successful");
+                            this.props.handlePageChange("/");
                         });
                         this.setState({
                             ...this.state,
@@ -214,8 +217,51 @@ class SurveyResponse extends Component {
         }
     });
 
+    showSubmitResponse= (()=>{
+        if(!this.state.readOnly){
+            let regex_email = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return (
+                <div align="center">
+                    <div>
+                        Email:
+                        <input type="text" value={this.state.email}
+                               disabled={this.state.loggedIn}
+                               style={{color:this.state.emailColor}}
+                               onChange={(event)=>{
+                                   this.setState({
+                                       ...this.state,
+                                       email : event.target.value,
+                                       emailColor : regex_email.test(this.state.email) ? 'black' : 'Red'
+                                   })
+                               }}
+                        />
+                        <span id="emailError" style={{color:this.state.emailColor}}></span>
+                    </div>
+                    <div>
+                        <input type="checkbox" className="option-"
+                               defaultChecked={false}
+                               onChange={(event)=>{
+                                   console.log("QuestionComponent: ", event.target.checked);
+                                   this.setState({
+                                       ...this.state,
+                                       sendcopy : event.target.checked
+                                   })
+                               }}
+                        /> I want to receive confirmation email
+                    </div>
+                    <button type="button" className="survey-response-submit-button"
+                            onClick={()=> {
+                                this.submitSurvey()
+                            }}
+                    >
+                        Submit
+                    </button>
+                </div>
+            )
+        }
+    });
+
     render() {
-        let regex_email = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return (
             <div className="">
                 <Header
@@ -227,45 +273,9 @@ class SurveyResponse extends Component {
                     {this.generateSurveyForm()}
                     <br/>
                     <br/>
-                    <div align="center">
-                        <div>
-                            Email:
-                            <input type="text" value={this.state.email}
-                                   disabled={this.state.loggedIn}
-                                   style={{color:this.state.emailColor}}
-                                   onChange={(event)=>{
-                                       this.setState({
-                                           ...this.state,
-                                           email : event.target.value,
-                                           emailColor : regex_email.test(this.state.email) ? 'black' : 'Red'
-                                       })
-                                   }}
-                            />
-                            <span id="emailError" style={{color:this.state.emailColor}}></span>
-                        </div>
-                        <div>
-                            <input type="checkbox" className="option-"
-                                   defaultChecked={false}
-                                   onChange={(event)=>{
-                                       console.log("QuestionComponent: ", event.target.checked);
-                                       this.setState({
-                                           ...this.state,
-                                           sendcopy : event.target.checked
-                                       })
-                                   }}
-                            /> I want to receive confirmation email
-                        </div>
-                    </div>
+
                     <div>
-                        <button type="button" className="survey-response-submit-button"
-                                onClick={
-                                    ()=> {
-                                        this.submitSurvey()
-                                    }
-                                }
-                        >
-                            Submit
-                        </button>
+                        {this.showSubmitResponse()}
                     </div>
                 </div>
 
