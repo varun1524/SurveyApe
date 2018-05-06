@@ -136,4 +136,18 @@ public class SurveyResponseServices {
         }
         return false;
     }
+
+    public List<SurveyResponse> getsurveyResponseByEmail(String email ){
+        List<SurveyResponse> resultSurveyResponses = new LinkedList<SurveyResponse>();
+        List<SurveyResponse> surveyResponses = surveyResRepo.findAllByEmail(email);
+        if(surveyResponses!=null){
+            for(SurveyResponse surRes:surveyResponses){
+                if(surRes.getSurvey().getPublished()){
+                    resultSurveyResponses.add(surRes);
+                }
+            }
+        }
+        return resultSurveyResponses;
+
+    }
 }
