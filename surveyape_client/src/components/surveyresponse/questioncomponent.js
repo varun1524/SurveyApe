@@ -435,7 +435,7 @@ class QuestionComponent extends Component {
                             <StarRatingComponent
                                 name="rate1"
                                 starCount={5}
-                                disabled={this.props.readOnly}
+                                editing={!this.props.readOnly}
                                 value={this.getDefaultAnswer(question_id, null, question_types.STARRATING)}
                                 onStarClick={(rating)=>{
                                     console.log("nextvalue: ", rating);
