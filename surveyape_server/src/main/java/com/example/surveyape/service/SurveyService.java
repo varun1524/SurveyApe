@@ -138,10 +138,15 @@ public class SurveyService {
 		}
 		return survey;
 	}
-
+	// 1- success, 0- failure, 2- can not delete as there are active responses
 	public int deleteSurvey(String surveyId){
-		int deleteStatus = surveyRepository.deleteBySurveyId(surveyId);
-		return deleteStatus;
+
+		if(this.checkIsSurveyShared(surveyId)){
+			return 2;
+		}else{
+			return surveyRepository.deleteBySurveyId(surveyId);
+		}
+
 	}
 
 
@@ -200,5 +205,29 @@ public class SurveyService {
 		}
 		return false;
 
+	}
+
+	public Boolean checkForActiveSurveyResponse(String surveyId){
+		Survey survey = surveyRepository.findBySurveyId(surveyId);
+		if(survey != null){
+			List<SurveyResponse> surveyResponseList = surveyResponseRepository.findAllBySurvey(survey);
+			for(SurveyResponse surRes:surveyResponseList){
+				if(surRes.getSubmitted()){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public Boolean checkIsSurveyShared(String surveyId){
+		Survey survey = surveyRepository.findBySurveyId(surveyId);
+		if(survey != null){
+			List<SurveyResponse> surveyResponseList = surveyResponseRepository.findAllBySurvey(survey);
+			if(surveyResponseList!=null && surveyResponseList.size()>0){
+				return true;
+			}
+		}
+		return false;
 	}
 }

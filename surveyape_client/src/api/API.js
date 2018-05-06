@@ -284,3 +284,20 @@ export const submitSurveyResponse = (payload) =>
         console.log(error);
         return error;
     });
+
+    export const publishSurvey = (survey_id) =>
+        fetch(`${api}/survey/publish`, {
+            method: 'POST',
+            headers: {
+                ...headers,
+                'Content-Type': 'application/json'
+            },
+            credentials:'include',
+            body: JSON.stringify({survey_id:survey_id})
+        }).then(res => {
+            return res;
+        }).catch(error => {
+            console.log("This is error");
+            console.log(error);
+            return error;
+        });

@@ -33,7 +33,18 @@ class QuestionDashboard extends Component {
 
     publishSurvey(){
         console.log("[QuestionDashboard] publishSurvey() Survey Data: ",this.props.survey);
-        console.log(JSON.stringify(this.props.survey));
+        //console.log(JSON.stringify(this.props.survey));
+        API.publishSurvey(this.props.survey.survey_id)
+        .then((response)=>{
+          if(response.status === 200){
+            alert("Survey published successfully !!!")
+          }
+
+        }).catch((error)=>{
+          alert("Failed to publish !!!")
+          console.log("[QuestionDashboard] publish() error",error);
+        })
+
 
     }
 
@@ -42,10 +53,16 @@ class QuestionDashboard extends Component {
         //console.log(JSON.stringify(this.props.survey));
         API.updateSurvey(this.props.survey).then((response)=>{
             console.log(response.status);
-            response.json().then((data)=>{
-                console.log("[QuestionDashboard] Save Survey to database after api call",data);
-                this.props.updateSurvey(data);
-            });
+            if(response.status === 200){
+              response.json().then((data)=>{
+                  console.log("[QuestionDashboard] Save Survey to database after api call",data);
+                  alert("Survey Saved successfully !!!")
+                  this.props.updateSurvey(data);
+              });
+            }else{
+                alert("Failed to save survey !!!")
+            }
+
         });
     }
 
@@ -109,7 +126,7 @@ class QuestionDashboard extends Component {
                     <span className="end-survey-date-label">Survey End Date:</span>
 
                 </div>
-                
+
                 {/*<div className="survey-name-p">{this.state.survey.survey_name} <span className="survey-type-span">[{this.state.survey.survey_name}]</span></div>*/}
                 {this.displayQuestionComponent()}
                 {this.getPublishandSave()}
@@ -121,7 +138,8 @@ class QuestionDashboard extends Component {
 function mapStateToProps(state) {
     console.log("mapstoprops questiondashboard",state.survey);
     return{
-        survey: state.survey
+        survey: state.survey,
+        questions: state.survey.questions,
     }
 }
 

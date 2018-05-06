@@ -16,7 +16,7 @@ const user = (state = userdata, action)=>
                 user:action.data
             })
         case actionTypes.UPDATE_SURVEYOR_DASHBOARD :
-            console.log("[user reducer]  UPDATE_SURVEYOR_DASHBOARD data created_surveys:",action.created_surveys);
+            console.log("[user reducer]  UPDATE_SURVEYOR_DASHBOARD data created_surveys:",action.created_surveys, "requested_surveys :",action.requested_surveys);
             return Object.assign({},state,{
                 created_surveys:action.created_surveys,
                 requested_surveys:action.requested_surveys

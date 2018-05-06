@@ -79,6 +79,11 @@ class mysurvey extends Component {
                         //this.props.handlePageChange("/home/createsurvey");
                         this.props.update_surveyor_dashboard(data.created_surveys,data.requested_surveys);
                     })
+                }else if(response.status === 409){
+                  console.log(response.json())
+                    alert("Can not delete survey, as it has been shared with users !!!")
+                }else{
+
                 }
 
             }).catch((error)=>{
@@ -179,4 +184,3 @@ function mapDispatchToProps(dispatch) {
 
 
 export default withRouter(connect(null, mapDispatchToProps)(mysurvey));
-

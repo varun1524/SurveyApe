@@ -24,6 +24,9 @@ public class UserController {
 	@Autowired
 	MailService mailService;
 
+	@Autowired
+	SurveyResponseServices surveyResService;
+
 	@JsonView({ UserView.summary.class })
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 	public ResponseEntity signup(@RequestBody String body) {
@@ -125,17 +128,17 @@ public class UserController {
 		}
 		return new ResponseEntity(responseMap, null, status);
 	}
-
-	@JsonView({ SurveyListView.summary.class })
+	@JsonView(SurveyListView.summary.class)
 	@RequestMapping(value = "/surveylist", method = RequestMethod.GET)
 	public ResponseEntity<?> getUserSurveyList(HttpSession session) {
 		HttpStatus status = HttpStatus.BAD_REQUEST;
-		Map<String, List<Survey>> responseMap = new HashMap<>();
+		Map responseMap = new HashMap<>();
 		try {
 			List<Survey> createdSurveys = userService.getAllUserSurvey(session.getAttribute("email").toString());
 			System.out.println("created" + createdSurveys);
+			List<SurveyResponse> responseSurveyList = surveyResService.getsurveyResponseByEmail(session.getAttribute("email").toString());
 			responseMap.put("created_surveys", createdSurveys);
-			responseMap.put("requested_surveys", createdSurveys);
+			responseMap.put("requested_surveys", responseSurveyList);
 			status = HttpStatus.OK;
 
 		} catch (Exception exp) {

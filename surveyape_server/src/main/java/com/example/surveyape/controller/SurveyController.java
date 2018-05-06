@@ -1,8 +1,9 @@
 package com.example.surveyape.controller;
 
-import com.example.surveyape.entity.Survey;
+import com.example.surveyape.entity.*;
 import com.example.surveyape.entity.User;
 import com.example.surveyape.service.*;
+import com.example.surveyape.view.SurveyListView;
 import com.example.surveyape.view.SurveyView;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,8 @@ public class SurveyController {
     QuestionService questionService;
     @Autowired
     OptionAnsService optionAnsService;
+    @Autowired
+    SurveyResponseServices surveyResService;
 
     @JsonView({SurveyView.summary.class})
     @RequestMapping(value = "/create", method = RequestMethod.POST)
@@ -134,7 +137,7 @@ public class SurveyController {
         return responseEntity;
     }
 
-    @JsonView({SurveyView.summary.class})
+    @JsonView(SurveyListView.summary.class)
     @RequestMapping(value = "/deletesurvey", method = RequestMethod.DELETE)
     public ResponseEntity deleteSurvey(@RequestParam(value = "survey_id") String surveyId, HttpSession session){
         HttpStatus status = HttpStatus.BAD_REQUEST;
@@ -145,15 +148,19 @@ public class SurveyController {
             int result = surveyService.deleteSurvey(surveyId);
 
             if(result==1){
-                List<Survey> createdSurveys = userService.getAllUserSurvey("rutvik.pensionwar@gmail.com"/*session.getAttribute("email").toString()*/);
+                List<Survey> createdSurveys = userService.getAllUserSurvey(session.getAttribute("email").toString());
                 System.out.println("[SurveyController] created" + createdSurveys);
+                List<SurveyResponse> responseSurveyList = surveyResService.getsurveyResponseByEmail(session.getAttribute("email").toString());
+
                 responseMap.put("created_surveys", createdSurveys);
-                responseMap.put("requested_surveys", createdSurveys);
+                responseMap.put("requested_surveys", responseSurveyList);
                 status = HttpStatus.OK;
                 resMsg = "Survey id: "+surveyId+" deleted succcessfully :)";
                 responseMap.put("message",resMsg);
-            }
-            else {
+            }else if(result == 2){
+                status = HttpStatus.CONFLICT;
+                resMsg = "Can not delete survey id: "+surveyId+" as it has been shared with users !!!";
+            }else {
                 status = HttpStatus.INTERNAL_SERVER_ERROR;
                 resMsg = "Failed to delte survey id: "+surveyId+" due internal server error !!!";
                 responseMap.put("error",resMsg);
@@ -190,6 +197,7 @@ public class SurveyController {
         Map resMap = new HashMap();
         try {
             String surveyId = map.get("survey_id");
+            System.out.println("surveyId: "+surveyId);
             if(surveyId !=null && surveyId.trim().length() > 0){
                 Boolean publishstatus = surveyService.publishSurvey(surveyId);
                 if(publishstatus){
@@ -199,8 +207,7 @@ public class SurveyController {
 
             }
 
-        }
-        catch (Exception e){
+        }catch (Exception e){
             e.printStackTrace();
         }
         return new ResponseEntity(resMap,status);
