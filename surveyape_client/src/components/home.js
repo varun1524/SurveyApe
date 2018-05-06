@@ -67,7 +67,7 @@ class Home extends Component {
                     loggedIn = {true}
                 />
                 <div className="welcome-user">
-                    <h3>Welcome back, <strong>{this.props.state.user.firstname}</strong> !</h3>
+                    <h3>Welcome back, <strong>{this.props.state.user.user.firstname}</strong> !</h3>
                 </div>
                 <Switch>
                     <Route exact path="/home" render = {()=> (
@@ -79,14 +79,14 @@ class Home extends Component {
                             <SurveyeeDashboard/>
                         </div>
                     )}/>
-                    <Route path="/home/dash" render = {()=> {
-                        return(
-                            <div>
-                                <SurveyorDashboard/>
-                                <SurveyeeDashboard/>
-                            </div>
-                        )
-                    }}/>
+                    {/*<Route path="/home/dash" render = {()=> {*/}
+                        {/*return(*/}
+                            {/*<div>*/}
+                                {/*<SurveyorDashboard/>*/}
+                                {/*<SurveyeeDashboard/>*/}
+                            {/*</div>*/}
+                        {/*)*/}
+                    {/*}}/>*/}
                     <Route path= "/home/createsurvey/:survey_id" render = {(match) => (
                         <CreateSurvey
                             handlePageChange = {this.props.handlePageChange}
@@ -109,7 +109,7 @@ class Home extends Component {
 }
 
 function mapStateToProps(state) {
-    // console.log(state);
+    console.log("[home] mapStateToProps state : ", state);
     return {
         state : state,
         userdashboardDetail:state.user

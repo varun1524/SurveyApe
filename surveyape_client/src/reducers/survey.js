@@ -6,6 +6,7 @@ const survey_data = {
     survey_name: "",
     survey_type:"",
     end_date:"",
+    ispublished:false,
     questions:[]
 };
 
@@ -70,7 +71,8 @@ const survey = (state = survey_data, action)=>
                 survey_name:action.data.survey_name,
                 survey_type:action.data.survey_type,
                 end_date:action.data.end_date?new Date(action.data.end_date).toISOString().slice(0,10):action.data.end_date,
-                create_date:action.create_date,
+                create_date:action.data.create_date,
+                ispublished:action.data.ispublished,
                 questions:action.data.questions
             });
 

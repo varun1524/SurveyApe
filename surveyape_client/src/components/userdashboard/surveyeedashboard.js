@@ -20,9 +20,11 @@ class surveyeedashboard extends Component {
     render() {
         return (
             <div className="surveyeedashboard">
-                <h3>Surveys for me</h3>
+                <div className="surveys-created-for-me">Surveys created for me</div>
 
-                {this.displayAllSurveys()}
+                <div>
+                    {/*{this.displayAllSurveys()}*/}
+                </div>
             </div>
         )
     }

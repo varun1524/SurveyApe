@@ -14,7 +14,15 @@ class myresponse extends Component {
     render() {
         return (
             <div className="myresponse">
-                <h3>{this.props.survey_json.survey_name}</h3>
+                <div className="myresponse-details">
+                    <div className="surveyee-dashboard-survey-name">
+                        Survey Name : <strong>Survey_1</strong>
+                    </div>
+
+                    <div className="surveyee-dashboard-survey-type">
+                        Survey Type : <strong>Survey_Type</strong>
+                    </div>
+                </div>
             </div>
         )
     }
