@@ -1,11 +1,18 @@
 .surveyeedashboard {
-    width: 98%;
-    height: 100%;
-    margin: 1% 1%;
+    width: 100%;
+    height: auto;
+    min-height: 300px;
+    margin: 1% 0;
     background-color: #f1f1f1;
-    border: 1px solid #cccccc;
 }
 
 .surveyeedashboard h3 {
     padding: 5px 10px;
+}
+
+.surveys-created-for-me {
+    float: left;
+    font-size: 28px;
+    margin: 1%;
+    font-weight: lighter;
 }

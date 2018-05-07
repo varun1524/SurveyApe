@@ -8,6 +8,9 @@ import {login_success} from "../actions/login";
 import * as API from '../api/API';
 import '../stylesheets/signin.css';
 
+// import { withAlert } from 'react-alert';
+
+
 class Login extends Component {
 
     constructor() {
@@ -27,7 +30,6 @@ class Login extends Component {
         //Validation
         var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
         if(this.state.email.length == 0){
-
             document.getElementById('emailErr').innerHTML = 'Username is required';
         }
         else if (this.state.password.length == 0){
@@ -47,7 +49,8 @@ class Login extends Component {
                         console.log(data);
                         this.props.login_success(data);
                     });
-                    this.props.history.push("/home")
+                    this.props.history.push("/home");
+                    // this.props.alert.success('Logged in successfully !!!');
                 }
                 else if (response.status === 203) {
                     this.setState({

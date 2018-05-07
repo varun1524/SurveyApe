@@ -110,6 +110,10 @@ class mysurvey extends Component {
         });
     }
 
+    openStats(payload) {
+        console.log("[mysurvey] openStats", payload);
+    }
+
     render() {
         console.log("[mysurvey] render" );
 
@@ -125,7 +129,6 @@ class mysurvey extends Component {
                     <div className="surveyor-dashboard-survey-type">
                         Survey Type : <strong>{this.props.survey_json.survey_type}</strong>
                     </div>
-
                 </div>
 
 
@@ -133,6 +136,7 @@ class mysurvey extends Component {
                     <span onClick={() => {this.editSurvey(this.props.survey_json.survey_id)}}><Glyphicon glyph="pencil"/></span>
                     <span onClick={() => {this.deleteSurvey(this.props.survey_json.survey_id)}}><Glyphicon glyph="trash"/></span>
                     <span onClick={() => {this.openShareSurveyModal()}}><Glyphicon glyph="share"/></span>
+                    <span onClick={() => {this.openStats(this.props.survey_json.survey_id)}}><Glyphicon glyph="stats"/></span>
                 </span>
 
                 <ShareSurveyModal
@@ -160,6 +164,7 @@ class mysurvey extends Component {
                                   cols="30"
                                   rows="7"
                                   onChange={(event)=>{this.state.surveyee_emails = event.target.value;}}
+                                  placeholder="Please type in the email addresses separated by comma"
                         ></textarea>
 
                         <input type="button" className="share-survey-submit" value="Submit" onClick={()=>{this.shareSurvey()}}/>
