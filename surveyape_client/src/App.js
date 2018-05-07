@@ -11,6 +11,8 @@ import VerifyAccount from './components/verifyaccount'
 import CreateSurvey from './components/createsurvey/createsurvey';
 import SurveyResponse from './components/surveyresponse/surveyresponse';
 import {login_success} from './actions/login';
+import StatisticsHome from "./components/statistics/StatisticsHome";
+import StatisticsDashboard from "./components/statistics/StatisticsDashboard";
 
 class App extends Component {
 
@@ -99,6 +101,22 @@ class App extends Component {
                             {...match}
                         />)}
                     />
+
+                    <Route exact path= "/surveystats/:survey_id/:question_id" render = {() => (
+                        <StatisticsDashboard
+                            handlePageChange = {this.handlePageChange}
+                            validateSession = {this.validateSession}
+                        />)}
+                    />
+
+                    <Route path= "/surveystats/:survey_id" render = {() => (
+                        <StatisticsHome
+                            handlePageChange = {this.handlePageChange}
+                            validateSession = {this.validateSession}
+                        />)}
+                    />
+
+
                 </Switch>
             </div>
         );
