@@ -87,7 +87,6 @@ class StatisticsHome extends Component {
         )
     }
 
-
     render() {
         console.log("[StatisticsHome] render", this.props.survey);
 

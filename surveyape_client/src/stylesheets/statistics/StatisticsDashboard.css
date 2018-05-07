@@ -1,0 +1,15 @@
+.statistics-dashboard-question-label {
+    font-weight: lighter;
+    width: 100%;
+    height: 40%;
+    margin: 1% 0;
+    text-align: center;
+}
+
+.statistics-dashboard-graph-div {
+    width: 80%;
+    min-height: 700px;
+    height: auto;
+    margin: 2% 10%;
+    border: 1px solid #cccccc;
+}

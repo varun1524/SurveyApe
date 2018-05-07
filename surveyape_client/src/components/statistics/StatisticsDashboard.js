@@ -35,10 +35,13 @@ class StatisticsDashboard extends Component {
                     handlePageChange = {this.props.handlePageChange}
                     loggedIn = {true}
                 />
-                <div className="welcome-user">
-                    <h4>The below stats is for Question : <strong>Question_1</strong></h4>
+                <div className="statistics-dashboard-question-label">
+                    <h4><strong>Question_1</strong></h4>
                 </div>
 
+                <div className="statistics-dashboard-graph-div">
+
+                </div>
             </div>
 
         );
