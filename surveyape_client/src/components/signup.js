@@ -210,7 +210,8 @@ class SignUp extends Component {
         });
 
         if(code.length <6){
-            alert("Code length is less than 6 character !!!")
+            alert("Code length is less than 6 character !!!");
+            return;
         }
 
         console.log("[Signup] code"+code);
@@ -273,7 +274,7 @@ class SignUp extends Component {
                         </div>
 
                         <div className="verify-modal-footer">
-                            <button className ="verify-modal-button-close" onClick={() => {}}>
+                            <button className ="verify-modal-button-close" onClick={() => {this.closeVerificationModal()}}>
                                 Close
                             </button>
                             <button className ="verify-modal-button-submit" onClick={()=>{this.handleVerification()}}>

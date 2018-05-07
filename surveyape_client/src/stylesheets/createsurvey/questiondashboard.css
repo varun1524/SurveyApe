@@ -14,13 +14,14 @@
 }
 
 .end-survey-date-label {
-    float: right;
-    font-size: 14px;
+    /*float: left;*/
+    font-size: 18px;
     margin-top: 8px;
+    margin-left: 50px;
 }
 
 .end-survey-datepicker {
-    float: right;
+    /*float: right;*/
     background-color: #54CB8B;
     border: none;
     margin-left: 50px;
@@ -35,4 +36,14 @@
     width: 45%;
     margin: 1%;
     float: right;
+}
+
+.save-survey-button-sample {
+    float: right;
+    width: 120px;
+    margin: 0 20px;
+    height: 30px;
+    padding: 0;
+    background-color: #FF5B38;
+
 }

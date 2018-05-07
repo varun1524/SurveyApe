@@ -76,7 +76,9 @@ class Home extends Component {
                                 // created_surveys = {this.props.userdashboardDetail.created_surveys}
                                 handlePageChange = {this.props.handlePageChange}
                             />
-                            <SurveyeeDashboard/>
+                            <SurveyeeDashboard
+                                handlePageChange = {this.props.handlePageChange}
+                            />
                         </div>
                     )}/>
                     {/*<Route path="/home/dash" render = {()=> {*/}

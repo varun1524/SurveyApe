@@ -37,11 +37,12 @@ class QuestionDashboard extends Component {
         API.publishSurvey(this.props.survey.survey_id)
         .then((response)=>{
           if(response.status === 200){
-            alert("Survey published successfully !!!")
+              // console.log("[questiondashboard] publishSurvey successful");
+              alert("Survey published successfully !!!");
           }
 
         }).catch((error)=>{
-          alert("Failed to publish !!!")
+          alert("Failed to publish !!!");
           console.log("[QuestionDashboard] publish() error",error);
         })
 
@@ -66,24 +67,24 @@ class QuestionDashboard extends Component {
         });
     }
 
-    getPublishandSave(){
-        if(this.props.survey.questions.length>0) {
-            return (
-                <div>
-                    <button type="button" className="save-survey-button" onClick={() => {
-                        this.saveSurvey()
-
-                    }}>Save
-                    </button>
-                    <button type="button" className="publish-survey-button" onClick={() => {
-                        this.publishSurvey()
-
-                    }}>Publish
-                    </button>
-                </div>
-            );
-        }
-    }
+    // getPublishandSave(){
+    //     if(this.props.survey.questions.length>0) {
+    //         return (
+    //             <div>
+    //                 <button type="button" className="save-survey-button" onClick={() => {
+    //                     this.saveSurvey()
+    //
+    //                 }}>Save
+    //                 </button>
+    //                 <button type="button" className="publish-survey-button" onClick={() => {
+    //                     this.publishSurvey()
+    //
+    //                 }}>Publish
+    //                 </button>
+    //             </div>
+    //         );
+    //     }
+    // }
 
     componentDidMount(){
         console.log("componentDidMount question dashboard",this.props.param);
@@ -111,8 +112,13 @@ class QuestionDashboard extends Component {
         return(
             <div>
                 {/*<Spinner name="ball-spin-fade-loader" color="coral"/>*/}
-                <div className="survey-name-p">Survey Name: {this.props.survey.survey_name}
+                <div className="survey-name-p">
+
+                    {this.props.survey.survey_name}
                     <span className="survey-type-span">[{this.props.survey.survey_type}]</span>
+
+                    <span className="end-survey-date-label">{this.props.survey.end_date}</span>
+                    <span className="end-survey-date-label">Survey End Date:</span>
 
                     <input type="date" className="end-survey-datepicker" onChange={(event)=>{
                         let payload ={
@@ -122,14 +128,16 @@ class QuestionDashboard extends Component {
                         }
                         this.props.updateSurveyNameDate(payload);
                     }}/>
-                    <span className="end-survey-date-label">{this.props.survey.end_date}</span>
-                    <span className="end-survey-date-label">Survey End Date:</span>
+
+                    <button type="button" className="save-survey-button-sample" onClick={() => {this.publishSurvey()}}>Publish</button>
+                    <button type="button" className="save-survey-button-sample" onClick={() => {this.saveSurvey()}}>Save</button>
+
 
                 </div>
 
                 {/*<div className="survey-name-p">{this.state.survey.survey_name} <span className="survey-type-span">[{this.state.survey.survey_name}]</span></div>*/}
                 {this.displayQuestionComponent()}
-                {this.getPublishandSave()}
+                {/*{this.getPublishandSave()}*/}
             </div>
         );
     }
