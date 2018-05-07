@@ -10,9 +10,10 @@ class surveyeedashboard extends Component {
 
 
     displayAllSurveys() {
-        return this.props.userdashboardDetail.requested_surveys.map((survey) => {
+        console.log("[surveyeedashboard] displayAllSurveys - requested_surveys : ", this.props.userdashboardDetail.requested_surveys);
+        return this.props.userdashboardDetail.requested_surveys.map((requested_survey) => {
             return (
-                <MyResponse survey_json = {survey}/>
+                <MyResponse requested_survey_json = {requested_survey}/>
             )
         })
     }
@@ -23,7 +24,7 @@ class surveyeedashboard extends Component {
                 <div className="surveys-created-for-me">Surveys created for me</div>
 
                 <div>
-                    {/*{this.displayAllSurveys()}*/}
+                    {this.displayAllSurveys()}
                 </div>
             </div>
         )
