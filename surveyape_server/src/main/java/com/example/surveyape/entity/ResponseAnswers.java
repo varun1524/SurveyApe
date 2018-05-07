@@ -1,5 +1,6 @@
 package com.example.surveyape.entity;
 
+import com.example.surveyape.view.BasicStatsView;
 import com.example.surveyape.view.ResponseView;
 import com.example.surveyape.view.SurveyAndResponseView;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,7 +26,7 @@ public class ResponseAnswers {
     @JoinColumn(name = "questionId", nullable = false)
     private Question question;
 
-    @JsonView({ ResponseView.summary.class , SurveyAndResponseView.summary.class})
+    @JsonView({ ResponseView.summary.class , SurveyAndResponseView.summary.class,BasicStatsView.summary.class})
     @JsonProperty("answer_value")
     private String answerValue;
 
