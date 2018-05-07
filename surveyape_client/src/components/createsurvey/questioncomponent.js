@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-
+import * as API from './../../api/API';
 import '../../stylesheets/createsurvey/questioncomponent.css';
 import {bindActionCreators} from "redux";
-import {addQuestion, editQuestion,editOption, addOption} from "../../actions/survey";
+import {addQuestion, editQuestion,editOption, addOption, updateSurvey} from "../../actions/survey";
 import {Glyphicon} from "react-bootstrap";
 import StarRatingComponent from 'react-star-rating-component';
 
@@ -34,6 +34,48 @@ class QuestionComponent extends Component {
 
         this.props.editOption(payload);
     }
+
+  deleteOption(option){
+      API.deleteOption(option,this.props.survey.survey_id)
+      .then((response)=>{
+        if(response.status === 200){
+            response.json().then((data)=>{
+                console.log("[QuestionComponent] deleteOption() ",data);
+                alert("Option deleted successfully !!!")
+                this.props.updateSurvey(data);
+            });
+        }else{
+          alert("Failed to deleted option !!!")
+          console.log("[QuestionComponent] Failed to delete Option")
+
+        }
+      }).catch((error)=>{
+        alert("Failed to deleted option !!!")
+        console.log("[QuestionComponent] Error",error)
+      })
+    }
+
+
+  deletequestion(question_id){
+
+      API.deleteQuestion(question_id,this.props.survey.survey_id)
+      .then((response)=>{
+        if(response.status === 200){
+            response.json().then((data)=>{
+                console.log("[QuestionComponent] deletequestion() ",data);
+                alert("Question deleted successfully !!!")
+                this.props.updateSurvey(data);
+            });
+        }else{
+          alert("Failed to deleted question !!!")
+          console.log("[QuestionComponent] Failed to delete question")
+
+        }
+      }).catch((error)=>{
+        alert("Failed to deleted question !!!")
+        console.log("[QuestionComponent] Error",error)
+      })
+  }
 
     editQuestionText(question_text){
         console.log(this.props.index_id,"  question_text ",question_text );
@@ -72,7 +114,9 @@ class QuestionComponent extends Component {
                 }} defaultValue={this.props.questions[this.props.index_id].question_text}/>
 
                 <div className="remove-glyphicon-question">
-                    <span onClick={() => {console.log("cross")}}><Glyphicon glyph="remove"/></span>
+                    <span onClick={() => {
+                      this.deletequestion(this.props.questions[this.props.index_id].question_id)
+                    }}><Glyphicon glyph="remove"/></span>
                 </div>
 
                 {this.getAddButtonView()}
@@ -98,7 +142,9 @@ class QuestionComponent extends Component {
                                           onChange={(event)=>{this.editOptionText(event.target.value, id)}}
                                    />
                                    <div className="remove-glyphicon-option">
-                                       <span onClick={() => {console.log("cross")}}><Glyphicon glyph="remove"/></span>
+                                       <span onClick={() => {
+                                         this.deleteOption(option.option_id)
+                                       }}><Glyphicon glyph="remove"/></span>
                                    </div>
                                </div>
                            )
@@ -122,7 +168,9 @@ class QuestionComponent extends Component {
                                            onChange={(event)=>{this.editOptionText(event.target.value, id)}}
                                     />
                                     <div className="remove-glyphicon-option">
-                                        <span onClick={() => {console.log("cross")}}><Glyphicon glyph="remove"/></span>
+                                        <span onClick={() => {
+                                          this.deleteOption(option.option_id)
+                                        }}><Glyphicon glyph="remove"/></span>
                                     </div>
                                 </div>
                             )
@@ -150,7 +198,9 @@ class QuestionComponent extends Component {
                                            onChange={(event)=>{this.editOptionText(event.target.value, id)}}
                                     />
                                     <div className="remove-glyphicon-option">
-                                        <span onClick={() => {console.log("cross")}}><Glyphicon glyph="remove"/></span>
+                                        <span onClick={() => {
+                                          this.deleteOption(option.option_id)
+                                        }}><Glyphicon glyph="remove"/></span>
                                     </div>
                                 </div>
                             )
@@ -197,9 +247,7 @@ class QuestionComponent extends Component {
                                            value=""
 
                                     />
-                                    <div className="remove-glyphicon-option">
-                                        <span onClick={() => {console.log("cross")}}><Glyphicon glyph="remove"/></span>
-                                    </div>
+                                  
                                 </div>
                             //)
                         //})
@@ -308,6 +356,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         addQuestion: addQuestion,
+        updateSurvey: updateSurvey,
         editQuestion : editQuestion,
         addOption: addOption,
         editOption:editOption
