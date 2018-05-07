@@ -94,26 +94,39 @@ class Header extends Component {
 
 
     }
-
+    validaterCreateSurveyForm(){
+        if(!this.state.survey_name || this.state.survey_name.length <=0){
+            alert("Survey Name can not be left blank !!!")
+            return false;
+        }else if(!this.state.survey_type || this.state.survey_type.length <=0){
+            alert("You must choose a survey type !!!")
+            return false;
+        }
+        return true
+    }
 
     createSurvey(){
         console.log("[Header] Before API call creater survey data:",this.state);
-        API.createSurvey({
-                survey_name:this.state.survey_name,
-                survey_type:this.state.survey_type,
-                end_date: this.state.end_date
-            }
-        ).then((response)=>{
-            if(response.status === 200){
-                console.log("[Header] Survey created successfully status 200: survey - ");
-                response.json().then((data)=>{
-                    console.log(data);
-                    this.props.createSurvey(data);
-                    this.closeCreateSurveyModal();
-                    this.props.handlePageChange("/home/createsurvey");
-                })
-            }
-        });
+
+        if(this.validaterCreateSurveyForm()){
+            API.createSurvey({
+                    survey_name:this.state.survey_name,
+                    survey_type:this.state.survey_type,
+                    end_date: this.state.end_date
+                }
+            ).then((response)=>{
+                if(response.status === 200){
+                    console.log("[Header] Survey created successfully status 200: survey - ");
+                    response.json().then((data)=>{
+                        console.log(data);
+                        this.props.createSurvey(data);
+                        this.closeCreateSurveyModal();
+                        this.props.handlePageChange("/home/createsurvey");
+                    })
+                }
+            });
+        }
+
     }
 
     showLoggedInHeader = (()=>{

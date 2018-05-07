@@ -12,7 +12,7 @@ class myresponse extends Component {
     }
 
     render() {
-        console.log("[myresponse] render this.props : ", this.props.requested_survey_json.survey);
+        console.log("[myresponse] render this.props : ", this.props.requested_survey_json);
         return (
             <div className="myresponse">
 
@@ -27,7 +27,11 @@ class myresponse extends Component {
 
 
                 </div>
-                <button type="button" className="take-survey-button">{this.props.requested_survey_json.issubmitted?"View Your Response":"Take Survey"}</button>
+                <button type="button" className="take-survey-button" onClick={
+                    ()=>{
+                        this.props.handlePageChange("/surveyresponse/"+this.props.requested_survey_json.response_id)
+                    }
+                }>{this.props.requested_survey_json.issubmitted?"View Your Response":"Take Survey"}</button>
             </div>
         )
     }
