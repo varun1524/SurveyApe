@@ -58,6 +58,7 @@ class Login extends Component {
                         message: "User not Verified. Please verify your account."
                     });
                     console.log("User not Verified. Please verify your account.")
+                    alert("User not verified, kindly check your mail to verify your account !!!")
                 }
                 else if (response.status === 404) {
                     this.setState({

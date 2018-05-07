@@ -6,8 +6,9 @@ const survey_data = {
     survey_name: "",
     survey_type:"",
     end_date:"",
-    ispublished:false,
-    questions:[]
+    questions:[],
+    ispublished:true,
+    iseditable:true
 };
 
 const survey = (state = survey_data, action)=>
@@ -22,7 +23,9 @@ const survey = (state = survey_data, action)=>
                 survey_type:action.data.survey_type,
                 end_date:action.data.end_date,
                 create_date:action.create_date,
-                questions:action.data.questions
+                questions:action.data.questions,
+                ispublished:action.data.ispublished,
+                iseditable:action.data.iseditable
             });
         case actionTypes.ADD_QUESTION :
             console.log("ADD_QUESTION reducer",action.question_type);
@@ -71,9 +74,10 @@ const survey = (state = survey_data, action)=>
                 survey_name:action.data.survey_name,
                 survey_type:action.data.survey_type,
                 end_date:action.data.end_date?new Date(action.data.end_date).toISOString().slice(0,10):action.data.end_date,
-                create_date:action.data.create_date,
-                ispublished:action.data.ispublished,
-                questions:action.data.questions
+                create_date:action.create_date,
+                questions:action.data.questions,
+                iseditable:action.data.iseditable,
+                ispublished:action.data.ispublished
             });
 
         case actionTypes.UPDATE_SURVEY_NAME_DATE:
