@@ -13,7 +13,9 @@ class surveyeedashboard extends Component {
         console.log("[surveyeedashboard] displayAllSurveys - requested_surveys : ", this.props.userdashboardDetail.requested_surveys);
         return this.props.userdashboardDetail.requested_surveys.map((requested_survey) => {
             return (
-                <MyResponse requested_survey_json = {requested_survey}/>
+                <MyResponse requested_survey_json = {requested_survey}
+                            handlePageChange = {this.props.handlePageChange}
+                />
             )
         })
     }
