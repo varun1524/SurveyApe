@@ -28,9 +28,7 @@ class myresponse extends Component {
 
                 </div>
                 <button type="button" className="take-survey-button" onClick={
-                    ()=>{
-                        this.props.handlePageChange("/surveyresponse/"+this.props.requested_survey_json.response_id)
-                    }
+                    ()=>{this.props.handlePageChange("/surveyresponse/"+this.props.requested_survey_json.response_id)}
                 }>{this.props.requested_survey_json.issubmitted?"View Your Response":"Take Survey"}</button>
             </div>
         )

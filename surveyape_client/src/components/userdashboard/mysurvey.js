@@ -110,8 +110,9 @@ class mysurvey extends Component {
         });
     }
 
-    openStats(payload) {
-        console.log("[mysurvey] openStats", payload);
+    openStats() {
+        console.log("[mysurvey] this.props.survey_json.survey_id)", this.props.survey_json.survey_id);
+        this.props.handlePageChange("/surveystats/"+this.props.survey_json.survey_id);
     }
 
     render() {
