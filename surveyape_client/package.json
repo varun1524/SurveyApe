@@ -3,11 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "chart.js": "^2.7.2",
     "material-ui": "^0.19.4",
     "react": "^16.3.2",
     "react-alert": "^4.0.2",
     "react-alert-template-basic": "^1.0.0",
     "react-bootstrap": "^0.32.1",
+    "react-chartjs-2": "^2.7.2",
     "react-dom": "^16.3.2",
     "react-modal": "^3.4.4",
     "react-redux": "^5.0.6",
