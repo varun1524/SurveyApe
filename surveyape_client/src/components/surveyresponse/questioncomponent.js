@@ -192,6 +192,15 @@ class QuestionComponent extends Component {
     //     });
     // });
 
+    showAnswerByAnswerType = ((option)=>{
+        if(option.option_type==="image"){
+            return(<img src={option.option_text} height="150" width="150"/>)
+        }
+        else {
+            return(<span>{option.option_text}</span>)
+        }
+    });
+
     getOptionView(){
         console.log("NextValue: ", this.state.rating);
         let question_id = this.props.questions[this.props.index_id].question_id;
@@ -224,7 +233,7 @@ class QuestionComponent extends Component {
                                                this.response.response_answer = res;
                                                this.sendSurveySaveRequest(this.response, question_types.CHECKBOX);
                                            }}
-                                    /> {option.option_text}
+                                    /> {this.showAnswerByAnswerType(option)}
                                 </div>
                             )
                         })
@@ -261,7 +270,7 @@ class QuestionComponent extends Component {
                                                this.sendSurveySaveRequest(this.response);
                                            }}
                                     />
-                                    {option.option_text}
+                                    {this.showAnswerByAnswerType(option)}
                                 </div>
                             )
                         })
