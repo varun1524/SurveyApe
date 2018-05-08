@@ -22,6 +22,7 @@ public class OptionAns {
     @JoinColumn(name = "questionId", nullable = false)
     private Question question;
 
+    @Lob
     @JsonProperty("option_text")
     @JsonView({SurveyView.summary.class, SurveyAndResponseView.summary.class})
     private String optionText;
