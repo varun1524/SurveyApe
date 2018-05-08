@@ -88,6 +88,13 @@ const survey = (state = survey_data, action)=>
                 survey_name:action.data.survey_name,
                 end_date:action.data.end_date}
             );
+
+        case actionTypes.CHANGE_SURVEY_PUBLISH_STATE:
+            console.log("UPDATE_SURVEY_NAME_DATE  survey reducer");
+             let currentstate = state.ispublished
+            return Object.assign({},state,{
+                ispublished:!currentstate
+            });
         default :
             return state;
     }

@@ -77,11 +77,16 @@ class StatisticsHome extends Component {
 
                         })
                     });
-                }
-                else if(response.status===404){
+                }else if(response.status === 405){
+                    console.log(" [StatisticHome] Error 405 in getSurveyById")
+                    alert("Survey do not have enough data for statistic !!!")
+
+                }else if(response.status===404){
+                    console.log(" [StatisticHome] Error 404 in getSurveyById")
                     alert("Error 404 in getSurveyById")
                 }
                 else if(response.status===400){
+                    console.log(" [StatisticHome] Error 400 in getSurveyById")
                     alert("Error 400 in getSurveyById")
                 }
             });

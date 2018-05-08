@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import QuestionComponent from './questioncomponent';
 import * as API from './../../api/API';
 import {bindActionCreators} from 'redux';
-import {updateSurvey,updateSurveyNameDate} from './../../actions/survey';
+import {updateSurvey,updateSurveyNameDate, changePublishState} from './../../actions/survey';
 import Spinner from 'react-spinkit';
 
 import './../../stylesheets/createsurvey/questiondashboard.css';
@@ -39,6 +39,11 @@ class QuestionDashboard extends Component {
           if(response.status === 200){
               // console.log("[questiondashboard] publishSurvey successful");
               alert("Survey published successfully !!!");
+              response.json().then((data)=>{
+                  console.log("[QuestionDashboard] Save Survey publish to database after api call",data);
+
+                  this.props.changePublishState();
+              });
           }
 
         }).catch((error)=>{
@@ -106,6 +111,10 @@ class QuestionDashboard extends Component {
         }
     }
 
+    closeSurvey(){
+
+    }
+
     render () {
         console.log("render questiondashboard data ",this.props.survey)
 
@@ -130,9 +139,14 @@ class QuestionDashboard extends Component {
                         this.props.updateSurveyNameDate(payload);
                     }}/>
 
-                    <button type="button" className="save-survey-button-sample" onClick={() => {this.publishSurvey()}}>Publish</button>
-                    <button type="button" className="save-survey-button-sample" onClick={() => {this.saveSurvey()}}>Save</button>
-
+                    <button type="button" className="save-survey-button-sample" onClick={() => {this.publishSurvey()}}>{this.props.survey.ispublished?"Unpublish":"Publish"}</button>
+                    <button type="button" className="save-survey-button-sample" hidden={!this.props.survey.iseditable} onClick={() => {this.saveSurvey()}}>Save</button>
+                    <button type="button" className="save-survey-button-sample"  hidden={(this.props.survey.end_date && this.props.survey.end_date.length >0)}
+                            onClick={() => {
+                                console.log("[questiondashboard] Close button clicked")
+                                this.closeSurvey()
+                            }}
+                    >Close</button>
 
                 </div>
 
@@ -155,6 +169,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         updateSurvey: updateSurvey,
+        changePublishState:changePublishState,
         updateSurveyNameDate:updateSurveyNameDate
     }, dispatch)
 }

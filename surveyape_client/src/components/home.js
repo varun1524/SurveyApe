@@ -26,7 +26,7 @@ class Home extends Component {
     }
 
     componentDidMount(){
-        // this.props.validateSession();
+        this.props.validateSession();
         console.log("[Home] - componentDidMount");
         API.getSurveyList().then((response) => {
             console.log(response.status);

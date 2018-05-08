@@ -53,6 +53,7 @@ class SurveyResponse extends Component {
         this.validateSession();
 
         console.log("SurveyResponse params: ", this.props.match.params);
+        console.log("SurveyResponse params: ", this.props.match);
         if(this.props.match.params.hasOwnProperty("survey_id")){
             console.log(this.props.match.params);
             console.log("[surveyresponse] param hasProperty survey_id :", this.props.match.params.hasOwnProperty("survey_id"));
@@ -111,7 +112,7 @@ class SurveyResponse extends Component {
                 if(response.status===200){
                     response.json().then((data)=>{
                         console.log("getSurveyAndResponseByResponseId: ", data);
-                        if(data.ispublished){
+                        if(data.survey.ispublished){
                             this.props.generateSurveyForm(data.survey);
                             this.props.createSurveyResponse(data);
                             this.setReadOnly(data);
@@ -138,12 +139,12 @@ class SurveyResponse extends Component {
         }
         //Open Survey
         else if(this.props.match.params.hasOwnProperty("oresponse_id")){
-            API.getSurveyAndResponseByResponseId(this.props.match.params.response_id).then((response)=>{
+            API.getSurveyAndResponseByResponseId(this.props.match.params.oresponse_id).then((response)=>{
                 console.log(response.status);
                 if(response.status===200){
                     response.json().then((data)=>{
                         console.log("getSurveyAndResponseByResponseId: ", data);
-                        if(data.ispublished){
+                        if(data.survey.ispublished){
                             this.props.generateSurveyForm(data.survey);
                             this.props.createSurveyResponse(data);
                             this.setReadOnly(data);
@@ -307,7 +308,7 @@ class SurveyResponse extends Component {
             <div className="">
                 <Header
                     // loggedIn = {true}
-                    handlePageChange = {this.handlePageChange}
+                    handlePageChange = {this.props.handlePageChange}
                 />
                 <div className="survey-response-main-div">
                     Survey ID: {this.props.survey.survey_id}<br/>

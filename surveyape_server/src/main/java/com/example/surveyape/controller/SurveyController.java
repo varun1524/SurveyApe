@@ -191,6 +191,7 @@ public class SurveyController {
         return new ResponseEntity(resMap,status);
     }
 
+    //This api is use used to toggle the survey publish state i.e. if publish is set true it changes it to false and vice versa
     @RequestMapping(value = "/publish", method = RequestMethod.POST)
     public ResponseEntity publishSurvey(@RequestBody Map<String, String> map, HttpSession session){
         HttpStatus status = HttpStatus.BAD_REQUEST;
@@ -198,6 +199,32 @@ public class SurveyController {
         try {
             String surveyId = map.get("survey_id");
             System.out.println("surveyId: "+surveyId);
+            if(surveyId !=null && surveyId.trim().length() > 0){
+                Boolean publishstatus = surveyService.publishSurvey(surveyId);
+                if(publishstatus){
+                    status = HttpStatus.OK;
+                    resMap.put("message","Survey published successfully !!!");
+                }
+
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(resMap,status);
+    }
+
+    @RequestMapping(value = "/close", method = RequestMethod.POST)
+    public ResponseEntity publishSurvey(@PathVariable String surveyId, HttpSession session){
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        Map resMap = new HashMap();
+        try {
+            if(surveyId!= null){
+                System.out.println("[SurveyController] surveyId: "+surveyId);
+                //Date date =
+            }
+
+
             if(surveyId !=null && surveyId.trim().length() > 0){
                 Boolean publishstatus = surveyService.publishSurvey(surveyId);
                 if(publishstatus){

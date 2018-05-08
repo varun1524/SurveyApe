@@ -49,3 +49,9 @@ export function updateSurveyNameDate(data) {
         data
     }
 }
+export function changePublishState() {
+    return {
+        type: actionTypes.CHANGE_SURVEY_PUBLISH_STATE
+
+    }
+}

@@ -2,6 +2,7 @@ package com.example.surveyape.controller;
 
 
 import com.example.surveyape.service.StatisticServices;
+import com.example.surveyape.utils.ErrorMessage;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -29,6 +30,9 @@ public class StatisticController {
             status = HttpStatus.OK;
 
         }catch(Exception exp){
+            if(exp.getMessage().equals(ErrorMessage.NOT_ENOUGH_RESPONSE)){
+                status = HttpStatus.METHOD_NOT_ALLOWED;
+            }
 
         }
         return new ResponseEntity(map,status);

@@ -4,6 +4,7 @@ import com.example.surveyape.entity.*;
 import com.example.surveyape.repository.QuestionRepository;
 import com.example.surveyape.repository.SurveyRepository;
 import com.example.surveyape.repository.SurveyResponseRepository;
+import com.example.surveyape.utils.ErrorMessage;
 import com.example.surveyape.utils.QuestionUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class StatisticServices {
     @Autowired
     QuestionRepository questionRepository;
 
-    public Map getBasicStats(String surveyId){
+    public Map getBasicStats(String surveyId)throws Exception{
         Map map = new HashMap();
         Survey survey = surveyRepository.findBySurveyId(surveyId);
         if(survey !=null){
@@ -41,7 +42,9 @@ public class StatisticServices {
             map.put("survey_type",survey.getSurveyType());
             List<SurveyResponse> participants = new LinkedList<>();
             List<SurveyResponse> surveyResponses = surveyResponseRepository.findAllBySurvey(survey);
+
             if(surveyResponses!=null){
+
                 for(SurveyResponse eachRequest:surveyResponses){
                     if(eachRequest.getSubmitted()){
                         participants.add(eachRequest);
@@ -51,6 +54,9 @@ public class StatisticServices {
                 map.put("participants",participants.size());
                 map.put("participation_rate",participationRate);
                 map.put("questions",survey.getQuestions());
+            }
+            if(participants.size()<2){
+                throw new Exception(ErrorMessage.NOT_ENOUGH_RESPONSE);
             }
 
         }

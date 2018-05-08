@@ -175,7 +175,7 @@ public class SurveyService {
 					msgBody = MailUtility.open_survey_body+responseId;
 					msgBody += "\n\n"+MailUtility.thank_team_surveyape;
 					subject = MailUtility.open_survey_subject;
-				}else if(survey.getSurveyType().equals("close")){
+				}else if(survey.getSurveyType().equals("closed")){
 					msgBody = MailUtility.close_survey_body+responseId;
 					msgBody += "\n\n"+MailUtility.thank_team_surveyape;
 					subject = MailUtility.close_survey_subject;
@@ -200,8 +200,8 @@ public class SurveyService {
 	public Boolean publishSurvey(String survey_id){
 
 		Survey survey = surveyRepository.findBySurveyId(survey_id);
-		if(survey != null && survey.getPublished()!=true){
-			survey.setPublished(true);
+		if(survey != null){
+			survey.setPublished(survey.getPublished());
 			survey.setPublishDate(new Date());
 			surveyRepository.save(survey);
 			return true;
@@ -232,5 +232,15 @@ public class SurveyService {
 			}
 		}
 		return false;
+	}
+	public Date closeSurvey(String surveyId){
+		Date endDate = null;
+		Survey survey = surveyRepository.findBySurveyId(surveyId);
+		if(survey !=null){
+			endDate = new Date();
+			survey.setSurveyEndDate(endDate);
+		}
+		return endDate;
+
 	}
 }
