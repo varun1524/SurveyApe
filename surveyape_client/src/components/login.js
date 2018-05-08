@@ -75,10 +75,7 @@ class Login extends Component {
                     alert("Incorrect Password. Try Again");
                 }
                 else {
-                    this.setState({
-                        ...this.state,
-                        message: "Error while Signing In"
-                    })
+                    alert("Error while Signing In");
                 }
             });
          }
