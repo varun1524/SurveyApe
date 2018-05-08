@@ -104,9 +104,17 @@ class mysurvey extends Component {
 
         API.shareSurvey(payload)
             .then((response) => {
-                response.json().then((data) => {
-                    console.log("[mysurvey] shareSurvey API message", data.message);
-                });
+                if(response.status === 200){
+                    response.json().then((data) => {
+                        alert("Survey shared successfully !!!");
+                        this.closeShareSurveyModal()
+                        console.log("[mysurvey] shareSurvey API message", data.message);
+
+                    });
+                }else{
+                    console.log("[mysurvey] Failed to share the survey!!!")
+                }
+
         });
     }
 
