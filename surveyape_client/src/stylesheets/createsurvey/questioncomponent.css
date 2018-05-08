@@ -14,7 +14,7 @@
 }
 
 .question-input-box {
-    margin: 1%;
+    margin: 1% 0;
     width: 60%;
     height: 30px;
     padding: 5px 5px;
@@ -28,10 +28,10 @@
 }
 
 .add-option-button {
-    width: 15%;
+    width: 12%;
     height: 30px;
     padding: 5px 5px;
-    margin: 1%;
+    margin: 1% 1% 1% 0.5%;
     float: right;
     vertical-align: center;
     background-color: #52BE80;
@@ -42,20 +42,67 @@
     letter-spacing: 2px;
 }
 
-.add-option-button-yes-no {
-    width: 15%;
+.add-image-option-button {
+    width: 12%;
     height: 30px;
     padding: 5px 5px;
-    margin: 1%;
+    margin: 1% 0.5% 1% 0.5%;
     float: right;
     vertical-align: center;
-    background-color: #ffffff;
+    background-color: #FFF;
+    color: #000;
+    border: none;
+    cursor: pointer;
+    font-size: medium;
+    letter-spacing: 1px;
+}
+
+.delete-option-button {
+    width: 12%;
+    height: 30px;
+    padding: 5px 5px;
+    margin: 1% 0.5% 1% 1%;
+    float: right;
+    vertical-align: center;
+    background-color: #e84118;
     color: white;
     border: none;
     cursor: pointer;
     font-size: medium;
     letter-spacing: 2px;
 }
+
+.add-option-button-yes-no {
+    width: 12%;
+    height: 30px;
+    padding: 5px 5px;
+    margin: 1% 1% 1% 0.5%;
+    float: right;
+    vertical-align: center;
+    background-color: #FFF;
+    /*color: white;*/
+    /*border: none;*/
+    /*cursor: pointer;*/
+    /*font-size: medium;*/
+    /*letter-spacing: 2px;*/
+}
+
+.add-image-option-button-dd {
+    width: 12%;
+    height: 30px;
+    padding: 5px 5px;
+    margin: 1% 0.5% 1% 0.5%;
+    float: right;
+    vertical-align: center;
+    background-color: #FFF;
+    /*color: white;*/
+    /*border: none;*/
+    /*cursor: pointer;*/
+    /*font-size: medium;*/
+    /*letter-spacing: 2px;*/
+}
+
+
 
 .remove-glyphicon-question {
     width: 20%;
@@ -64,6 +111,7 @@
     float: left;
     cursor: pointer;
 }
+
 
 .remove-glyphicon-question .glyphicon-remove {
     top: 25%            !important;
