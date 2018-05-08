@@ -1,5 +1,7 @@
 package com.example.surveyape.entity;
 
+import com.example.surveyape.view.BasicStatsView;
+import com.example.surveyape.view.ResDistributionStatsView;
 import com.example.surveyape.view.SurveyAndResponseView;
 import com.example.surveyape.view.SurveyView;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,7 +17,7 @@ public class OptionAns {
     @Id
 //    @GeneratedValue(generator = "uuid")
 //    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @JsonView({SurveyView.summary.class, SurveyAndResponseView.summary.class})
+    @JsonView({SurveyView.summary.class, SurveyAndResponseView.summary.class,ResDistributionStatsView.summary.class})
     private String optionId;
 
     @ManyToOne(targetEntity = Question.class, cascade = {CascadeType.PERSIST})
@@ -24,12 +26,12 @@ public class OptionAns {
 
     @Lob
     @JsonProperty("option_text")
-    @JsonView({SurveyView.summary.class, SurveyAndResponseView.summary.class})
+    @JsonView({SurveyView.summary.class, SurveyAndResponseView.summary.class,BasicStatsView.summary.class,ResDistributionStatsView.summary.class})
     private String optionText;
 
     //TODO: text/image
     @JsonProperty("option_type")
-    @JsonView({SurveyView.summary.class, SurveyAndResponseView.summary.class})
+    @JsonView({SurveyView.summary.class, SurveyAndResponseView.summary.class,ResDistributionStatsView.summary.class})
     private String optionType;
 
     public String getOptionId() {
@@ -63,4 +65,6 @@ public class OptionAns {
     public void setOptionType(String optionType) {
         this.optionType = optionType;
     }
+
+
 }

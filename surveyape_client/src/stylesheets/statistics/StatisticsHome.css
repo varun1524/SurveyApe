@@ -5,8 +5,10 @@
     /*background-color: #cccccc;*/
     margin-right: auto;
     margin-left: 15%;
+    margin-top: 20px;
     border: 1px solid #7C7C7C;
     border-radius: 5px;
+
 }
 
 .statistics-dashboard-header {
@@ -69,14 +71,14 @@
 }
 
 .statistics-question-label {
-    width: 75%;
+    width: 70%;
     font-size: 20px;
     margin: 2%;
     float: left;
 }
 
 .statistics-question-button {
-    width: 17%;
+    width: 22%;
     margin: 1% 2%;
     float: right;
 }

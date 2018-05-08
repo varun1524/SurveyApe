@@ -112,7 +112,7 @@ class mysurvey extends Component {
 
     openStats() {
         console.log("[mysurvey] this.props.survey_json.survey_id)", this.props.survey_json.survey_id);
-        this.props.handlePageChange("/surveystats/"+this.props.survey_json.survey_id);
+        this.props.handlePageChange("/stats/basic/"+this.props.survey_json.survey_id);
     }
 
     render() {
