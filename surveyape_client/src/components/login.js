@@ -65,12 +65,14 @@ class Login extends Component {
                         ...this.state,
                         message: "User not registered. Please sign up"
                     });
+                    alert("User not registered. Please sign up");
                 }
-                else if (response.status === 400) {
+                else if (response.status === 401) {
                     this.setState({
                         ...this.state,
                         message: "Incorrect Password. Please try again"
-                    })
+                    });
+                    alert("Incorrect Password. Try Again");
                 }
                 else {
                     this.setState({
@@ -84,7 +86,7 @@ class Login extends Component {
 
     render() {
         console.log("[signin] render method");
-        var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
+        let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
         return (
             <div className="DemoSignIn">
                 <HeaderComponent />
