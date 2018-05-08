@@ -266,6 +266,7 @@ class SurveyResponse extends Component {
             <div className="">
                 <Header
                     // loggedIn = {true}
+                    handlePageChange = {this.handlePageChange}
                 />
                 <div className="survey-response-main-div">
                     Survey ID: {this.props.survey.survey_id}<br/>

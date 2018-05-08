@@ -144,7 +144,7 @@ class mysurvey extends Component {
                 <span className="mysurvey-actions">
                     <span onClick={() => {this.editSurvey(this.props.survey_json.survey_id)}}><Glyphicon glyph="pencil"/></span>
                     <span onClick={() => {this.deleteSurvey(this.props.survey_json.survey_id)}}><Glyphicon glyph="trash"/></span>
-                    <span onClick={() => {this.openShareSurveyModal()}}><Glyphicon glyph="share"/></span>
+                    <span hidden={this.props.survey_json.ispublished} onClick={() => {this.openShareSurveyModal()}}><Glyphicon glyph="share"/></span>
                     <span onClick={() => {this.openStats(this.props.survey_json.survey_id)}}><Glyphicon glyph="stats"/></span>
                 </span>
 
