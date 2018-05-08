@@ -23,7 +23,7 @@ class SurveyResponse extends Component {
         }
     }
 
-    componentDidMount(){
+    validateSession = (()=>{
         API.validateSession().then((response)=>{
             if(response.status===200){
                 response.json().then((data)=>{
@@ -47,6 +47,11 @@ class SurveyResponse extends Component {
                 alert("[SurveyResponse] Error while checking session existance");
             }
         });
+    });
+
+    componentDidMount(){
+        this.validateSession();
+
         console.log("SurveyResponse params: ", this.props.match.params);
         if(this.props.match.params.hasOwnProperty("survey_id")){
             console.log(this.props.match.params);
@@ -55,9 +60,15 @@ class SurveyResponse extends Component {
                 console.log(response.status);
                 if(response.status===200){
                     response.json().then((data)=>{
-                        console.log(data);
-                        this.props.generateSurveyForm(data);
-                        this.createSurveyResponse();
+                        console.log("[SurveyResponse]", data);
+                        if(data.ispublished){
+                            this.props.generateSurveyForm(data);
+                            this.createSurveyResponse();
+                        }
+                        else{
+                            alert("Survey is not published");
+                            this.props.handlePageChange("/")
+                        }
                     });
                 }
                 else if(response.status===404){
@@ -74,9 +85,15 @@ class SurveyResponse extends Component {
                 if(response.status===200){
                     response.json().then((data)=>{
                         console.log("getSurveyAndResponseByResponseId: ", data);
-                        this.props.generateSurveyForm(data.survey);
-                        this.props.createSurveyResponse(data);
-                        this.setReadOnly(data);
+                        if(data.ispublished){
+                            this.props.generateSurveyForm(data.survey);
+                            this.props.createSurveyResponse(data);
+                            this.setReadOnly(data);
+                        }
+                        else{
+                            alert("Survey is not published");
+                            this.props.handlePageChange("/")
+                        }
                     });
                 }
                 else if(response.status===404){
@@ -94,16 +111,28 @@ class SurveyResponse extends Component {
                 if(response.status===200){
                     response.json().then((data)=>{
                         console.log("getSurveyAndResponseByResponseId: ", data);
-                        this.props.generateSurveyForm(data.survey);
-                        this.props.createSurveyResponse(data);
-                        this.setReadOnly(data);
+                        if(data.ispublished){
+                            this.props.generateSurveyForm(data.survey);
+                            this.props.createSurveyResponse(data);
+                            this.setReadOnly(data);
+                        }
+                        else{
+                            alert("Survey is not published");
+                            this.props.handlePageChange("/")
+                        }
                     });
                 }
+                else if(response.status===203){
+                    alert("Error 203 in User not authorized to access this survey");
+                    this.props.handlePageChange("/login");
+                }
                 else if(response.status===404){
-                    alert("Error 404 in getSurveyAndResponseByResponseId")
+                    alert("Error 404 in Response Not Found");
+                    this.props.handlePageChange("/login");
                 }
                 else if(response.status===400){
-                    alert("Error 400 in getSurveyAndResponseByResponseId")
+                    alert("Error 400 in getSurveyAndResponseByResponseId");
+                    this.props.handlePageChange("/");
                 }
             });
         }
@@ -114,9 +143,15 @@ class SurveyResponse extends Component {
                 if(response.status===200){
                     response.json().then((data)=>{
                         console.log("getSurveyAndResponseByResponseId: ", data);
-                        this.props.generateSurveyForm(data.survey);
-                        this.props.createSurveyResponse(data);
-                        this.setReadOnly(data);
+                        if(data.ispublished){
+                            this.props.generateSurveyForm(data.survey);
+                            this.props.createSurveyResponse(data);
+                            this.setReadOnly(data);
+                        }
+                        else{
+                            alert("Survey is not published");
+                            this.props.handlePageChange("/")
+                        }
                     });
                 }
                 else if(response.status===404){
@@ -137,6 +172,12 @@ class SurveyResponse extends Component {
         email : "",
         responses:[]
     };
+
+    verifyIsSurveyPublisher = ((data)=>{
+        if(data.ispublished){
+
+        }
+    });
 
     createSurveyResponse = (()=>{
         this.survey_response.response_id = uuidv4();

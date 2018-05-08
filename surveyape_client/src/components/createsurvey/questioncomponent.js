@@ -35,7 +35,7 @@ class QuestionComponent extends Component {
         this.props.editOption(payload);
     }
 
-    uploadImage(event, option_index, option_type="image"){
+    uploadImage(event, option_index){
         let file = event.target.files[0];
         let fileReader;
         console.log("[QuationComponent] handleFileUpload : ", file);
@@ -52,7 +52,7 @@ class QuestionComponent extends Component {
                 option_text:base64data,
                 question_index:index_id,
                 option_index:option_index,
-                option_type:option_type
+                option_type:"image"
             };
             console.log("[QuationComponent] handleFileUpload :", payload);
             editopttion(payload);
@@ -80,6 +80,7 @@ class QuestionComponent extends Component {
         })
     }
 
+
     deletequestion(question_id){
 
         API.deleteQuestion(question_id,this.props.survey.survey_id)
@@ -96,7 +97,7 @@ class QuestionComponent extends Component {
 
                 }
             }).catch((error)=>{
-            alert("Failed to deleted question !!!")
+            alert("Failed to deleted question !!!");
             console.log("[QuestionComponent] Error",error)
         })
     }
@@ -124,14 +125,14 @@ class QuestionComponent extends Component {
 
                     <button type="button" className="add-option-button" onClick={()=>{this.addOptionView()}}>Add Option</button>
                     <div className="add-image-option-button">
-                        <input type="checkbox" onChange={(event) => {
-                            console.log(event.target.checked);
-                            this.setState({
-                                ...this.state,
-                                is_option_image: event.target.checked
-                            })
-                        }}/>
-                        <label>Check input</label>
+                        <input type="checkbox" id="cbOptionImage"
+                               onChange={(event) => {
+                                   this.setState({
+                                       ...this.state,
+                                       is_option_image: event.target.checked
+                                   })
+                               }}/>
+                        <label>Image Option</label>
                     </div>
                     <button type="button"
                             className="delete-option-button"
@@ -166,8 +167,8 @@ class QuestionComponent extends Component {
                     {/*this.deletequestion(this.props.questions[this.props.index_id].question_id)*/}
                     {/*}}><Glyphicon glyph="remove"/></span>*/}
                     {/*</div>*/}
-                    <button type="button" className="add-option-button-yes-no" onClick={()=>{this.addOptionView()}}></button>
-                    <button type="button" className="add-image-option-button-dd" onClick={()=>{this.addOptionView()}}></button>
+                    <button type="button" className="add-option-button-yes-no" onClick={()=>{this.addOptionView()}}/>
+                    <button type="button" className="add-image-option-button-dd" onClick={()=>{this.addOptionView()}}/>
                     <button type="button"
                             className="delete-option-button"
                             onClick={()=>{this.deletequestion(this.props.questions[this.props.index_id].question_id)}}>Delete Q/O</button>
@@ -199,8 +200,8 @@ class QuestionComponent extends Component {
                 <div>
                     {
                         this.props.questions[this.props.index_id].options.map((option, id) => {
-                            console.log("[QuestionComponent] getOptionView() ", option.option_type)
-                            if(this.state.is_option_image){
+                            console.log("[QuestionComponent] getOptionView() ", option.option_type);
+                            if(this.state.is_option_image || option.option_type==="image"){
                                 return(
                                     <div className="option-input-box">
                                         <input type="checkbox"
@@ -254,8 +255,8 @@ class QuestionComponent extends Component {
                 <div>
                     {
                         this.props.questions[this.props.index_id].options.map((option, id) => {
-                            console.log("[QuestionComponent] getOptionView() ", option.option_type)
-                            if(this.state.is_option_image){
+                            console.log("[QuestionComponent] getOptionView() ", option.option_type);
+                            if(this.state.is_option_image || option.option_type==="image"){
                                 return(
 
                                     <div className="option-input-box">
@@ -453,8 +454,8 @@ class QuestionComponent extends Component {
     }
 
     render() {
-        console.log(this.props.index_id)
-        console.log(this.props.question_type)
+        console.log(this.props.index_id);
+        console.log(this.props.question_type);
         console.log("this.props.questions[this.props.index_id].options",this.props.questions[this.props.index_id].options)
 
         console.log("rating", this.state.rating);
