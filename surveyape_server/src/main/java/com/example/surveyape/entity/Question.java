@@ -14,12 +14,12 @@ import java.util.List;
 public class Question {
 
     @JsonProperty("question_id")
-	@JsonView({ SurveyView.summary.class, ResponseView.summary.class , SurveyAndResponseView.summary.class, BasicStatsView.summary.class})
+	@JsonView({ SurveyView.summary.class, ResponseView.summary.class , SurveyAndResponseView.summary.class, BasicStatsView.summary.class,ResDistributionStatsView.summary.class})
     @Id
     private String questionId;
 
     @JsonProperty("question_type")
-    @JsonView({SurveyView.summary.class, SurveyAndResponseView.summary.class, BasicStatsView.summary.class})
+    @JsonView({SurveyView.summary.class, SurveyAndResponseView.summary.class, BasicStatsView.summary.class,ResDistributionStatsView.summary.class})
     private String questionType;
 
     @ManyToOne(targetEntity = Survey.class, cascade = CascadeType.PERSIST)
@@ -27,7 +27,7 @@ public class Question {
     private Survey survey;
 
     @JsonProperty("question_text")
-    @JsonView({SurveyView.summary.class, SurveyAndResponseView.summary.class, BasicStatsView.summary.class})
+    @JsonView({SurveyView.summary.class, SurveyAndResponseView.summary.class, BasicStatsView.summary.class,ResDistributionStatsView.summary.class})
     private String questionText;
 
     @JsonView({SurveyView.summary.class, SurveyAndResponseView.summary.class})

@@ -102,14 +102,14 @@ class App extends Component {
                         />)}
                     />
 
-                    <Route exact path= "/surveystats/:survey_id/:question_id" render = {() => (
+                    <Route exact path= "/stats/response/:question_id" render = {() => (
                         <StatisticsDashboard
                             handlePageChange = {this.handlePageChange}
                             validateSession = {this.validateSession}
                         />)}
                     />
 
-                    <Route path= "/surveystats/:survey_id" render = {() => (
+                    <Route exact path= "/stats/basic/:survey_id" render = {() => (
                         <StatisticsHome
                             handlePageChange = {this.handlePageChange}
                             validateSession = {this.validateSession}

@@ -202,6 +202,22 @@ export const getSurveyById = (surveyId) =>
         return error;
     });
 
+export const getSurveyBasicStats = (surveyId) =>
+    fetch(`${api}/stats/basic/${surveyId}`, {
+        method: 'GET',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        credentials:'include'
+    }).then(res => {
+        return res;
+    }).catch(error => {
+        console.log("This is error");
+        console.log(error);
+        return error;
+    });
+
 export const getSurveyList = () =>
     fetch(`${api}/user/surveylist`, {
         method: 'GET',
@@ -301,3 +317,20 @@ export const submitSurveyResponse = (payload) =>
             console.log(error);
             return error;
         });
+
+
+export const getQuestionResponseDitribution = (question_id) =>
+    fetch(`${api}/stats/response/${question_id}`, {
+        method: 'GET',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        credentials:'include'
+    }).then(res => {
+        return res;
+    }).catch(error => {
+        console.log("This is error");
+        console.log(error);
+        return error;
+    });

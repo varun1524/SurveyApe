@@ -4,6 +4,7 @@ import com.example.surveyape.entity.*;
 import com.example.surveyape.repository.QuestionRepository;
 import com.example.surveyape.repository.SurveyRepository;
 import com.example.surveyape.repository.SurveyResponseRepository;
+import com.example.surveyape.utils.QuestionUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,8 @@ public class StatisticServices {
             String edateString = simpleDateFormat.format(survey.getSurveyEndDate());
             map.put("start_time",sdateString);
             map.put("end_date",edateString);
+            map.put("survey_name",survey.getSurveyName());
+            map.put("survey_type",survey.getSurveyType());
             List<SurveyResponse> participants = new LinkedList<>();
             List<SurveyResponse> surveyResponses = surveyResponseRepository.findAllBySurvey(survey);
             if(surveyResponses!=null){
@@ -54,26 +57,42 @@ public class StatisticServices {
         Map  map = new HashMap();
         Question question = questionRepository.findByQuestionId(questionId);
         if(question!=null){
+            String type = question.getQuestionType();
+            map.put("question",question);
             List<OptionAns> optionAnsList = question.getOptions();
-            List<Integer> countForOptions = new LinkedList<>();
-            List<ResponseAnswers> responseAnswersList = question.getResponseAnswers();
-            if(optionAnsList!=null){
-                int index =0;
-                for(OptionAns opt:optionAnsList){
-                    Integer responseCount = 0;
-                    if(responseAnswersList!=null){
-                        for(ResponseAnswers resAns:responseAnswersList){
-                            if(opt.getOptionId().equals(resAns.getAnswerValue())){
-                                responseCount++;
+            if(optionAnsList!=null) {
+                List<ResponseAnswers> responseAnswersList = question.getResponseAnswers();
+                if (type.toLowerCase().equals(QuestionUtility.CHECKBOX) || type.toLowerCase().equals(QuestionUtility.RADIO) || type.toLowerCase().equals(QuestionUtility.DROPDOWN)) {
+                    List<Integer> countForOptions = new LinkedList<>();
+
+                    int index = 0;
+                    for (OptionAns opt : optionAnsList) {
+                        Integer responseCount = 0;
+                        if (responseAnswersList != null) {
+                            for (ResponseAnswers resAns : responseAnswersList) {
+                                if (opt.getOptionId().equals(resAns.getAnswerValue())) {
+                                    responseCount++;
+                                }
                             }
                         }
+                        //map.put(opt,responseCount);
+                        countForOptions.add(index++, responseCount);
                     }
-                    //map.put(opt,responseCount);
-                    countForOptions.add(index++,responseCount);
-                }
-                map.put("options_list",optionAnsList);
-                map.put("response_count",countForOptions);
+                    map.put("options_list", optionAnsList);
+                    map.put("response_count", countForOptions);
 
+
+                } else {
+                    List<String> responseAnsList = new LinkedList<>();
+
+                    if(responseAnswersList!=null){
+                        for (ResponseAnswers resAns : responseAnswersList) {
+                            responseAnsList.add(resAns.getAnswerValue());
+                        }
+
+                    }
+                    map.put("answers",responseAnsList);
+                }
             }
 
 

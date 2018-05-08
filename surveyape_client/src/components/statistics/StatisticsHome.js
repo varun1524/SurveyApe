@@ -14,6 +14,13 @@ class StatisticsHome extends Component {
     constructor(){
         super();
         this.state = {
+            survey_name:"",
+            survey_type:"",
+            end_date:"",
+            start_time:"",
+            participation_rate:"",
+            participants:"",
+            questions:[]
 
         };
     }
@@ -23,6 +30,7 @@ class StatisticsHome extends Component {
     }
 
     componentDidMount(){
+
         API.validateSession().then((response)=>{
             if(response.status===200){
                 response.json().then((data)=>{
@@ -51,13 +59,23 @@ class StatisticsHome extends Component {
 
         if(this.props.match.params.hasOwnProperty("survey_id")){
             console.log(this.props.match.params);
-            console.log("[surveyresponse] param hasProperty survey_id :", this.props.match.params.hasOwnProperty("survey_id"));
-            API.getSurveyById(this.props.match.params.survey_id).then((response)=>{
+            console.log("[StatisticHome] param hasProperty survey_id :", this.props.match.params.hasOwnProperty("survey_id"));
+            API.getSurveyBasicStats(this.props.match.params.survey_id).then((response)=>{
                 console.log(response.status);
                 if(response.status===200){
                     response.json().then((data)=>{
-                        console.log("[StatisticsHome] getSurveyById API response : ", data);
-                        this.props.generateSurveyForm(data);
+                       console.log("[StatisticHome] data:",data)
+                        this.setState({
+                            ...this.state,
+                            survey_name:data.survey_name,
+                            survey_type:data.survey_type,
+                            end_date:data.end_date,
+                            start_time:data.start_time,
+                            participation_rate:data.participation_rate?parseFloat(data.participation_rate).toFixed(2):"",
+                            participants:data.participants,
+                            questions:data.questions
+
+                        })
                     });
                 }
                 else if(response.status===404){
@@ -71,20 +89,25 @@ class StatisticsHome extends Component {
     }
 
     getQuestionComponent() {
-        return(
-            <div className="statistics-question-component">
 
-                <div className="statistics-question-label">
-                    What is the capital of United States?
-                </div>
+           return  this.state.questions.map((each_question)=>{
+               return(
+                   <div className="statistics-question-component">
 
-                <button type="button" className="statistics-question-button" onClick={() => {
-                    // question id is hardcoded here
-                    {this.props.handlePageChange("/surveystats/" + this.props.survey.survey_id + "/" + "1234");}
-                }}>Check Stats</button>
-            </div>
+                       <div className="statistics-question-label">
+                           Question: {each_question.question_text}
+                       </div>
 
-        )
+                       <button type="button" className="statistics-question-button" onClick={() => {
+                           // question id is hardcoded here
+                           {this.props.handlePageChange("/stats/response/"+each_question.question_id );}
+                       }}>Check Response Stats</button>
+                   </div>
+               )
+            });
+
+
+
     }
 
     render() {
@@ -96,26 +119,24 @@ class StatisticsHome extends Component {
                     handlePageChange = {this.props.handlePageChange}
                     loggedIn = {true}
                 />
-                <div className="welcome-user">
-                    <h4>The Survey Id is : <strong>survey_id_number</strong></h4>
-                </div>
+
 
                 <div className="statistics-dashboard">
                     <div className="statistics-dashboard-header">
-                        <span className="statistics-survey_name">Survey_Name</span>
-                        <span className="statistics-survey-type">[survey_type]</span>
+                        <span className="statistics-survey_name">{this.state.survey_name}</span>
+                        <span className="statistics-survey-type"> [ {this.state.survey_type} ]</span>
 
-                        <span className="statistics-date-label"><span style={{'font-size' : '14px'}}>Survey End Date: </span><strong>06/10/2018</strong></span>
-                        <span className="statistics-date-label"><span style={{'font-size' : '14px'}}>Survey Start Date: </span><strong>06/05/2018</strong></span>
+                        <span className="statistics-date-label"><span style={{'font-size' : '14px'}}>Survey End Date: </span><strong>{this.state.end_date}</strong></span>
+                        <span className="statistics-date-label"><span style={{'font-size' : '14px'}}>Survey Start Date: </span><strong>{this.state.start_time}</strong></span>
 
                         <div className="statistics-block-1">
                             <div className="no-of-participants">Number of Participants</div>
-                            <span className="no-of-participants-count">30</span>
+                            <span className="no-of-participants-count">{this.state.participants}</span>
                         </div>
 
                         <div className="statistics-block-2">
                             <div className="no-of-participants">Participation Rate</div>
-                            <span className="no-of-participants-count">50 %</span>
+                            <span className="no-of-participants-count">{this.state.participation_rate} %</span>
                         </div>
 
                     </div>

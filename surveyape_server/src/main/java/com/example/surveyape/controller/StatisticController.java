@@ -4,6 +4,7 @@ package com.example.surveyape.controller;
 import com.example.surveyape.service.StatisticServices;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,9 @@ public class StatisticController {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         Map map = null;
         try{
+
             map = statisticServices.getBasicStats(surveyId);
+            status = HttpStatus.OK;
 
         }catch(Exception exp){
 
@@ -33,12 +36,13 @@ public class StatisticController {
 
 
     @JsonView({ResDistributionStatsView.summary.class})
-    @RequestMapping(value = "/response/distribution/{questionId}", method = RequestMethod.GET)
-    public ResponseEntity getResponseDistribution(@PathVariable String questionId, HttpSession session){
+    @RequestMapping(value = "/response/{questionId}", method = RequestMethod.GET)
+    public ResponseEntity getResponseDistribution(@PathVariable String questionId,HttpSession session){
         HttpStatus status = HttpStatus.BAD_REQUEST;
         Map map = null;
         try{
             map = statisticServices.responseDistributionByQuestion(questionId);
+            status = HttpStatus.OK;
 
         }catch(Exception exp){
 
