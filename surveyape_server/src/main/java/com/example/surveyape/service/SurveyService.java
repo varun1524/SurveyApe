@@ -160,7 +160,7 @@ public class SurveyService {
 			for(String email:emails){
 				String responseId = UUID.randomUUID().toString();
 				surveyResponse = new SurveyResponse();
-				surveyResponse.setEmail(email);
+				surveyResponse.setEmail(email.trim());
 				surveyResponse.setResponseId(responseId);
 				surveyResponse.setSurvey(survey);
 				surveyResponseRepository.save(surveyResponse);
