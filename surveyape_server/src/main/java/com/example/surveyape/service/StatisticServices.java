@@ -26,10 +26,17 @@ public class StatisticServices {
         Survey survey = surveyRepository.findBySurveyId(surveyId);
         if(survey !=null){
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            String sdateString = simpleDateFormat.format(survey.getPublishDate());
-            String edateString = simpleDateFormat.format(survey.getSurveyEndDate());
-            map.put("start_time",sdateString);
-            map.put("end_date",edateString);
+            if(survey.getPublishDate()!=null){
+                String sdateString = simpleDateFormat.format(survey.getPublishDate());
+                map.put("start_time",sdateString);
+            }
+            if(survey.getSurveyEndDate()!=null){
+                String edateString = simpleDateFormat.format(survey.getSurveyEndDate());
+
+                map.put("end_date",edateString);
+            }
+
+
             map.put("survey_name",survey.getSurveyName());
             map.put("survey_type",survey.getSurveyType());
             List<SurveyResponse> participants = new LinkedList<>();

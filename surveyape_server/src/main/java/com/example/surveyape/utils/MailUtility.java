@@ -17,7 +17,14 @@ public class MailUtility {
     public static final String verificationSuccessfulMessage = "Congratulations. You have successfully verified your account.";
     public static final String general_survey_body = "Please take the general Survey using the below link:\nURL:" + url+"/survey/";
     public static final String general_survey_subject = "General Survey request";
+    public static final String close_survey_body = "Please take the close Survey using the below link:\nURL:" + url+"/surveyresponse/c/";
+    public static final String close_survey_subject = "Close Survey request";
+
+    public static final String open_survey_body = "Please take the close Survey using the below link:\nURL:" + url+"/surveyresponse/o/";
+    public static final String open_survey_subject = "Open Survey request";
 
     public static final String surveyResponseMsg = "Thank you for you response !!! ";
     public static final String surveyResponseBody = "Survey Submitted successfully";
+
+    public static final String thank_team_surveyape = "Regards,\nTeam SurveyApe";
 }

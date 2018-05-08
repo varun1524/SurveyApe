@@ -171,14 +171,17 @@ public class SurveyService {
 				inviteeRepository.save(invitees);
 				String msgBody = "";
 				String subject = "";
-				if(survey.getSurveyType()=="open"){
-					msgBody = MailUtility.general_survey_body;
-					subject = MailUtility.general_survey_subject;
-				}else if(survey.getSurveyType()=="close"){
-					msgBody = MailUtility.general_survey_body;
-					subject = MailUtility.general_survey_subject;
+				if(survey.getSurveyType().equals("open")){
+					msgBody = MailUtility.open_survey_body+responseId;
+					msgBody += "\n\n"+MailUtility.thank_team_surveyape;
+					subject = MailUtility.open_survey_subject;
+				}else if(survey.getSurveyType().equals("close")){
+					msgBody = MailUtility.close_survey_body+responseId;
+					msgBody += "\n\n"+MailUtility.thank_team_surveyape;
+					subject = MailUtility.close_survey_subject;
 				}else{
 					msgBody = MailUtility.general_survey_body+surveyId;
+					msgBody += "\n\n"+MailUtility.thank_team_surveyape;
 					subject = MailUtility.general_survey_subject;
 				}
 				try{

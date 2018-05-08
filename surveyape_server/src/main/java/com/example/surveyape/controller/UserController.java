@@ -62,8 +62,11 @@ public class UserController {
 						httpSession.setAttribute("email", map.get("email"));
 						responseEntity = new ResponseEntity(user, HttpStatus.OK);
 					}
+					else{
+						responseEntity = new ResponseEntity(user, HttpStatus.UNAUTHORIZED);
+					}
 				} else {
-					responseEntity = new ResponseEntity(user, HttpStatus.NON_AUTHORITATIVE_INFORMATION);
+					responseEntity = new ResponseEntity(null, HttpStatus.NON_AUTHORITATIVE_INFORMATION);
 				}
 			} else {
 				responseEntity = new ResponseEntity(null, HttpStatus.NOT_FOUND);

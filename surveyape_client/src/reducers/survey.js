@@ -62,6 +62,7 @@ const survey = (state = survey_data, action)=>
             console.log("EDIT_QUESTION reducer",action.data);
             let edit_questions2 = state.questions;
             edit_questions2[action.data.question_index].options[action.data.option_index].option_text =action.data.option_text;
+            edit_questions2[action.data.question_index].options[action.data.option_index].option_type =action.data.option_type;
             return Object.assign({},state,{
                 questions:edit_questions2
             });
