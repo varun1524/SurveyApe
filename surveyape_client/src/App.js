@@ -44,6 +44,17 @@ class App extends Component {
     });
 
     componentDidMount(){
+        API.validateSession().then((response) => {
+            console.log(response.status);
+            if(response.status === 200){
+                response.json().then((data) => {
+                    this.props.login_success(data);
+                });
+            }
+            else {
+                console.log("[App] : User not logged in")
+            }
+        });
     }
 
     render() {
