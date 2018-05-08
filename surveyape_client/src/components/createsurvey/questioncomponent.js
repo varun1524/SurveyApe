@@ -80,7 +80,6 @@ class QuestionComponent extends Component {
         })
     }
 
-
     deletequestion(question_id){
 
         API.deleteQuestion(question_id,this.props.survey.survey_id)
@@ -126,7 +125,7 @@ class QuestionComponent extends Component {
                     <button type="button" className="add-option-button" onClick={()=>{this.addOptionView()}}>Add Option</button>
                     <div className="add-image-option-button">
                         <input type="checkbox" onChange={(event) => {
-                            console.log(event.target.checked)
+                            console.log(event.target.checked);
                             this.setState({
                                 ...this.state,
                                 is_option_image: event.target.checked
@@ -204,13 +203,25 @@ class QuestionComponent extends Component {
                             if(this.state.is_option_image){
                                 return(
                                     <div className="option-input-box">
-                                        <input type="checkbox" className="option-type"/>
-                                        <img src={option.option_text} height="150" width="150"/>
-                                        <input type="file" onChange={((event)=>{this.uploadImage(event, id)})}/>
-                                        <div className="remove-glyphicon-option">
-                                           <span onClick={() => {
-                                               this.deleteOption(option.option_id)
-                                           }}><Glyphicon glyph="remove"/></span>
+                                        <input type="checkbox"
+                                               className="option-type"/>
+
+                                        <input type="file"
+                                               onChange={((event)=>{this.uploadImage(event, id)})}
+                                               className="option-image-choose-file"
+                                        />
+
+                                        <span className="remove-glyphicon-option" onClick={() => {
+                                            this.deleteOption(option.option_id)
+                                        }}><Glyphicon glyph="remove"/></span>
+
+                                        <div className="option-actual-image-div">
+                                            <img src={option.option_text}
+                                                 height="150"
+                                                 width="150"
+                                                 className="option-actual-image"
+                                                 alt="Please select appropriate image"
+                                            />
                                         </div>
                                     </div>
                                 )
@@ -246,16 +257,40 @@ class QuestionComponent extends Component {
                             console.log("[QuestionComponent] getOptionView() ", option.option_type)
                             if(this.state.is_option_image){
                                 return(
+
                                     <div className="option-input-box">
-                                        <input type="radio" className="option-type"/>
-                                        <img src={option.option_text} height="150" width="150"/>
-                                        <input type="file" onChange={((event)=>{this.uploadImage(event, id)})}/>
-                                        <div className="remove-glyphicon-option">
-                                           <span onClick={() => {
-                                               this.deleteOption(option.option_id)
-                                           }}><Glyphicon glyph="remove"/></span>
+                                        <input type="radio"
+                                               className="option-type"/>
+
+                                        <input type="file"
+                                               onChange={((event)=>{this.uploadImage(event, id)})}
+                                               className="option-image-choose-file"
+                                        />
+
+                                        <span className="remove-glyphicon-option" onClick={() => {
+                                            this.deleteOption(option.option_id)
+                                        }}><Glyphicon glyph="remove"/></span>
+
+                                        <div className="option-actual-image-div">
+                                            <img src={option.option_text}
+                                                 height="150"
+                                                 width="150"
+                                                 className="option-actual-image"
+                                                 alt="Please select appropriate image"
+                                            />
                                         </div>
                                     </div>
+
+                                    // <div className="option-input-box">
+                                    //     <input type="radio" className="option-type"/>
+                                    //     <img src={option.option_text} height="150" width="150"/>
+                                    //     <input type="file" onChange={((event)=>{this.uploadImage(event, id)})}/>
+                                    //     <div className="remove-glyphicon-option">
+                                    //        <span onClick={() => {
+                                    //            this.deleteOption(option.option_id)
+                                    //        }}><Glyphicon glyph="remove"/></span>
+                                    //     </div>
+                                    // </div>
                                 )
                             }
                             else {
@@ -343,8 +378,9 @@ class QuestionComponent extends Component {
                             <label className="option-type-dropdown">Option</label>
                             <input type="text"
                                    className="option-text-box-dropdown"
-                                   placeholder="Enter option here"
+                                   placeholder="This is a sample input box for user input"
                                    value=""
+                                   disabled={true}
                             />
                             <div className="remove-glyphicon-option">
                                 <span></span>
