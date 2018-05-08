@@ -122,11 +122,17 @@ class SurveyResponse extends Component {
                         }
                     });
                 }
+                else if(response.status===203){
+                    alert("Error 203 in User not authorized to access this survey");
+                    this.props.handlePageChange("/login");
+                }
                 else if(response.status===404){
-                    alert("Error 404 in getSurveyAndResponseByResponseId")
+                    alert("Error 404 in Response Not Found");
+                    this.props.handlePageChange("/login");
                 }
                 else if(response.status===400){
-                    alert("Error 400 in getSurveyAndResponseByResponseId")
+                    alert("Error 400 in getSurveyAndResponseByResponseId");
+                    this.props.handlePageChange("/");
                 }
             });
         }
