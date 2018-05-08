@@ -126,6 +126,7 @@ class QuestionDashboard extends Component {
                             survey_type:this.props.survey.survey_type,
                             end_date:event.target.value
                         }
+
                         this.props.updateSurveyNameDate(payload);
                     }}/>
 
