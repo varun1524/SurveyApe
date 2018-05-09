@@ -23,7 +23,8 @@ class SurveyResponse extends Component {
             loggedIn : false,
             sendcopy : false,
             email : "",
-            emailcolor : "red"
+            emailcolor : "red",
+            showEmail : false
         }
     }
 
@@ -141,6 +142,11 @@ class SurveyResponse extends Component {
                             this.props.generateSurveyForm(data.survey);
                             this.props.createSurveyResponse(data);
                             this.setReadOnly(data);
+                            this.setState({
+                                ...this.state,
+                                email : data.email,
+                                showEmail : true
+                            })
                         }
                         else{
                             showAlert("Survey is not published", alert_types.ERROR, this);
@@ -349,7 +355,7 @@ class SurveyResponse extends Component {
                     <div>
                         Email:
                         <input type="text" value={this.state.email}
-                               disabled={this.state.loggedIn}
+                               disabled={(this.state.loggedIn || this.state.showEmail)}
                                style={{color:this.state.emailColor}}
                                onChange={(event)=>{
                                    this.setState({
