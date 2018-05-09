@@ -334,3 +334,19 @@ export const getQuestionResponseDitribution = (question_id) =>
         console.log(error);
         return error;
     });
+
+export const closeSurvey = (survey_id) =>
+    fetch(`${api}/survey/close/${survey_id}`, {
+        method: 'GET',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        credentials:'include'
+    }).then(res => {
+        return res;
+    }).catch(error => {
+        console.log("This is error");
+        console.log(error);
+        return error;
+    });

@@ -1,7 +1,7 @@
 .statistics-dashboard {
     width: 70%;
     height: auto;
-    min-height: 800px;
+    min-height: 500px;
     /*background-color: #cccccc;*/
     margin-right: auto;
     margin-left: 15%;
@@ -70,15 +70,20 @@
     margin: 3%;
 }
 
+.statistics-question-component {
+    height: auto;
+    min-height: 80px;
+}
+
 .statistics-question-label {
-    width: 70%;
+    width: 65%;
     font-size: 20px;
     margin: 2%;
     float: left;
 }
 
 .statistics-question-button {
-    width: 22%;
+    width: 27%;
     margin: 1% 2%;
     float: right;
 }

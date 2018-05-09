@@ -158,7 +158,7 @@ class StatisticsDashboard extends Component {
             return(
 
                     this.state.answers.map((each_answer)=>{
-                       return <p style={{marginLeft:"20%",marginTop:10}}>{each_answer}</p>
+                       return <p style={{marginLeft:"10%",marginTop:"5%"}}>{each_answer}</p>
                     })
 
             )
