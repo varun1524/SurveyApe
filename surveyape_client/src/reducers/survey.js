@@ -104,6 +104,13 @@ const survey = (state = survey_data, action)=>
             return Object.assign({},state, {
                 end_date: new_end_1date
             });
+        case actionTypes.SAVE_END_DATE:
+            console.log("[SurveyReducer] SAVE_END_DATE: data: ",action.data);
+            let new_end_date1 = action.data.end_date?action.data.end_date:state.end_date;
+            return Object.assign({},state, {
+                end_date: new_end_date1
+            });
+
         default :
             return state;
     }

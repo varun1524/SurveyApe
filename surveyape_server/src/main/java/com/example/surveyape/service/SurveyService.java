@@ -247,4 +247,20 @@ public class SurveyService {
 		return endDate;
 
 	}
+
+	public Date saveEndSurvey(String surveyId, String dateStr){
+		Date endDate = null;
+		Survey survey = surveyRepository.findBySurveyId(surveyId);
+		if(survey !=null){
+			try{
+				endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateStr);
+				survey.setSurveyEndDate(endDate);
+				surveyRepository.save(survey);
+			}catch(Exception exp){
+				System.out.println("[SurveyService] saveEndSurvey() exception: "+exp.getMessage());
+			}
+
+		}
+		return endDate;
+	}
 }
