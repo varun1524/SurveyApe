@@ -17,6 +17,7 @@ class StatisticsDashboard extends Component {
         this.state = {
             question:{},
             answers:[],
+            imagedataset:[],
             data:{
                 labels: [],
                 datasets:[],
@@ -75,18 +76,31 @@ class StatisticsDashboard extends Component {
     setCheckRadioDropDownData(data){
         console.log("[StatisticDashBoard] setCheckRadioDropDownData() data:",data);
         let server_dataset = data.response_count;
-        let option_labels = []
-        data.options_list.map((each_opt)=>{
-            let trimed_option_text = each_opt.option_text.length > 10?each_opt.option_text.slice(0,10):each_opt.option_text;
-            option_labels.push(trimed_option_text);
-        });
+        let option_labels = [];
+        let imagedataset = [];
+        if(data.options_list && data.options_list.length>0 && data.options_list[0].option_type ==="image"){
+            let imgCount = 1;
+            data.options_list.map((each_opt)=>{
+                imagedataset.push(each_opt);
+                option_labels.push(imgCount++);
+            });
+        }else{
+            data.options_list.map((each_opt)=>{
+                let trimed_option_text = each_opt.option_text.length > 10?each_opt.option_text.slice(0,10):each_opt.option_text;
+                option_labels.push(trimed_option_text);
+            });
+        }
+
+
+
         let new_data = this.state.data;
         new_data.labels = option_labels;
         new_data.datasets = server_dataset;
         this.setState({
             ...this.state,
             data:new_data,
-            question:data.question
+            question:data.question,
+            imagedataset:imagedataset
 
         });
     }
@@ -149,12 +163,58 @@ class StatisticsDashboard extends Component {
 
     }
 
+    getImageList(){
+        console.log("[statisticdashboard] getImageList() this.state.imagedataset: ",this.state.imagedataset)
+        return this.state.imagedataset.map((each_image,index)=>{
+            console.log("[statisticdashboard] getImageList() each_image: ",each_image)
+            return(
+
+                    <div className="statistics-dashboard-img-div">
+                        <span className="statistics-dashboard-img-number">{index+1}</span>
+                        <img src={each_image.option_text}
+                             height="150"
+                             width="150"
+                             className="option-actual-image"
+                             alt="Please select appropriate image"
+                        />
+                    </div>
+
+
+
+
+            )
+
+
+        })
+    }
+
+    getCheckDropRadioImageView(){
+        console.log("[statisticdashboard] getCheckDropRadioImageView() ")
+        return (
+            <div>
+                <BarChart data={this.state.data}/>
+                <div className="statisticboard-graph-image-list">
+                    {this.getImageList()}
+                </div>
+
+            </div>
+        )
+    }
+
+
+
+
     getDasboardView(){
         console.log("[StatisticDashboard] getDasboardView() state: ",this.state);
         if(this.state.question && ((this.state.question.question_type === "CheckBox")||(this.state.question.question_type === "DropDown")||(this.state.question.question_type === "RadioGroup") || (this.state.question.question_type === "YesNo") ||  (this.state.question.question_type === "StarRating"))){
-            return(
-                <BarChart data={this.state.data}/>
-            )
+            if(this.state.imagedataset && this.state.imagedataset.length>0&&this.state.imagedataset[0].option_type==="image"){
+                return this.getCheckDropRadioImageView();
+            }else{
+                return(
+                    <BarChart data={this.state.data}/>
+                )
+            }
+
         }else{
             return(
 
