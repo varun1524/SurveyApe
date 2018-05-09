@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @CrossOrigin(origins = "*", allowCredentials = "true")
@@ -214,24 +214,18 @@ public class SurveyController {
         return new ResponseEntity(resMap,status);
     }
 
-    @RequestMapping(value = "/close", method = RequestMethod.POST)
-    public ResponseEntity publishSurvey(@PathVariable String surveyId, HttpSession session){
+    @RequestMapping(value = "/close/{surveyId}", method = RequestMethod.GET)
+    public ResponseEntity closeSurvey(@PathVariable String surveyId, HttpSession session){
         HttpStatus status = HttpStatus.BAD_REQUEST;
         Map resMap = new HashMap();
         try {
             if(surveyId!= null){
                 System.out.println("[SurveyController] surveyId: "+surveyId);
-                //Date date =
-            }
-
-
-            if(surveyId !=null && surveyId.trim().length() > 0){
-                Boolean publishstatus = surveyService.publishSurvey(surveyId);
-                if(publishstatus){
+                Date date = surveyService.closeSurvey(surveyId);
+                if(date!=null){
                     status = HttpStatus.OK;
-                    resMap.put("message","Survey published successfully !!!");
+                    resMap.put("end_date",date);
                 }
-
             }
 
         }catch (Exception e){

@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import QuestionComponent from './questioncomponent';
 import * as API from './../../api/API';
 import {bindActionCreators} from 'redux';
-import {updateSurvey,updateSurveyNameDate, changePublishState} from './../../actions/survey';
+import {updateSurvey,updateSurveyNameDate, changePublishState, closeSurvey} from './../../actions/survey';
 import Spinner from 'react-spinkit';
 
 import './../../stylesheets/createsurvey/questiondashboard.css';
@@ -112,6 +112,22 @@ class QuestionDashboard extends Component {
     }
 
     closeSurvey(){
+        API.closeSurvey(this.props.survey.survey_id)
+            .then((response)=>{
+                if(response.status === 200){
+                    response.json().then((data)=>{
+                        console.log("[QuestionDashboard] closeSurvey() after server response data: ",data);
+                        this.props.closeSurvey(data)
+                    });
+
+
+                }else{
+                    alert("Failed to close the survey !!!")
+                }
+
+            }).catch((error)=>{
+
+        })
 
     }
 
@@ -169,6 +185,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         updateSurvey: updateSurvey,
+        closeSurvey:closeSurvey,
         changePublishState:changePublishState,
         updateSurveyNameDate:updateSurveyNameDate
     }, dispatch)

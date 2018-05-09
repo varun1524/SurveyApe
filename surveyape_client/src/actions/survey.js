@@ -55,3 +55,11 @@ export function changePublishState() {
 
     }
 }
+
+export function closeSurvey(data) {
+    return {
+        type: actionTypes.CLOSE_SURVEY,
+        data
+
+    }
+}

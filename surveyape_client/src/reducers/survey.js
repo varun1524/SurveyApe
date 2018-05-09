@@ -95,6 +95,12 @@ const survey = (state = survey_data, action)=>
             return Object.assign({},state,{
                 ispublished:!currentstate
             });
+        case actionTypes.CLOSE_SURVEY:
+            console.log("[SurveyReducer] CLOSE_SURVEY: data: ",action.data);
+            let new_enddate = action.data.end_date?action.data.end_date:state.end_date;
+            return Object.assign({},state, {
+                end_date: new_enddate
+            });
         default :
             return state;
     }

@@ -242,6 +242,7 @@ public class SurveyService {
 		if(survey !=null){
 			endDate = new Date();
 			survey.setSurveyEndDate(endDate);
+			surveyRepository.save(survey);
 		}
 		return endDate;
 
