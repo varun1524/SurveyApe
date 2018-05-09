@@ -8,7 +8,11 @@ import {login_success} from './../../actions/login'
 import uuidv4 from "uuid";
 import QuestionComponent from './questioncomponent';
 import Header from './../header';
-import '../../stylesheets/surveyresponse/surveyresponse.css'
+import '../../stylesheets/surveyresponse/surveyresponse.css';
+
+import {alert_types} from '../../config/alert_types';
+import AlertContainer from 'react-alert';
+import {alertOptions, showAlert} from "../../config/alertConfig";
 
 class SurveyResponse extends Component {
 
@@ -44,7 +48,8 @@ class SurveyResponse extends Component {
                 });
             }
             else {
-                alert("[SurveyResponse] Error while checking session existance");
+                showAlert("Error while checking session existance", alert_types.ERROR, this);
+                // alert("[SurveyResponse] Error while checking session existance");
             }
         });
     });
@@ -68,16 +73,19 @@ class SurveyResponse extends Component {
                             this.createSurveyResponse();
                         }
                         else{
-                            alert("Survey is not published");
+                            showAlert("Survey is not published", alert_types.ERROR, this);
+                            // alert("Survey is not published");
                             this.props.handlePageChange("/")
                         }
                     });
                 }
                 else if(response.status===404){
-                    alert("Error 404 in getSurveyById")
+                    showAlert("Survey not found", alert_types.ERROR, this);
+                    // alert("Error 404 in getSurveyById");
                 }
-                else if(response.status===400){
-                    alert("Error 400 in getSurveyById")
+                else {
+                    showAlert("Error while fetching survey data", alert_types.ERROR, this);
+                    // alert("Error 400 in getSurveyById");
                 }
             });
         }
@@ -94,16 +102,19 @@ class SurveyResponse extends Component {
                             this.setReadOnly(data);
                         }
                         else{
-                            alert("Survey is not published");
+                            showAlert("Survey is not published", alert_types.ERROR, this);
+                            // alert("Survey is not published");
                             this.props.handlePageChange("/")
                         }
                     });
                 }
                 else if(response.status===404){
-                    alert("Error 404 in getSurveyAndResponseByResponseId")
+                    showAlert("Response doesn't exist", alert_types.ERROR, this);
+                    // alert("Error 404 in getSurveyAndResponseByResponseId");
                 }
-                else if(response.status===400){
-                    alert("Error 400 in getSurveyAndResponseByResponseId")
+                else {
+                    showAlert("Error while fetching response data", alert_types.ERROR, this);
+                    // alert("Error 400 in getSurveyAndResponseByResponseId");
                 }
             });
         }
@@ -120,22 +131,48 @@ class SurveyResponse extends Component {
                             this.setReadOnly(data);
                         }
                         else{
-                            alert("Survey is not published");
+                            showAlert("Survey is not published", alert_types.ERROR, this);
+                            // alert("Survey is not published");
                             this.props.handlePageChange("/")
                         }
                     });
                 }
-                else if(response.status===203){
-                    alert("Error 203 in User not authorized to access this survey");
-                    this.props.handlePageChange("/login");
+                else if(response.status===403){
+                    showAlert("User not authorized to access this survey", alert_types.ERROR, this);
+                    setTimeout((()=>{
+                        this.props.handlePageChange("/login");
+                    }),500);
+                }
+                else if(response.status===401){
+                    // alert("User is not Logged In");
+                    showAlert("User is not Logged In", alert_types.ERROR, this);
+                    setTimeout((()=>{
+                        this.props.handlePageChange("/login");
+                    }),500);
+                }
+                else if(response.status===402){
+                    // alert("User not registered. Please sign up and provide your response");
+                    showAlert("User not registered. Please sign up and provide your response", alert_types.ERROR, this);
+                    setTimeout((()=>{
+                        this.props.handlePageChange("/signup");
+                    }),500);
+
                 }
                 else if(response.status===404){
-                    alert("Error 404 in Response Not Found");
-                    this.props.handlePageChange("/login");
+                    // alert("Survey Not Available");
+                    showAlert("Survey Response does not exist", alert_types.ERROR, this);
+                    setTimeout((()=>{
+                        this.props.handlePageChange("/signup");
+                    }),500);
+
                 }
                 else if(response.status===400){
-                    alert("Error 400 in getSurveyAndResponseByResponseId");
-                    this.props.handlePageChange("/");
+                    // alert("Error while fetching response data");
+                    showAlert("Error while fetching response data", alert_types.ERROR, this);
+                    setTimeout((()=>{
+                        this.props.handlePageChange("/");
+                    }),500);
+
                 }
             });
         }
@@ -153,16 +190,19 @@ class SurveyResponse extends Component {
                             this.setReadOnly(data);
                         }
                         else{
-                            alert("Survey is not published");
+                            showAlert("Survey is not published", alert_types.ERROR, this);
+                            // alert("Survey is not published");
                             this.props.handlePageChange("/")
                         }
                     });
                 }
                 else if(response.status===404){
-                    alert("Error 404 in getSurveyAndResponseByResponseId")
+                    showAlert("Response doesn't exist", alert_types.ERROR, this);
+                    // alert("Error 404 in getSurveyAndResponseByResponseId");
                 }
-                else if(response.status===400){
-                    alert("Error 400 in getSurveyAndResponseByResponseId")
+                else {
+                    showAlert("Error while fetching response data", alert_types.ERROR, this);
+                    // alert("Error 400 in getSurveyAndResponseByResponseId");
                 }
             });
         }
@@ -176,12 +216,6 @@ class SurveyResponse extends Component {
         email : "",
         responses:[]
     };
-
-    verifyIsSurveyPublisher = ((data)=>{
-        if(data.ispublished){
-
-        }
-    });
 
     createSurveyResponse = (()=>{
         this.survey_response.response_id = uuidv4();
@@ -244,7 +278,8 @@ class SurveyResponse extends Component {
             if (response.status === 200) {
                 response.json().then((data)=>{
                     console.log("[SurveyResponse submitSurveyResponse: Succesful]", data);
-                    alert("Survey Submission Successful");
+                    showAlert("Survey Submission Successful", alert_types.SUCCESS, this);
+                    // alert("Survey Submission Successful");
                 });
                 this.setState({
                     ...this.state,
@@ -252,10 +287,12 @@ class SurveyResponse extends Component {
                 })
             }
             else if (response.status === 404) {
-                alert("Survey Response not provided by User. Hence cannot submit survey")
+                showAlert("Survey Response not provided by User. Hence cannot submit survey", alert_types.INFO, this);
+                // alert("Survey Response not provided by User. Hence cannot submit survey");
             }
             else {
-                alert("Error "+response.status+"submitting Survey Response");
+                showAlert("Error " +response.status + "submitting Survey Response", alert_types.ERROR, this);
+                // alert("Error "+response.status+"submitting Survey Response");
             }
         });
     });
@@ -269,7 +306,8 @@ class SurveyResponse extends Component {
         // console.log()
         if(this.state.sendcopy){
             if(this.state.email===undefined || this.state.email===null || this.state.email===""){
-                alert("Please provide valid email id")
+                showAlert("Please provide valid email id", alert_types.INFO, this);
+                // alert("Please provide valid email id");
             }
             else {
                 let regex_email = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -353,7 +391,7 @@ class SurveyResponse extends Component {
                         {this.showSubmitForm()}
                     </div>
                 </div>
-
+                <AlertContainer ref={a => this.msg = a} {...alertOptions}/>
             </div>
         );
     }

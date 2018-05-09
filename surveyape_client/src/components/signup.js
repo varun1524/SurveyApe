@@ -10,6 +10,10 @@ import VerificationModal from 'react-modal';
 import VerificationSuccessModal from 'react-modal';
 import VerificationFailedModal from 'react-modal';
 
+import {alert_types} from './../config/alert_types';
+import AlertContainer from 'react-alert';
+import {alertOptions, showAlert} from "../config/alertConfig";
+
 // import InnerVerificationModal from './modals/verification-modal';
 // import InnerVerificationSuccessModal from './modals/verification-success-modal';
 
@@ -100,6 +104,7 @@ class SignUp extends Component {
                             message: "You have successfully signed up. Please login here"
                         });
                         //this.props.history.push("/login");
+                        showAlert("Verification mail sent", alert_types.SUCCESS, this);
                         this.openVerificationModal()
 
                     } else if (response.status === 400) {
@@ -109,7 +114,8 @@ class SignUp extends Component {
                             isLoggedIn: false,
                             message: "Error while adding userdata"
                         });
-                        alert("Error while adding userdata");
+                        showAlert("Error while adding userdata", alert_types.INFO, this);
+                        // alert("Error while adding userdata");
                         // this.props.history.push("/signup")
                     }
                     else if (response.status === 302) {
@@ -118,7 +124,8 @@ class SignUp extends Component {
                             isLoggedIn: false,
                             message: "User already exists with emailId"
                         });
-                        alert("User already exists with emailId");
+                        showAlert("User already exists with emailId", alert_types.ERROR, this);
+                        // alert("User already exists with emailId");
                     }
                     else {
                         this.setState({
@@ -126,7 +133,8 @@ class SignUp extends Component {
                             isLoggedIn: false,
                             message: "Error while signing up."
                         });
-                        alert("Error while signing up.");
+                        showAlert("Error while signing up", alert_types.INFO, this);
+                        // alert("Error while signing up.");
                     }
                 });
         }
@@ -212,7 +220,8 @@ class SignUp extends Component {
         });
 
         if(code.length <6){
-            alert("Code length is less than 6 character !!!");
+            showAlert("Code length is less than 6 character !!!", alert_types.ERROR, this);
+            // alert("Code length is less than 6 character !!!");
             return;
         }
 
@@ -224,11 +233,12 @@ class SignUp extends Component {
             .then((response)=>{
                 if(response.status === 200){
                     console.log("[signup] handleVerification status : ", response.status);
+                    showAlert("Account Verified Successfully", alert_types.SUCCESS, this);
                     this.afterVerifiedSuccess();
                 }else{
                     response.json().then((data) => {
-
                         this.state.message = data.message;
+                        showAlert("Verification Failed. Please try again", alert_types.ERROR, this);
                         this.afterVerifiedFailed();
                     });
                 }
@@ -398,6 +408,7 @@ class SignUp extends Component {
                         </div>
                     </form>
                 </div>
+                <AlertContainer ref={a => this.msg = a} {...alertOptions}/>
             </div>
         );
     }

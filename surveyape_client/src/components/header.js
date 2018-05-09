@@ -8,6 +8,10 @@ import {connect} from "react-redux";
 import {bindActionCreators} from 'redux';
 import {update_surveyor_dashboard} from "../actions/login";
 
+import {alert_types} from './../config/alert_types';
+import AlertContainer from 'react-alert';
+import {alertOptions, showAlert} from "../config/alertConfig";
+
 const customStyles = {
     overlay : {
         position          : 'fixed',
@@ -66,12 +70,15 @@ class Header extends Component {
         console.log("Logout called");
         API.doLogout().then((response)=>{
             console.log(response.status);
-            this.props.history.push("/login");
+            showAlert("Logout successful", alert_types.SUCCESS, this);
+            setTimeout((()=>{
+                this.props.history.push("/login");
+            }),500);
         });
     });
 
     handleHomeButtonClick(){
-            console.log("[Header] - handleHomeButtonClick() server request");
+        console.log("[Header] - handleHomeButtonClick() server request");
         this.props.handlePageChange("/home");
             API.getSurveyList().then((response) => {
                 console.log(response.status);
@@ -96,10 +103,12 @@ class Header extends Component {
     }
     validaterCreateSurveyForm(){
         if(!this.state.survey_name || this.state.survey_name.length <=0){
-            alert("Survey Name can not be left blank !!!")
+            showAlert("Survey Name can not be left blank !!!", alert_types.INFO, this);
+            // alert("Survey Name can not be left blank !!!");
             return false;
         }else if(!this.state.survey_type || this.state.survey_type.length <=0){
-            alert("You must choose a survey type !!!")
+            showAlert("You must choose a survey type !!!", alert_types.INFO, this);
+            // alert("You must choose a survey type !!!");
             return false;
         }
         return true
@@ -121,7 +130,11 @@ class Header extends Component {
                         console.log(data);
                         this.props.createSurvey(data);
                         this.closeCreateSurveyModal();
-                        this.props.handlePageChange("/home/createsurvey");
+
+                        showAlert("Survey created successfully", alert_types.SUCCESS, this);
+                        setTimeout(() => {
+                            this.props.handlePageChange("/home/createsurvey");
+                        }, 500);
                     })
                 }
             });
@@ -201,6 +214,7 @@ class Header extends Component {
                         }}/>
                     </div>
                 </CreateSurveyModal>
+                <AlertContainer ref={a => this.msg = a} {...alertOptions}/>
             </div>
         );
     }
