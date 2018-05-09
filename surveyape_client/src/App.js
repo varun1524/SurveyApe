@@ -57,13 +57,36 @@ class App extends Component {
         });
     }
 
+    doesSessionExist(){
+        API.validateSession().then((response) => {
+            console.log(response.status);
+            if(response.status === 200){
+                response.json().then((data) => {
+                    this.props.login_success(data);
+                });
+                this.handlePageChange("/home");
+            }
+            else if(response.status === 404) {
+                this.setState({
+                    ...this.state,
+                    isLoggedIn : false,
+                    email : ""
+                });
+                this.handlePageChange("/login");
+            }
+            else {
+                this.handlePageChange("/login");
+            }
+        });
+    }
+
     render() {
         return (
             <div className="App">
                 <Switch>
                     <Route exact path= "/" render={() =>(
                         <div>
-                            {this.validateSession()}
+                            {this.doesSessionExist()}
                         </div>
                     )}/>
                     <Route path= "/signup" render = {() => (
