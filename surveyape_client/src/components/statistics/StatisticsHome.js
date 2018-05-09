@@ -99,9 +99,7 @@ class StatisticsHome extends Component {
                return(
                    <div className="statistics-question-component">
 
-                       <div className="statistics-question-label">
-                           Question: {each_question.question_text}
-                       </div>
+                       <label className="statistics-question-label">Question: {each_question.question_text}</label>
 
                        <button type="button" className="statistics-question-button" onClick={() => {
                            // question id is hardcoded here
