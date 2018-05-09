@@ -14,6 +14,9 @@ public class MailUtility {
     }
 
     public static final String url = "http://localhost:3000";
+    public static final String generalurl = url+"/survey/";
+    public static final String openurl = url+"/surveyresponse/o/";
+    public static final String closedurl = url+"/surveyresponse/c/";
     public static final String verificationSuccessfulMessage = "Congratulations. You have successfully verified your account.";
     public static final String general_survey_body = "Please take the general Survey using the below link:\nURL:" + url+"/survey/";
     public static final String general_survey_subject = "General Survey request";
