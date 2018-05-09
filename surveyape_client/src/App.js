@@ -91,24 +91,28 @@ class App extends Component {
                     <Route path= "/survey/:survey_id" render = {(match) => (
                         <SurveyResponse
                             handlePageChange = {this.handlePageChange}
+                            validateSession = {this.validateSession}
                             {...match}
                         />)}
                     />
                     <Route exact path= "/surveyresponse/:response_id" render = {(match) => (
                         <SurveyResponse
                             handlePageChange = {this.handlePageChange}
+                            validateSession = {this.validateSession}
                             {...match}
                         />)}
                     />
                     <Route exact path= "/surveyresponse/c/:cresponse_id" render = {(match) => (
                         <SurveyResponse
                             handlePageChange = {this.handlePageChange}
+                            validateSession = {this.validateSession}
                             {...match}
                         />)}
                     />
                     <Route exact path= "/surveyresponse/o/:oresponse_id" render = {(match) => (
                         <SurveyResponse
                             handlePageChange = {this.handlePageChange}
+                            validateSession = {this.validateSession}
                             {...match}
                         />)}
                     />

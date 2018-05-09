@@ -63,6 +63,7 @@ class SurveyResponse extends Component {
                     response.json().then((data)=>{
                         console.log("[SurveyResponse]", data);
                         if(data.ispublished){
+                            this.redirectOnExpiredSurvey();
                             this.props.generateSurveyForm(data);
                             this.createSurveyResponse();
                         }
@@ -83,6 +84,7 @@ class SurveyResponse extends Component {
         else if(this.props.match.params.hasOwnProperty("response_id")){
             API.getSurveyAndResponseByResponseId(this.props.match.params.response_id).then((response)=>{
                 console.log(response.status);
+                this.props.validateSession();
                 if(response.status===200){
                     response.json().then((data)=>{
                         console.log("getSurveyAndResponseByResponseId: ", data);
@@ -145,6 +147,7 @@ class SurveyResponse extends Component {
                     response.json().then((data)=>{
                         console.log("getSurveyAndResponseByResponseId: ", data);
                         if(data.survey.ispublished){
+                            this.redirectOnExpiredSurvey();
                             this.props.generateSurveyForm(data.survey);
                             this.props.createSurveyResponse(data);
                             this.setReadOnly(data);
@@ -207,60 +210,89 @@ class SurveyResponse extends Component {
 
     setReadOnly = ((data)=>{
         console.log("[SurveyResponse] setVisibility: ", data);
-        let end_date_time = new Date(data.survey.end_date);
+        let end_date_time;
         let current_date_time = new Date();
-        console.log("[SurveyResponse] Date difference: ", current_date_time>end_date_time);
-        if(data.issubmitted || current_date_time>end_date_time){
+        if(data.issubmitted){
             this.setState({
                 ...this.state,
                 readOnly : true
             })
         }
+        else if(data.survey.end_date!==null && data.survey.end_date!==undefined){
+            end_date_time = new Date(data.survey.end_date);
+            if(current_date_time>end_date_time){
+                this.setState({
+                    ...this.state,
+                    readOnly : true
+                })
+            }
+        }
     });
 
-    submitSurvey = (()=>{
-        if(this.state.sendcopy && this.state.isLoggedIn===false && (this.state.email===undefined || this.state.email===null || this.state.email==="")){
-            alert("Please provide email id")
+    redirectOnExpiredSurvey = ((end_date)=>{
+        if(end_date!==null && end_date!==undefined){
+            let current_date_time = new Date();
+            let end_date_time = new Date(end_date);
+            if(current_date_time>end_date_time){
+                this.props.handlePageChange("/")
+            }
         }
-        else {
-            let regex_email = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            console.log("[SurveyResponse] email veriication result: " + regex_email.test(this.state.email.toLowerCase()));
+    });
 
-            if(!regex_email.test(this.state.email.toLowerCase())){
-                document.getElementById('emailError').innerHTML='Email is invalid';
-                document.getElementById('emailError').onfocus = true;
+    sendSubmitRequest = ((payload)=>{
+        API.submitSurveyResponse(payload).then((response) => {
+            if (response.status === 200) {
+                response.json().then((data)=>{
+                    console.log("[SurveyResponse submitSurveyResponse: Succesful]", data);
+                    alert("Survey Submission Successful");
+                });
+                this.setState({
+                    ...this.state,
+                    readOnly : true
+                })
+            }
+            else if (response.status === 404) {
+                alert("Survey Response not provided by User. Hence cannot submit survey")
             }
             else {
-                API.submitSurveyResponse({
-                    response_id:this.props.survey_response.response_id,
-                    email: this.state.email,
-                    sendcopy: this.state.sendcopy
-                }).then((response) => {
-                    if (response.status === 200) {
-                        response.json().then((data)=>{
-                            console.log("[SurveyResponse submitSurveyResponse: Succesful]", data);
-                            // this.props.createSurveyResponse(data);
-                            alert("Survey Submission Successful");
-                            this.props.handlePageChange("/");
-                        });
-                        this.setState({
-                            ...this.state,
-                            is_response_disabled : true
-                        })
-                    }
-                    else if (response.status === 404) {
-                        alert("Error 404 submitting survey response")
-                    }
-                    else {
-                        alert("Error "+response.status+"submitting Survey Response");
-                    }
-                });
+                alert("Error "+response.status+"submitting Survey Response");
             }
+        });
+    });
+
+    onSubmitHandle = (()=>{
+        let payload = {
+            response_id:this.props.survey_response.response_id,
+            email: this.state.email,
+            sendcopy: this.state.sendcopy
+        };
+        // console.log()
+        if(this.state.sendcopy){
+            if(this.state.email===undefined || this.state.email===null || this.state.email===""){
+                alert("Please provide valid email id")
+            }
+            else {
+                let regex_email = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                console.log("[SurveyResponse] email veriication result: " + regex_email.test(this.state.email.toLowerCase()));
+
+                if(!regex_email.test(this.state.email.toLowerCase())){
+                    document.getElementById('emailError').innerHTML='Email is invalid';
+                    document.getElementById('emailError').onfocus = true;
+                }
+                else {
+                    this.sendSubmitRequest(payload);
+                }
+            }
+        }
+        else {
+            this.sendSubmitRequest(payload);
         }
     });
 
     showSubmitForm= (()=>{
-        if(!this.state.readOnly){
+        // if((!this.state.readOnly && this.props.survey_response.responses>0)
+        if((!this.state.readOnly)
+        ){
             let regex_email = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return (
                 <div align="center">
@@ -293,7 +325,7 @@ class SurveyResponse extends Component {
                     </div>
                     <button type="button" className="survey-response-submit-button"
                             onClick={()=> {
-                                this.submitSurvey()
+                                this.onSubmitHandle()
                             }}
                     >
                         Submit
@@ -307,7 +339,7 @@ class SurveyResponse extends Component {
         return (
             <div className="">
                 <Header
-                    // loggedIn = {true}
+                    loggedIn = {this.state.loggedIn}
                     handlePageChange = {this.props.handlePageChange}
                 />
                 <div className="survey-response-main-div">

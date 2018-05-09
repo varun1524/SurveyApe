@@ -109,6 +109,7 @@ class SignUp extends Component {
                             isLoggedIn: false,
                             message: "Error while adding userdata"
                         });
+                        alert("Error while adding userdata");
                         // this.props.history.push("/signup")
                     }
                     else if (response.status === 302) {
@@ -117,7 +118,7 @@ class SignUp extends Component {
                             isLoggedIn: false,
                             message: "User already exists with emailId"
                         });
-                        // this.props.history.push("/signup")
+                        alert("User already exists with emailId");
                     }
                     else {
                         this.setState({
@@ -125,6 +126,7 @@ class SignUp extends Component {
                             isLoggedIn: false,
                             message: "Error while signing up."
                         });
+                        alert("Error while signing up.");
                     }
                 });
         }
