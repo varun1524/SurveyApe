@@ -22,56 +22,55 @@ import java.awt.*;
 
 import static org.junit.Assert.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = SurveyController.class)
-@SpringBootTest
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
-
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(classes = SurveyController.class)
+//@SpringBootTest
+//@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SurveyControllerTest {
-    private MockMvc mockMvc;
+//    private MockMvc mockMvc;
 
-    @Autowired
-    private WebApplicationContext wac;
-
-
-
-    @Before
-    public void setUp() throws Exception {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-    }
+//    @Autowired
+//    private WebApplicationContext wac;
 
 
-    @Test
-    public void createSurvey() {
-//        mockMvc.perform(MockMvcBuilders.get("\create").accept(MediaType.APPLICATION_JSON))
-//                .andExpect(jsonPath("$",hasSize(4))).andDo(print());
-    }
 
-    @Test
-    public void updateSurvey() {
-    }
+//    @Before
+//    public void setUp() throws Exception {
+//        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+//    }
 
-    @Test
-    public void fetchSurvey() {
-    }
 
-    @Test
-    public void deleteQuestion() {
-    }
-
-    @Test
-    public void deleteoption() {
-    }
-
-    @Test
-    public void deleteSurvey() {
-    }
-
-    @Test
-    public void shareSurvey() {
-    }
-
-    @Test
-    public void publishSurvey() {
-    }
+//    @Test
+//    public void createSurvey() {
+////        mockMvc.perform(MockMvcBuilders.get("\create").accept(MediaType.APPLICATION_JSON))
+////                .andExpect(jsonPath("$",hasSize(4))).andDo(print());
+//    }
+//
+//    @Test
+//    public void updateSurvey() {
+//    }
+//
+//    @Test
+//    public void fetchSurvey() {
+//    }
+//
+//    @Test
+//    public void deleteQuestion() {
+//    }
+//
+//    @Test
+//    public void deleteoption() {
+//    }
+//
+//    @Test
+//    public void deleteSurvey() {
+//    }
+//
+//    @Test
+//    public void shareSurvey() {
+//    }
+//
+//    @Test
+//    public void publishSurvey() {
+//    }
 }

@@ -137,6 +137,10 @@ class Header extends Component {
                         }, 500);
                     })
                 }
+                else {
+                    showAlert("Failed to create a survey. Please try again", alert_types.ERROR, this);
+                    this.closeCreateSurveyModal();
+                }
             });
         }
 
