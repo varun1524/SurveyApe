@@ -238,13 +238,13 @@ public class SurveyController {
     }
 
     @RequestMapping(value = "/savedate/{surveyId}/{endDate}", method = RequestMethod.GET)
-    public ResponseEntity saveEndSurvey(@PathVariable String surveyId,String endDate, HttpSession session){
+    public ResponseEntity saveEndSurvey(@PathVariable String surveyId,@PathVariable String endDate, HttpSession session){
         HttpStatus status = HttpStatus.BAD_REQUEST;
         Map resMap = new HashMap();
         try {
             if(surveyId!= null){
                 System.out.println("[SurveyController] surveyId: "+surveyId);
-                if(surveyId!=null&& endDate!=null&& endDate.length()>10){
+                if(surveyId!=null&& endDate!=null&& endDate.length()>=10){
                     Date date = surveyService.saveEndSurvey(surveyId, endDate);
                     if(date!=null){
                         status = HttpStatus.OK;
