@@ -77,7 +77,8 @@ class StatisticsDashboard extends Component {
         let server_dataset = data.response_count;
         let option_labels = []
         data.options_list.map((each_opt)=>{
-            option_labels.push(each_opt.option_text);
+            let trimed_option_text = each_opt.option_text.length > 10?each_opt.option_text.slice(0,10):each_opt.option_text;
+            option_labels.push(trimed_option_text);
         });
         let new_data = this.state.data;
         new_data.labels = option_labels;
