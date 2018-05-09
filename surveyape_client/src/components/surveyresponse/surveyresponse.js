@@ -365,8 +365,8 @@ class SurveyResponse extends Component {
                     handlePageChange = {this.props.handlePageChange}
                 />
                 <div className="survey-response-main-div">
-                    Survey ID: {this.props.survey.survey_id}<br/>
-                    Survey Name: {this.props.survey.survey_name}
+                    {/*Survey ID: {this.props.survey.survey_id}<br/>*/}
+                    <label style={{fontSize:32}}>Survey Name: {this.props.survey.survey_name}</label>
                     {this.generateSurveyForm()}
                     <br/>
                     <br/>
