@@ -9,6 +9,10 @@ import '../../stylesheets/statistics/StatisticsHome.css';
 
 import {connect} from "react-redux";
 
+import {alert_types} from '../../config/alert_types';
+import AlertContainer from 'react-alert';
+import {alertOptions, showAlert} from "../../config/alertConfig";
+
 class StatisticsHome extends Component {
 
     constructor(){
@@ -78,16 +82,19 @@ class StatisticsHome extends Component {
                         })
                     });
                 }else if(response.status === 405){
-                    console.log(" [StatisticHome] Error 405 in getSurveyById")
-                    alert("Survey do not have enough data for statistic !!!")
+                    console.log(" [StatisticHome] Error 405 in getSurveyById");
+                    showAlert("Survey do not have enough data for statistic !!!", alert_types.INFO, this);
+                    // alert("Survey do not have enough data for statistic !!!")
 
                 }else if(response.status===404){
-                    console.log(" [StatisticHome] Error 404 in getSurveyById")
-                    alert("Error 404 in getSurveyById")
+                    console.log(" [StatisticHome] Error 404 in getSurveyById");
+                    showAlert("Error 404 in getSurveyById", alert_types.ERROR, this);
+                    // alert("Error 404 in getSurveyById");
                 }
                 else if(response.status===400){
-                    console.log(" [StatisticHome] Error 400 in getSurveyById")
-                    alert("Error 400 in getSurveyById")
+                    console.log(" [StatisticHome] Error 400 in getSurveyById");
+                    showAlert("Error while fetching stats data", alert_types.ERROR, this);
+                    // alert("Error 400 in getSurveyById");
                 }
             });
         }
@@ -126,8 +133,10 @@ class StatisticsHome extends Component {
 
                 <div className="statistics-dashboard">
                     <div className="statistics-dashboard-header">
-                        <span className="statistics-survey_name">{this.state.survey_name}</span>
-                        <span className="statistics-survey-type"> [ {this.state.survey_type} ]</span>
+                        <span className="statistics-survey_name">{this.state.survey_name}
+                            <span className="statistics-survey-type"> [ {this.state.survey_type} ]</span>
+                        </span>
+
 
                         <span className="statistics-date-label"><span style={{'font-size' : '14px'}}>Survey End Date: </span><strong>{this.state.end_date}</strong></span>
                         <span className="statistics-date-label"><span style={{'font-size' : '14px'}}>Survey Start Date: </span><strong>{this.state.start_time}</strong></span>
@@ -146,6 +155,7 @@ class StatisticsHome extends Component {
 
                     {this.getQuestionComponent()}
                 </div>
+                <AlertContainer ref={a => this.msg = a} {...alertOptions}/>
             </div>
 
         );

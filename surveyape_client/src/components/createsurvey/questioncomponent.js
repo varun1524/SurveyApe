@@ -7,6 +7,10 @@ import {addQuestion, editQuestion,editOption, addOption, updateSurvey} from "../
 import {Glyphicon} from "react-bootstrap";
 import StarRatingComponent from 'react-star-rating-component';
 
+import {alert_types} from '../../config/alert_types';
+import AlertContainer from 'react-alert';
+import {alertOptions, showAlert} from "../../config/alertConfig";
+
 class QuestionComponent extends Component {
 
     constructor() {
@@ -66,16 +70,19 @@ class QuestionComponent extends Component {
                 if(response.status === 200){
                     response.json().then((data)=>{
                         console.log("[QuestionComponent] deleteOption() ",data);
-                        alert("Option deleted successfully !!!")
+                        showAlert("Option deleted successfully !!!", alert_types.SUCCESS, this);
+                        // alert("Option deleted successfully !!!");
                         this.props.updateSurvey(data);
                     });
                 }else{
-                    alert("Failed to deleted option !!!")
+                    showAlert("Failed to deleted option !!!", alert_types.ERROR, this);
+                    // alert("Failed to deleted option !!!");
                     console.log("[QuestionComponent] Failed to delete Option")
 
                 }
             }).catch((error)=>{
-            alert("Failed to deleted option !!!")
+            showAlert("Failed to deleted option !!!", alert_types.ERROR, this);
+            // alert("Failed to deleted option !!!");
             console.log("[QuestionComponent] Error",error)
         })
     }
@@ -88,16 +95,19 @@ class QuestionComponent extends Component {
                 if(response.status === 200){
                     response.json().then((data)=>{
                         console.log("[QuestionComponent] deletequestion() ",data);
-                        alert("Question deleted successfully !!!")
+                        showAlert("Question deleted successfully !!!", alert_types.SUCCESS, this);
+                        // alert("Question deleted successfully !!!");
                         this.props.updateSurvey(data);
                     });
                 }else{
-                    alert("Failed to deleted question !!!")
+                    showAlert("Failed to deleted question !!!", alert_types.ERROR, this);
+                    // alert("Failed to deleted question !!!");
                     console.log("[QuestionComponent] Failed to delete question")
 
                 }
             }).catch((error)=>{
-            alert("Failed to deleted question !!!");
+            showAlert("Failed to deleted question !!!", alert_types.ERROR, this);
+            // alert("Failed to deleted question !!!");
             console.log("[QuestionComponent] Error",error)
         })
     }
@@ -136,7 +146,7 @@ class QuestionComponent extends Component {
                     </div>
                     <button type="button"
                             className="delete-option-button"
-                            onClick={()=>{this.deletequestion(this.props.questions[this.props.index_id].question_id)}}>Delete Q/O</button>
+                            onClick={()=>{this.deletequestion(this.props.questions[this.props.index_id].question_id)}}>Delete</button>
                 </div>
             );
         }
@@ -154,7 +164,7 @@ class QuestionComponent extends Component {
                     <button type="button" className="add-image-option-button-dd" onClick={()=>{this.addOptionView()}}></button>
                     <button type="button"
                             className="delete-option-button"
-                            onClick={()=>{this.deletequestion(this.props.questions[this.props.index_id].question_id)}}>Delete Q/O</button>
+                            onClick={()=>{this.deletequestion(this.props.questions[this.props.index_id].question_id)}}>Delete</button>
                 </div>
             );
         }
@@ -171,7 +181,7 @@ class QuestionComponent extends Component {
                     <button type="button" className="add-image-option-button-dd" onClick={()=>{this.addOptionView()}}/>
                     <button type="button"
                             className="delete-option-button"
-                            onClick={()=>{this.deletequestion(this.props.questions[this.props.index_id].question_id)}}>Delete Q/O</button>
+                            onClick={()=>{this.deletequestion(this.props.questions[this.props.index_id].question_id)}}>Delete</button>
                 </div>
             );
         }
@@ -474,6 +484,7 @@ class QuestionComponent extends Component {
                     </div>
 
                 </div>
+                <AlertContainer ref={a => this.msg = a} {...alertOptions}/>
             </div>
         );
 

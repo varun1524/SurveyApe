@@ -14,6 +14,7 @@ public class MailUtility {
     }
 
     public static final String url = "http://localhost:3000";
+    //    public static final String url = "http://ec2-54-193-69-76.us-west-1.compute.amazonaws.com:3000";
     public static final String generalurl = url+"/survey/";
     public static final String openurl = url+"/surveyresponse/o/";
     public static final String closedurl = url+"/surveyresponse/c/";

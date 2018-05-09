@@ -112,32 +112,7 @@ public class SurveyResponseController {
             System.out.println("getSurveyAndResponseByResponseId:	" + responseId);
             SurveyResponse surveyResponse = surveyResService.getSurveyResponseById(responseId);
             if(surveyResponse!=null){
-                if(surveyResponse.getSurvey().getSurveyType().toLowerCase().equals(SurveyType.CLOSED)){
-                    String email = null;
-                    if(session.getAttribute("email")!=null){
-                        email = session.getAttribute("email").toString();
-                        if(surveyResponse.getEmail().equals(email)){
-                            responseEntity = new ResponseEntity(surveyResponse, HttpStatus.OK);
-                        }
-                        else {
-                            responseEntity = new ResponseEntity(null, HttpStatus.FORBIDDEN);
-                        }
-                    }
-                    else {
-                        email = surveyResponse.getEmail();
-                        User user = userService.findByEmail(email);
-                        if(user==null){
-                            responseEntity = new ResponseEntity(null, HttpStatus.PAYMENT_REQUIRED);
-                        }
-                        else {
-                            responseEntity = new ResponseEntity(null, HttpStatus.UNAUTHORIZED);
-                        }
-
-                    }
-                }
-                else {
-                    responseEntity = new ResponseEntity(surveyResponse, HttpStatus.OK);
-                }
+                responseEntity = new ResponseEntity(surveyResponse, HttpStatus.OK);
             }
             else {
                 responseEntity = new ResponseEntity(null, HttpStatus.NOT_FOUND);
@@ -147,6 +122,51 @@ public class SurveyResponseController {
             e.printStackTrace();
         }
         return responseEntity;
+
+//        try {
+//            System.out.println("getSurveyAndResponseByResponseId:	" + responseId);
+//            SurveyResponse surveyResponse = surveyResService.getSurveyResponseById(responseId);
+//            if(surveyResponse!=null){
+//
+//
+//
+//
+//
+//                if(surveyResponse.getSurvey().getSurveyType().toLowerCase().equals(SurveyType.CLOSED)){
+//                    String email = null;
+//                    if(session.getAttribute("email")!=null){
+//                        email = session.getAttribute("email").toString();
+//                        if(surveyResponse.getEmail().equals(email)){
+//                            responseEntity = new ResponseEntity(surveyResponse, HttpStatus.OK);
+//                        }
+//                        else {
+//                            responseEntity = new ResponseEntity(null, HttpStatus.FORBIDDEN);
+//                        }
+//                    }
+//                    else {
+//                        email = surveyResponse.getEmail();
+//                        User user = userService.findByEmail(email);
+//                        if(user==null){
+//                            responseEntity = new ResponseEntity(null, HttpStatus.PAYMENT_REQUIRED);
+//                        }
+//                        else {
+//                            responseEntity = new ResponseEntity(null, HttpStatus.UNAUTHORIZED);
+//                        }
+//
+//                    }
+//                }
+//                else {
+//                    responseEntity = new ResponseEntity(surveyResponse, HttpStatus.OK);
+//                }
+//            }
+//            else {
+//                responseEntity = new ResponseEntity(null, HttpStatus.NOT_FOUND);
+//            }
+//        }
+//        catch (Exception e){
+//            e.printStackTrace();
+//        }
+//        return responseEntity;
     }
 
     @JsonView({ResponseView.summary.class})
