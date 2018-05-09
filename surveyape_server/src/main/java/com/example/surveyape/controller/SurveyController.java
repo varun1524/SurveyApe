@@ -74,7 +74,7 @@ public class SurveyController {
 
     @JsonView({SurveyView.summary.class})
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public ResponseEntity fetchSurvey(@RequestParam Map<String, String> map, HttpSession session){
+    public ResponseEntity fetchSurvey(@RequestParam Map<String, String> map){
         ResponseEntity responseEntity = new ResponseEntity(null, HttpStatus.BAD_REQUEST);
         try {
             Survey survey = surveyService.findBySurveyId(map.get("survey_id").toString());

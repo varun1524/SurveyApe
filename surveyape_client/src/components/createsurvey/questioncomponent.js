@@ -146,7 +146,7 @@ class QuestionComponent extends Component {
                     </div>
                     <button type="button"
                             className="delete-option-button"
-                            onClick={()=>{this.deletequestion(this.props.questions[this.props.index_id].question_id)}}>Delete Q/O</button>
+                            onClick={()=>{this.deletequestion(this.props.questions[this.props.index_id].question_id)}}>Delete</button>
                 </div>
             );
         }
@@ -164,7 +164,7 @@ class QuestionComponent extends Component {
                     <button type="button" className="add-image-option-button-dd" onClick={()=>{this.addOptionView()}}></button>
                     <button type="button"
                             className="delete-option-button"
-                            onClick={()=>{this.deletequestion(this.props.questions[this.props.index_id].question_id)}}>Delete Q/O</button>
+                            onClick={()=>{this.deletequestion(this.props.questions[this.props.index_id].question_id)}}>Delete</button>
                 </div>
             );
         }
@@ -181,7 +181,7 @@ class QuestionComponent extends Component {
                     <button type="button" className="add-image-option-button-dd" onClick={()=>{this.addOptionView()}}/>
                     <button type="button"
                             className="delete-option-button"
-                            onClick={()=>{this.deletequestion(this.props.questions[this.props.index_id].question_id)}}>Delete Q/O</button>
+                            onClick={()=>{this.deletequestion(this.props.questions[this.props.index_id].question_id)}}>Delete</button>
                 </div>
             );
         }
