@@ -38,10 +38,11 @@ class QuestionDashboard extends Component {
         .then((response)=>{
           if(response.status === 200){
               // console.log("[questiondashboard] publishSurvey successful");
-              alert("Survey published successfully !!!");
+
               response.json().then((data)=>{
                   console.log("[QuestionDashboard] Save Survey publish to database after api call",data);
-
+                  let str = this.props.survey.ispublished?"unpublished":"published";
+                  alert("Survey "+ str +" successfully !!!");
                   this.props.changePublishState();
               });
           }
