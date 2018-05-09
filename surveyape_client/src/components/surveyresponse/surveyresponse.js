@@ -84,6 +84,7 @@ class SurveyResponse extends Component {
         else if(this.props.match.params.hasOwnProperty("response_id")){
             API.getSurveyAndResponseByResponseId(this.props.match.params.response_id).then((response)=>{
                 console.log(response.status);
+                this.props.validateSession();
                 if(response.status===200){
                     response.json().then((data)=>{
                         console.log("getSurveyAndResponseByResponseId: ", data);
