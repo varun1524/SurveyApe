@@ -27,7 +27,7 @@ class App extends Component {
                 response.json().then((data) => {
                     this.props.login_success(data);
                 });
-                this.handlePageChange("/home");
+                //this.handlePageChange("/home");
             }
             else if(response.status === 404) {
                 this.setState({
@@ -91,24 +91,28 @@ class App extends Component {
                     <Route path= "/survey/:survey_id" render = {(match) => (
                         <SurveyResponse
                             handlePageChange = {this.handlePageChange}
+                            validateSession = {this.validateSession}
                             {...match}
                         />)}
                     />
                     <Route exact path= "/surveyresponse/:response_id" render = {(match) => (
                         <SurveyResponse
                             handlePageChange = {this.handlePageChange}
+                            validateSession = {this.validateSession}
                             {...match}
                         />)}
                     />
                     <Route exact path= "/surveyresponse/c/:cresponse_id" render = {(match) => (
                         <SurveyResponse
                             handlePageChange = {this.handlePageChange}
+                            validateSession = {this.validateSession}
                             {...match}
                         />)}
                     />
                     <Route exact path= "/surveyresponse/o/:oresponse_id" render = {(match) => (
                         <SurveyResponse
                             handlePageChange = {this.handlePageChange}
+                            validateSession = {this.validateSession}
                             {...match}
                         />)}
                     />
