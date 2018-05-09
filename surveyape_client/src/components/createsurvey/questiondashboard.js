@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import QuestionComponent from './questioncomponent';
 import * as API from './../../api/API';
 import {bindActionCreators} from 'redux';
-import {updateSurvey,updateSurveyNameDate, changePublishState, closeSurvey} from './../../actions/survey';
+import {updateSurvey,updateSurveyNameDate, changePublishState, closeSurvey,saveEndDate} from './../../actions/survey';
 import Spinner from 'react-spinkit';
 
 import './../../stylesheets/createsurvey/questiondashboard.css';
@@ -132,6 +132,19 @@ class QuestionDashboard extends Component {
 
     }
 
+    saveEndDate(end_date){
+        console.log("[QuestionDashboard] saveEndDate() end_date: ",end_date);
+        API.saveEndDate(this.props.survey.survey_id,end_date)
+            .then((response)=>{
+                if(response.status === 200){
+                    response.json().then((data)=>{
+                        console.log("[QuestionDashboard] saveEndDate() after server response data: ",data);
+                        this.props.saveEndDate(data)
+                    });
+                }
+            })
+    }
+
     render () {
         console.log("render questiondashboard data ",this.props.survey)
         let display_end_date = this.props.survey.end_date?new Date(this.props.survey.end_date).toDateString():"";
@@ -147,13 +160,14 @@ class QuestionDashboard extends Component {
                     <span className="end-survey-date-label">Survey End Date:</span>
 
                     <input type="date" className="end-survey-datepicker" onChange={(event)=>{
-                        let payload ={
-                            survey_name:this.props.survey.survey_name,
-                            survey_type:this.props.survey.survey_type,
-                            end_date:event.target.value
-                        }
+                        // let payload ={
+                        //     survey_name:this.props.survey.survey_name,
+                        //     survey_type:this.props.survey.survey_type,
+                        //     end_date:event.target.value
+                        // }
 
-                        this.props.updateSurveyNameDate(payload);
+                        //this.props.updateSurveyNameDate(payload);
+                        this.saveEndDate(event.target.value)
                     }}/>
 
                     <button type="button" className="save-survey-button-sample" onClick={() => {this.publishSurvey()}}>{this.props.survey.ispublished?"Unpublish":"Publish"}</button>
@@ -186,6 +200,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         updateSurvey: updateSurvey,
+        saveEndDate:saveEndDate,
         closeSurvey:closeSurvey,
         changePublishState:changePublishState,
         updateSurveyNameDate:updateSurveyNameDate
