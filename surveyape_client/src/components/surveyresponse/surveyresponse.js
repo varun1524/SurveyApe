@@ -243,13 +243,11 @@ class SurveyResponse extends Component {
             if (response.status === 200) {
                 response.json().then((data)=>{
                     console.log("[SurveyResponse submitSurveyResponse: Succesful]", data);
-                    // this.props.createSurveyResponse(data);
                     alert("Survey Submission Successful");
-                    this.props.handlePageChange("/");
                 });
                 this.setState({
                     ...this.state,
-                    is_response_disabled : true
+                    readOnly : true
                 })
             }
             else if (response.status === 404) {
@@ -291,7 +289,9 @@ class SurveyResponse extends Component {
     });
 
     showSubmitForm= (()=>{
-        if(!this.state.readOnly){
+        // if((!this.state.readOnly && this.props.survey_response.responses>0)
+        if((!this.state.readOnly)
+        ){
             let regex_email = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return (
                 <div align="center">
@@ -338,7 +338,7 @@ class SurveyResponse extends Component {
         return (
             <div className="">
                 <Header
-                    // loggedIn = {true}
+                    loggedIn = {this.state.loggedIn}
                     handlePageChange = {this.props.handlePageChange}
                 />
                 <div className="survey-response-main-div">
