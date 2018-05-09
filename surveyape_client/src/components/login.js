@@ -7,8 +7,9 @@ import SignUp from './signup';
 import {login_success} from "../actions/login";
 import * as API from '../api/API';
 import '../stylesheets/signin.css';
-
-// import { withAlert } from 'react-alert';
+import {alert_types} from './../config/alert_types';
+import AlertContainer from 'react-alert';
+import {alertOptions, showAlert} from "../config/alertConfig";
 
 
 class Login extends Component {
@@ -24,6 +25,7 @@ class Login extends Component {
     }
 
     handleLogin = (() => {
+        // showAlert("SHowed Successful", "info", this);
         document.getElementById('emailErr').innerHTML = '';
         console.log('1',this.state.email);
         console.log('1',this.state.password);
@@ -49,33 +51,39 @@ class Login extends Component {
                         console.log(data);
                         this.props.login_success(data);
                     });
-                    this.props.history.push("/home");
-                    // this.props.alert.success('Logged in successfully !!!');
+                    showAlert("Login Successful", alert_types.SUCCESS, this);
+                    setTimeout((()=>{
+                        this.props.history.push("/home");
+                    }),500);
                 }
                 else if (response.status === 203) {
                     this.setState({
                         ...this.state,
                         message: "User not Verified. Please verify your account."
                     });
-                    console.log("User not Verified. Please verify your account.")
-                    alert("User not verified, kindly check your mail to verify your account !!!")
+                    console.log("User not Verified. Please verify your account.");
+                    showAlert("User not verified, kindly check your mail to verify your account !!!", alert_types.ERROR, this);
+                    // alert("User not verified, kindly check your mail to verify your account !!!")
                 }
                 else if (response.status === 404) {
                     this.setState({
                         ...this.state,
                         message: "User not registered. Please sign up"
                     });
-                    alert("User not registered. Please sign up");
+                    showAlert("User not registered. Please sign up", alert_types.ERROR, this);
+                    // alert("User not registered. Please sign up");
                 }
                 else if (response.status === 401) {
                     this.setState({
                         ...this.state,
                         message: "Incorrect Password. Please try again"
                     });
-                    alert("Incorrect Password. Try Again");
+                    showAlert("Incorrect Password. Try Again", alert_types.ERROR, this);
+                    // alert("Incorrect Password. Try Again");
                 }
                 else {
-                    alert("Error while Signing In");
+                    showAlert("Error while Signing In", alert_types.ERROR, this);
+                    // alert("Error while Signing In");
                 }
             });
          }
@@ -120,6 +128,7 @@ class Login extends Component {
                         </div>
                     </form>
                 </div>
+                <AlertContainer ref={a => this.msg = a} {...alertOptions}/>
             </div>
         );
     }

@@ -9,6 +9,10 @@ import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import ShareSurveyModal from 'react-modal';
 
+import {alert_types} from '../../config/alert_types';
+import AlertContainer from 'react-alert';
+import {alertOptions, showAlert} from "../../config/alertConfig";
+
 const customStyles = {
     overlay : {
         position          : 'fixed',
@@ -78,17 +82,21 @@ class mysurvey extends Component {
                         console.log("[mysurvey] deleteSurvey() server response data ", data);
                         //this.props.handlePageChange("/home/createsurvey");
                         this.props.update_surveyor_dashboard(data.created_surveys,data.requested_surveys);
+                        showAlert("Survey deleted successfully", alert_types.SUCCESS, this);
                     })
                 }else if(response.status === 409){
-                  console.log(response.json())
-                    alert("Can not delete survey, as it has been shared with users !!!")
+                  console.log(response.json());
+                    // alert("Can not delete survey, as it has been shared with users !!!")
+                    showAlert("Can not delete survey, as it has been shared with users !!!", alert_types.INFO, this);
                 }else{
-
+                    showAlert("Some error occurred while deleting the survey !!!", alert_types.ERROR, this);
                 }
 
             }).catch((error)=>{
                 console.log("[mysurvey] delete survey error ",error)
-                alert("Failed to delete survey try again later !!!");
+                // alert("Failed to delete survey try again later !!!");
+                showAlert("Some error occurred while deleting the survey !!!", alert_types.ERROR, this);
+
         })
     }
 
@@ -106,13 +114,15 @@ class mysurvey extends Component {
             .then((response) => {
                 if(response.status === 200){
                     response.json().then((data) => {
-                        alert("Survey shared successfully !!!");
+                        showAlert("Survey shared successfully", alert_types.SUCCESS, this);
+                        // alert("Survey shared successfully !!!");
                         this.closeShareSurveyModal()
                         console.log("[mysurvey] shareSurvey API message", data.message);
 
                     });
                 }else{
-                    console.log("[mysurvey] Failed to share the survey!!!")
+                    showAlert("Failed to share the survey", alert_types.ERROR, this);
+                    console.log("[mysurvey] Failed to share the survey!!!");
                 }
 
         });
@@ -184,6 +194,7 @@ class mysurvey extends Component {
                 {/*<button type="button" onClick={() => {*/}
                     {/*this.editSurvey(this.props.survey_json.survey_id)*/}
                 {/*}}>Edit</button>*/}
+                <AlertContainer ref={a => this.msg = a} {...alertOptions}/>
             </div>
         )
     }

@@ -6,6 +6,10 @@ import {bindActionCreators} from 'redux';
 import {updateSurvey,updateSurveyNameDate, changePublishState, closeSurvey,saveEndDate} from './../../actions/survey';
 import Spinner from 'react-spinkit';
 
+import {alert_types} from '../../config/alert_types';
+import AlertContainer from 'react-alert';
+import {alertOptions, showAlert} from "../../config/alertConfig";
+
 import './../../stylesheets/createsurvey/questiondashboard.css';
 
 class QuestionDashboard extends Component {
@@ -42,14 +46,16 @@ class QuestionDashboard extends Component {
               response.json().then((data)=>{
                   console.log("[QuestionDashboard] Save Survey publish to database after api call",data);
                   let str = this.props.survey.ispublished?"unpublished":"published";
-                  alert("Survey "+ str +" successfully !!!");
+                  showAlert("Survey " + str + " successfully !!!", alert_types.SUCCESS, this);
+                  // alert("Survey "+ str +" successfully !!!");
                   this.props.changePublishState();
               });
           }
 
         }).catch((error)=>{
-          alert("Failed to publish !!!");
-          console.log("[QuestionDashboard] publish() error",error);
+            showAlert("Failed to publish !!!", alert_types.ERROR, this);
+            // alert("Failed to publish !!!");
+            console.log("[QuestionDashboard] publish() error",error);
         })
 
 
@@ -63,11 +69,13 @@ class QuestionDashboard extends Component {
             if(response.status === 200){
               response.json().then((data)=>{
                   console.log("[QuestionDashboard] Save Survey to database after api call",data);
-                  alert("Survey Saved successfully !!!")
+                  showAlert("Survey Saved successfully !!!", alert_types.SUCCESS, this);
+                  // alert("Survey Saved successfully !!!")
                   this.props.updateSurvey(data);
               });
             }else{
-                alert("Failed to save survey !!!")
+                showAlert("Failed to save survey !!!", alert_types.ERROR, this);
+                // alert("Failed to save survey !!!")
             }
 
         });
@@ -103,10 +111,12 @@ class QuestionDashboard extends Component {
                     });
                 }
                 else if(response.status===404){
-                    alert("Survey not found for given id");
+                    showAlert("Survey not found for given id", alert_types.ERROR, this);
+                    // alert("Survey not found for given id");
                 }
                 else if(response.status===400) {
-                    alert("Error while fetching survey by id");
+                    showAlert("Error while fetching survey by id", alert_types.ERROR, this);
+                    // alert("Error while fetching survey by id");
                 }
             });
         }
@@ -117,13 +127,15 @@ class QuestionDashboard extends Component {
             .then((response)=>{
                 if(response.status === 200){
                     response.json().then((data)=>{
+                        showAlert("Survey Closed successfully !!!", alert_types.SUCCESS, this);
                         console.log("[QuestionDashboard] closeSurvey() after server response data: ",data);
-                        this.props.closeSurvey(data)
+                        this.props.closeSurvey(data);
                     });
 
 
                 }else{
-                    alert("Failed to close the survey !!!")
+                    showAlert("Failed to close the survey !!!", alert_types.ERROR, this);
+                    // alert("Failed to close the survey !!!");
                 }
 
             }).catch((error)=>{
@@ -184,6 +196,7 @@ class QuestionDashboard extends Component {
                 {/*<div className="survey-name-p">{this.state.survey.survey_name} <span className="survey-type-span">[{this.state.survey.survey_name}]</span></div>*/}
                 {this.displayQuestionComponent()}
                 {/*{this.getPublishandSave()}*/}
+                <AlertContainer ref={a => this.msg = a} {...alertOptions}/>
             </div>
         );
     }
