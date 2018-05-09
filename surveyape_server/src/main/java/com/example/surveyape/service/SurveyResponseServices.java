@@ -120,19 +120,22 @@ public class SurveyResponseServices {
                 SurveyResponse surveyResponse = surveyResRepo.findByResponseId(responseId);
                 if(surveyResponse!=null){
                     surveyResponse.setSubmitted(true);
-                }
-                if(map.get("sendcopy")!=null && Boolean.parseBoolean(map.get("sendcopy").toString().toLowerCase())){
-                    String email = map.get("email")!=null?map.get("email").toString():surveyResponse.getEmail();
-                    if(email!=null){
-                        String msgBody = MailUtility.surveyResponseBody;
-                        String  msgSub = MailUtility.surveyResponseMsg;
-                        surveyResponse.setEmail(email);
-                        mailService.sendEmail(email,msgBody,msgSub);
+                    if(map.get("sendcopy")!=null && Boolean.parseBoolean(map.get("sendcopy").toString().toLowerCase())){
+                        String email = map.get("email")!=null?map.get("email").toString():surveyResponse.getEmail();
+                        if(email!=null){
+                            String msgBody = MailUtility.surveyResponseBody;
+                            String  msgSub = MailUtility.surveyResponseMsg;
+                            surveyResponse.setEmail(email);
+                            mailService.sendEmail(email,msgBody,msgSub);
+                        }
                     }
+                    surveyResRepo.save(surveyResponse);
                 }
-                surveyResRepo.save(surveyResponse);
-                return true;
+                else{
+                    return false;
+                }
 
+                return true;
         }
         return false;
     }
