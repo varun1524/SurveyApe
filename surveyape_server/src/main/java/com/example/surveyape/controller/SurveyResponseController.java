@@ -165,6 +165,10 @@ public class SurveyResponseController {
 				status = HttpStatus.OK;
 				resMap.put("message","Survey response submitted succesfully !!!");
 			}
+			else {
+				status = HttpStatus.NOT_FOUND;
+				resMap.put("message","Survey Response not provided by User. Hence cannot submit survey");
+			}
 		}
 		catch (Exception e){
 			e.printStackTrace();
