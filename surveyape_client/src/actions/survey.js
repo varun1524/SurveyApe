@@ -63,3 +63,12 @@ export function closeSurvey(data) {
 
     }
 }
+
+export function saveEndDate(data) {
+    return {
+        type: actionTypes.SAVE_END_DATE,
+        data
+
+    }
+}
+

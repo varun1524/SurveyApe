@@ -350,3 +350,19 @@ export const closeSurvey = (survey_id) =>
         console.log(error);
         return error;
     });
+
+export const saveEndDate = (survey_id, end_date) =>
+    fetch(`${api}/survey/savedate/${survey_id}/${end_date}`, {
+        method: 'GET',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        credentials:'include'
+    }).then(res => {
+        return res;
+    }).catch(error => {
+        console.log("This is error");
+        console.log(error);
+        return error;
+    });

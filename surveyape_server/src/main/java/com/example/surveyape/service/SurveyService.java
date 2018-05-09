@@ -174,21 +174,25 @@ public class SurveyService {
 				inviteeRepository.save(invitees);
 				String msgBody = "";
 				String subject = "";
+				String url = "";
 				if(survey.getSurveyType().equals("open")){
 					msgBody = MailUtility.open_survey_body+responseId;
+					url = MailUtility.openurl+responseId;
 					msgBody += "\n\n"+MailUtility.thank_team_surveyape;
 					subject = MailUtility.open_survey_subject;
 				}else if(survey.getSurveyType().equals("closed")){
+					url = MailUtility.closedurl+responseId;
 					msgBody = MailUtility.close_survey_body+responseId;
 					msgBody += "\n\n"+MailUtility.thank_team_surveyape;
 					subject = MailUtility.close_survey_subject;
 				}else{
+					url = MailUtility.generalurl+surveyId;
 					msgBody = MailUtility.general_survey_body+surveyId;
 					msgBody += "\n\n"+MailUtility.thank_team_surveyape;
 					subject = MailUtility.general_survey_subject;
 				}
 				try{
-					mailService.sendEmail(email,msgBody,subject);
+					mailService.sendEmail(email,msgBody,subject,url);
 				}catch(Exception exp){
 					System.out.println("[SurveyService] mail to send mail exception: "+exp.getMessage());
 				}
@@ -246,5 +250,21 @@ public class SurveyService {
 		}
 		return endDate;
 
+	}
+
+	public Date saveEndSurvey(String surveyId, String dateStr){
+		Date endDate = null;
+		Survey survey = surveyRepository.findBySurveyId(surveyId);
+		if(survey !=null){
+			try{
+				endDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
+				survey.setSurveyEndDate(endDate);
+				surveyRepository.save(survey);
+			}catch(Exception exp){
+				System.out.println("[SurveyService] saveEndSurvey() exception: "+exp.getMessage());
+			}
+
+		}
+		return endDate;
 	}
 }

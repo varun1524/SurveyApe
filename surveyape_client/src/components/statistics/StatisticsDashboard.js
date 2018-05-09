@@ -15,7 +15,7 @@ class StatisticsDashboard extends Component {
     constructor(){
         super();
         this.state = {
-            question:null,
+            question:{},
             answers:[],
             data:{
                 labels: [],
@@ -176,7 +176,7 @@ class StatisticsDashboard extends Component {
                     loggedIn = {true}
                 />
                 <div className="statistics-dashboard-question-label">
-                    <h4><strong>Question_1</strong></h4>
+                    <h4><strong>{this.state.question?this.state.question.question_text:""}</strong></h4>
                 </div>
 
                 <div className="statistics-dashboard-graph-div">
