@@ -56,7 +56,7 @@ class App extends Component {
             }
         });
     }
-
+    // Adding additional method to prevent infinite loop , when url is opened in multiple tab
     doesSessionExist(){
         API.validateSession().then((response) => {
             console.log(response.status);
