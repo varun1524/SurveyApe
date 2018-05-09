@@ -226,6 +226,9 @@ public class SurveyController {
                     status = HttpStatus.OK;
                     resMap.put("end_date",date);
                 }
+                else{
+                    status = HttpStatus.NOT_FOUND;
+                }
             }
 
         }catch (Exception e){

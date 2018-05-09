@@ -45,16 +45,17 @@ class SurveyResponse extends Component {
             }
             else {
                 alert("[SurveyResponse] Error while checking session existance");
+                return false;
             }
         });
+
     });
 
     componentDidMount(){
-        this.validateSession();
-
         console.log("SurveyResponse params: ", this.props.match.params);
         console.log("SurveyResponse params: ", this.props.match);
         if(this.props.match.params.hasOwnProperty("survey_id")){
+            this.validateSession();
             console.log(this.props.match.params);
             console.log("[surveyresponse] param hasProperty survey_id :", this.props.match.params.hasOwnProperty("survey_id"));
             API.getSurveyById(this.props.match.params.survey_id).then((response)=>{
@@ -63,7 +64,9 @@ class SurveyResponse extends Component {
                     response.json().then((data)=>{
                         console.log("[SurveyResponse]", data);
                         if(data.ispublished){
-                            this.redirectOnExpiredSurvey();
+                            if(this.redirectOnExpiredSurvey(data.end_date)){
+                                this.props.handlePageChange("/");
+                            }
                             this.props.generateSurveyForm(data);
                             this.createSurveyResponse();
                         }
@@ -82,33 +85,48 @@ class SurveyResponse extends Component {
             });
         }
         else if(this.props.match.params.hasOwnProperty("response_id")){
-            API.getSurveyAndResponseByResponseId(this.props.match.params.response_id).then((response)=>{
-                console.log(response.status);
-                this.props.validateSession();
+            API.validateSession().then((response)=>{
                 if(response.status===200){
                     response.json().then((data)=>{
-                        console.log("getSurveyAndResponseByResponseId: ", data);
-                        if(data.ispublished){
-                            this.props.generateSurveyForm(data.survey);
-                            this.props.createSurveyResponse(data);
-                            this.setReadOnly(data);
+                        this.props.login_success(data);
+                        this.setState({
+                            ...this.state,
+                            email : data.email,
+                            loggedIn : true
+                        })
+                    });
+                    API.getSurveyAndResponseByResponseId(this.props.match.params.response_id).then((response)=>{
+                        if(response.status===200){
+                            response.json().then((data)=>{
+                                console.log("getSurveyAndResponseByResponseId: ", data);
+                                if(data.survey.ispublished){
+                                    this.props.generateSurveyForm(data.survey);
+                                    this.props.createSurveyResponse(data);
+                                    this.setReadOnly(data);
+                                }
+                                else{
+                                    alert("Survey is not published");
+                                    this.props.handlePageChange("/")
+                                }
+                            });
                         }
-                        else{
-                            alert("Survey is not published");
-                            this.props.handlePageChange("/")
+                        else if(response.status===404){
+                            alert("Error 404 in getSurveyAndResponseByResponseId")
+                        }
+                        else if(response.status===400){
+                            alert("Error 400 in getSurveyAndResponseByResponseId")
                         }
                     });
                 }
-                else if(response.status===404){
-                    alert("Error 404 in getSurveyAndResponseByResponseId")
-                }
-                else if(response.status===400){
-                    alert("Error 400 in getSurveyAndResponseByResponseId")
+                else {
+                    this.props.handlePageChange("/login");
                 }
             });
+
         }
         //Closed Survey
         else if(this.props.match.params.hasOwnProperty("cresponse_id")){
+            this.validateSession();
             API.getSurveyAndResponseByResponseId(this.props.match.params.cresponse_id).then((response)=>{
                 console.log(response.status);
                 if(response.status===200){
@@ -125,22 +143,32 @@ class SurveyResponse extends Component {
                         }
                     });
                 }
-                else if(response.status===203){
-                    alert("Error 203 in User not authorized to access this survey");
+                else if(response.status===403){
+                    alert("User not authorized to access this survey");
                     this.props.handlePageChange("/login");
+                }
+                else if(response.status===401){
+                    alert("User is not Logged In");
+                    this.props.handlePageChange("/login");
+                }
+                else if(response.status===402){
+                    alert("User not registered. Please sign up and provide your response");
+                    this.props.handlePageChange("/signup");
                 }
                 else if(response.status===404){
-                    alert("Error 404 in Response Not Found");
-                    this.props.handlePageChange("/login");
+                    alert("Survey Not Available");
+                    this.props.handlePageChange("/signup");
                 }
                 else if(response.status===400){
-                    alert("Error 400 in getSurveyAndResponseByResponseId");
+                    alert("Internal Error");
                     this.props.handlePageChange("/");
                 }
             });
+
         }
-        //Open Survey
+//Open Survey
         else if(this.props.match.params.hasOwnProperty("oresponse_id")){
+            this.validateSession();
             API.getSurveyAndResponseByResponseId(this.props.match.params.oresponse_id).then((response)=>{
                 console.log(response.status);
                 if(response.status===200){
@@ -177,12 +205,6 @@ class SurveyResponse extends Component {
         responses:[]
     };
 
-    verifyIsSurveyPublisher = ((data)=>{
-        if(data.ispublished){
-
-        }
-    });
-
     createSurveyResponse = (()=>{
         this.survey_response.response_id = uuidv4();
         this.survey_response.email = this.props.user.email;
@@ -210,8 +232,7 @@ class SurveyResponse extends Component {
 
     setReadOnly = ((data)=>{
         console.log("[SurveyResponse] setVisibility: ", data);
-        let end_date_time;
-        let current_date_time = new Date();
+        console.log("[SurveyResponse] setReadOnly :" , data.survey.end_date);
         if(data.issubmitted){
             this.setState({
                 ...this.state,
@@ -219,8 +240,7 @@ class SurveyResponse extends Component {
             })
         }
         else if(data.survey.end_date!==null && data.survey.end_date!==undefined){
-            end_date_time = new Date(data.survey.end_date);
-            if(current_date_time>end_date_time){
+            if(this.redirectOnExpiredSurvey(data.survey.end_date)){
                 this.setState({
                     ...this.state,
                     readOnly : true
@@ -230,12 +250,14 @@ class SurveyResponse extends Component {
     });
 
     redirectOnExpiredSurvey = ((end_date)=>{
+        console.log("[SurveyResponse] enddate", end_date);
         if(end_date!==null && end_date!==undefined){
             let current_date_time = new Date();
             let end_date_time = new Date(end_date);
-            if(current_date_time>end_date_time){
-                this.props.handlePageChange("/")
-            }
+            console.log("[SurveyResponse] end_date_time :" , end_date_time);
+            console.log("[SurveyResponse] current_date_time :" , current_date_time);
+            console.log("[SurveyResponse] redirectOnExpiredSurvey :" , current_date_time > end_date_time);
+            return current_date_time > end_date_time;
         }
     });
 
