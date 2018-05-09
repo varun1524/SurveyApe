@@ -27,7 +27,7 @@ class App extends Component {
                 response.json().then((data) => {
                     this.props.login_success(data);
                 });
-                this.handlePageChange("/home");
+                //this.handlePageChange("/home");
             }
             else if(response.status === 404) {
                 this.setState({

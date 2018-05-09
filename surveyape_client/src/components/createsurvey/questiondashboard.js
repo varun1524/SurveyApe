@@ -134,7 +134,7 @@ class QuestionDashboard extends Component {
 
     render () {
         console.log("render questiondashboard data ",this.props.survey)
-
+        let display_end_date = this.props.survey.end_date?new Date(this.props.survey.end_date).toDateString():"";
         return(
             <div>
                 {/*<Spinner name="ball-spin-fade-loader" color="coral"/>*/}
@@ -143,7 +143,7 @@ class QuestionDashboard extends Component {
                     {this.props.survey.survey_name}
                     <span className="survey-type-span">[{this.props.survey.survey_type}]</span>
 
-                    <span className="end-survey-date-label">{this.props.survey.end_date}</span>
+                    <span className="end-survey-date-label">{display_end_date}</span>
                     <span className="end-survey-date-label">Survey End Date:</span>
 
                     <input type="date" className="end-survey-datepicker" onChange={(event)=>{
