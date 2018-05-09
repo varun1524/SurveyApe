@@ -163,7 +163,10 @@ public class SurveyService {
 				surveyResponse.setEmail(email.trim());
 				surveyResponse.setResponseId(responseId);
 				surveyResponse.setSurvey(survey);
-				surveyResponseRepository.save(surveyResponse);
+				if(survey.getSurveyType().equals("closed") || survey.getSurveyType().equals("open")){
+					surveyResponseRepository.save(surveyResponse);
+				}
+
 				Invitees invitees = new Invitees();
 				invitees.setEmail(email);
 				invitees.setSurvey(survey);
@@ -201,7 +204,7 @@ public class SurveyService {
 
 		Survey survey = surveyRepository.findBySurveyId(survey_id);
 		if(survey != null){
-			survey.setPublished(survey.getPublished());
+			survey.setPublished(!survey.getPublished());
 			survey.setPublishDate(new Date());
 			surveyRepository.save(survey);
 			return true;
