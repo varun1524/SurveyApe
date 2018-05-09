@@ -133,8 +133,10 @@ class StatisticsHome extends Component {
 
                 <div className="statistics-dashboard">
                     <div className="statistics-dashboard-header">
-                        <span className="statistics-survey_name">{this.state.survey_name}</span>
-                        <span className="statistics-survey-type"> [ {this.state.survey_type} ]</span>
+                        <span className="statistics-survey_name">{this.state.survey_name}
+                            <span className="statistics-survey-type"> [ {this.state.survey_type} ]</span>
+                        </span>
+
 
                         <span className="statistics-date-label"><span style={{'font-size' : '14px'}}>Survey End Date: </span><strong>{this.state.end_date}</strong></span>
                         <span className="statistics-date-label"><span style={{'font-size' : '14px'}}>Survey Start Date: </span><strong>{this.state.start_time}</strong></span>
