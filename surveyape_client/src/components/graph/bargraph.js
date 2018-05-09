@@ -52,12 +52,12 @@ render(){
         options={{
           title:{
             display:true,
-            text:"Monthly task status",
+            text:"",
             fontSize:25
           },
           legend:{
-            display:true,
-            position:"right"
+            display:false,
+            position:"right",
           },
           scales:{
             yAxes: [{
@@ -68,6 +68,11 @@ render(){
                 stepValue:5,
               }
             }],
+              xAxes: [{
+                  ticks: {
+                      fontSize: 20
+                  }
+              }]
           }
         }}
       />

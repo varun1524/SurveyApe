@@ -13,3 +13,18 @@
     margin: 2% 10%;
     border: 1px solid #cccccc;
 }
+
+.statisticboard-graph-image-list{
+    margin-left: 40px;
+    margin-top: 20px;
+}
+
+.statistics-dashboard-img-div{
+    padding: 10px;
+}
+
+.statistics-dashboard-img-number{
+    font-weight: bolder;
+    font-size: 16px;
+    padding: 10px;
+}
