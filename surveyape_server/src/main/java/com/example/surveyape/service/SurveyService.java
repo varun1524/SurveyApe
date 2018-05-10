@@ -63,7 +63,7 @@ public class SurveyService {
 				survey.setSurveyType(map.get("survey_type").toString());
 				survey.setUpdateDate(new Date());
 				// survey.setPublishDate(new SimpleDateFormat("yyyy-MM-dd-HH").parse(map.get("publish_date").toString()));
-				if(map.get("end_date")!=null){
+				if(map.get("end_date")!=null&&map.get("end_date").toString().length()>0 ){
 					Date endDate = new SimpleDateFormat("yyyy-MM-dd").parse(map.get("end_date").toString());
 					survey.setSurveyEndDate(endDate);
 				}
