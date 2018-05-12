@@ -6,13 +6,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
+import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.LinkedList;
 import java.util.List;
 
 @Entity
 public class Question {
-
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
     @JsonProperty("question_id")
 	@JsonView({ SurveyView.summary.class, ResponseView.summary.class , SurveyAndResponseView.summary.class, BasicStatsView.summary.class,ResDistributionStatsView.summary.class})
     @Id

@@ -15,8 +15,8 @@ public class OptionAns {
 
     @JsonProperty("option_id")
     @Id
-//    @GeneratedValue(generator = "uuid")
-//    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
     @JsonView({SurveyView.summary.class, SurveyAndResponseView.summary.class,ResDistributionStatsView.summary.class})
     private String optionId;
 
