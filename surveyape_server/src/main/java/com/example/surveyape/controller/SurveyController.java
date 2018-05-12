@@ -259,7 +259,28 @@ public class SurveyController {
             e.printStackTrace();
         }
         return new ResponseEntity(resMap,status);
+
+
     }
+
+    @JsonView({SurveyView.summary.class})
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    public ResponseEntity uploadQuestion(@RequestBody Map map, HttpSession session){
+        ResponseEntity responseEntity = new ResponseEntity(null, HttpStatus.BAD_REQUEST);
+        try {
+            Survey survey = surveyService.uploadQuestion(map);
+            if(survey!=null){
+                survey = surveyService.findBySurveyId(survey.getSurveyId());
+                responseEntity = new ResponseEntity(survey, HttpStatus.OK);
+
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return responseEntity;
+    }
+
 
 
 }

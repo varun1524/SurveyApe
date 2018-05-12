@@ -367,3 +367,20 @@ export const saveEndDate = (survey_id, end_date) =>
         console.log(error);
         return error;
     });
+
+export const uploadQuestion = (payload) =>
+    fetch(`${api}/survey/upload/`, {
+        method: 'POST',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        credentials:'include',
+        body: JSON.stringify(payload)
+    }).then(res => {
+        return res;
+    }).catch(error => {
+        console.log("This is error");
+        console.log(error);
+        return error;
+    });

@@ -6,9 +6,13 @@ import com.example.surveyape.repository.SurveyRepository;
 import com.example.surveyape.repository.SurveyResponseRepository;
 import com.example.surveyape.utils.MailUtility;
 import com.example.surveyape.utils.QuestionUtility;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 
 import java.util.*;
@@ -85,7 +89,10 @@ public class SurveyService {
         List<Question> questionList = new LinkedList<>();
         for(Map map : questionMapList){
             question = new Question();
-            question.setQuestionId(map.get("question_id").toString());
+            if(map.get("question_id")!=null){
+				question.setQuestionId(map.get("question_id").toString());
+			}
+            //question.setQuestionId(map.get("question_id").toString());
             question.setQuestionText(map.get("question_text").toString());
             question.setQuestionType(map.get("question_type").toString());
             question.setSurvey(survey);
@@ -118,14 +125,20 @@ public class SurveyService {
 	private List<OptionAns> generateAnswersOptions(List<Map> answerMapList, Question question) {
 		OptionAns answerOptions = null;
 		List<OptionAns> answerOptionsList = new LinkedList<>();
-		for (Map map : answerMapList) {
-			answerOptions = new OptionAns();
-			answerOptions.setOptionType(map.get("option_type").toString());
-			answerOptions.setOptionText(map.get("option_text").toString());
-			answerOptions.setOptionId(map.get("option_id").toString());
-			answerOptions.setQuestion(question);
-			answerOptionsList.add(answerOptions);
+		if(answerMapList != null){
+			for (Map map : answerMapList) {
+				answerOptions = new OptionAns();
+				answerOptions.setOptionType(map.get("option_type").toString());
+				answerOptions.setOptionText(map.get("option_text").toString());
+				if(map.get("option_id")!=null){
+					answerOptions.setOptionId(map.get("option_id").toString());
+				}
+
+				answerOptions.setQuestion(question);
+				answerOptionsList.add(answerOptions);
+			}
 		}
+
 		return answerOptionsList;
 	}
 
@@ -266,5 +279,35 @@ public class SurveyService {
 
 		}
 		return endDate;
+	}
+
+	public Survey uploadQuestion(Map map){
+		Survey survey = null;
+		if(map.get("survey_id")!=null){
+			survey = surveyRepository.findBySurveyId(map.get("survey_id").toString().trim());
+			if(map.get("file_content")!=null){
+				System.out.println("[SurveyService] uploadQuestion() "+map.get("file_content").toString().split(",")[1]);
+				//byte[] decodedBytes = Base64.getDecoder().decode(map.get("file_content").toString().split(",")[1]);
+
+				//String decodedString = new String(decodedBytes);
+				//System.out.println("println: "+decodedString);
+				ObjectMapper jsonObjMapper = new ObjectMapper();
+				try {
+					Map<String,Object> dataMap = jsonObjMapper.readValue(map.get("file_content").toString(),new TypeReference<Map<String, Object>>() {});
+					List<Map> questionMapList = (List) dataMap.get("questions");
+					System.out.println(questionMapList);
+					survey.setQuestions(generateQuestionList(questionMapList, survey));
+					survey = surveyRepository.save(survey);
+
+
+					System.out.println("SurveyService upload question survey"+survey);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+			}
+
+		}
+		return survey;
 	}
 }
