@@ -78,7 +78,7 @@ class QuestionSidebar extends Component {
         fileReader.onload = function(event) {
             console.log("[Questionsidebar] onload ",event.target.result);
             superThis.setUploadData(event.target.result);
-            };
+        };
 
         fileReader.readAsText(file);
         //upload_data.survey_id = this.props.survey.survey_id;
@@ -86,7 +86,7 @@ class QuestionSidebar extends Component {
         //this.state.upload_data = upload_data;
         //console.log("[Questionsidebar] uploadQuestionJson :", this.state.upload_data);
 
-        };
+    };
 
 
     uploadQuestionJson(){
@@ -104,7 +104,7 @@ class QuestionSidebar extends Component {
                 }
 
             }).catch((error)=>{
-                console.log("[Questionsidebar] uploadQuestionJson Error after api call")
+            console.log("[Questionsidebar] uploadQuestionJson Error after api call")
         })
 
     }
@@ -112,7 +112,7 @@ class QuestionSidebar extends Component {
 
 
     addQuestion(question_type){
-        let payload ={}
+        let payload ={};
         payload.question_id = uuidv4();
         payload.question_type = question_type;
         payload.question_text = "";
@@ -125,10 +125,10 @@ class QuestionSidebar extends Component {
                 option_type:"text",
                 option_text:"Yes"},
                 {
-                  option_id:uuidv4(),
-                  option_type:"text",
-                  option_text:"No"
-              }]
+                    option_id:uuidv4(),
+                    option_type:"text",
+                    option_text:"No"
+                }];
             this.props.addQuestion(payload);
         }else if(question_type === "ShortAnswer" || question_type === "DateTime" || question_type === "StarRating"){
             payload.options = [{
@@ -147,12 +147,54 @@ class QuestionSidebar extends Component {
                     <a key={question_type.id} href = "#" onClick={() => this.addQuestion(question_type.question_type)}>{question_type.question_type}</a>
                     <hr/>
                 </div>
-
-
-
             )
         });
     }
+
+    exportSurvey = (()=>{
+        let fs = require("fs");
+        //TODO: Implement Model to fetch file name
+        let file_name = prompt("Please Enter file name");
+        console.log("[QuestionSidebar] exportSurvey filename", file_name);
+
+        // let export_survey = {
+        //     a: 1,
+        //     b: 2,
+        //     c: {
+        //         x: 11,
+        //         y: 22
+        //     }
+        // };
+
+        let export_survey = {
+            file_name:file_name,
+            questions:""
+        };
+
+        export_survey.questions = this.props.survey.questions;
+
+        export_survey.questions.map((question)=>{
+            if(question.hasOwnProperty("question_id")){
+                delete question.question_id;
+            }
+            if(question.hasOwnProperty("options")){
+                question.options.map((option=>{
+                    if(option.hasOwnProperty("option_id")){
+                        delete option.option_id;
+                    }
+                }))
+            }
+        });
+
+        console.log("[QuestionSidebar] exportSurvey sampleObject", JSON.stringify(export_survey));
+
+        let data = new Blob([JSON.stringify(export_survey)], {type: 'text'});
+        let csvURL = window.URL.createObjectURL(data);
+        let download_Link = document.createElement('a');
+        download_Link.href = csvURL;
+        download_Link.setAttribute('download', file_name+".txt");
+        download_Link.click();
+    });
 
     render() {
 
@@ -163,7 +205,7 @@ class QuestionSidebar extends Component {
                     {this.renderQuestionTypes()}
                     <a key="upload_json_button" href = "#" onClick={()=>{this.openUploadModal()}}>Upload Questions</a>
                     <hr/>
-                    <a key="upload_json_button" href = "#" onClick={()=>{}}>Export Survey</a>
+                    <a key="upload_json_button" href = "#" onClick={()=>{this.exportSurvey()}}>Export Survey</a>
                     <UploadModal
                         isOpen={this.state.uploadModalOpen}
                         onAfterOpen={this.openUploadModal}
