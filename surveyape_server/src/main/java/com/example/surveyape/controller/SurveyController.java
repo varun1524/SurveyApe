@@ -96,17 +96,26 @@ public class SurveyController {
     public ResponseEntity deleteQuestion(@RequestParam Map<String, String> map, HttpSession session){
         ResponseEntity responseEntity = new ResponseEntity(null, HttpStatus.BAD_REQUEST);
         try {
-            int result = questionService.deleteQuestion(map.get("question_id").toString());
             Survey survey = surveyService.findBySurveyId(map.get("survey_id").toString());
-            if(survey!=null){
-                if(result==1){
-                    responseEntity = new ResponseEntity(survey, HttpStatus.OK);
-                }
-                else {
-                    responseEntity = new ResponseEntity(new HashMap<String, String>().put("message","Failed to delete Question"), HttpStatus.NOT_FOUND);
+            if (survey != null) {
+                if (!survey.getPublished() && survey.getEditable()) {
+                    int result = questionService.deleteQuestion(map.get("question_id").toString());
+                    if (result == 1) {
+                        responseEntity = new ResponseEntity(survey, HttpStatus.OK);
+                    } else {
+                        responseEntity = new ResponseEntity(new HashMap<String, String>().put("message", "Failed to delete Question"), HttpStatus.NOT_FOUND);
+                    }
+                } else {
+                    responseEntity = new ResponseEntity(
+                            new HashMap<String, String>().put("message", "Cannot Delete Question as survey is published"),
+                            HttpStatus.PRECONDITION_FAILED);
                 }
             }
-
+            else {
+                responseEntity = new ResponseEntity(
+                        new HashMap<String, String>().put("message", "Cannot not find survey to delete options"),
+                        HttpStatus.NOT_FOUND);
+            }
         }
         catch (Exception e){
             e.printStackTrace();
@@ -119,17 +128,27 @@ public class SurveyController {
     public ResponseEntity deleteoption(@RequestParam Map<String, String> map, HttpSession session){
         ResponseEntity responseEntity = new ResponseEntity(null, HttpStatus.BAD_REQUEST);
         try {
-            int result = optionAnsService.deleteOption(map.get("option_id").toString());
             Survey survey = surveyService.findBySurveyId(map.get("survey_id").toString());
-            if(survey!=null){
-                if(result==1){
-                    responseEntity = new ResponseEntity(survey, HttpStatus.OK);
+            if (survey != null) {
+                if (!survey.getPublished() && survey.getEditable()) {
+                    int result = optionAnsService.deleteOption(map.get("option_id").toString());
+                    if (result == 1) {
+                        responseEntity = new ResponseEntity(survey, HttpStatus.OK);
+                    } else {
+                        responseEntity = new ResponseEntity(new HashMap<String, String>().put("message", "Failed to delete Option"), HttpStatus.NOT_FOUND);
+                    }
                 }
                 else {
-                    responseEntity = new ResponseEntity(new HashMap<String, String>().put("message","Failed to delete Question"), HttpStatus.NOT_FOUND);
+                    responseEntity = new ResponseEntity(
+                            new HashMap<String, String>().put("message", "Cannot Delete Option as survey is published"),
+                            HttpStatus.PRECONDITION_FAILED);
                 }
             }
-
+            else {
+                responseEntity = new ResponseEntity(
+                        new HashMap<String, String>().put("message", "Cannot not find survey to delete options"),
+                        HttpStatus.NOT_FOUND);
+            }
         }
         catch (Exception e){
             e.printStackTrace();
@@ -145,28 +164,42 @@ public class SurveyController {
         String resMsg = "";
         System.out.println("[SurveyController] delete survey surveyID:"+surveyId);
         try {
-            int result = surveyService.deleteSurvey(surveyId);
 
-            if(result==1){
-                List<Survey> createdSurveys = userService.getAllUserSurvey(session.getAttribute("email").toString());
-                System.out.println("[SurveyController] created" + createdSurveys);
-                List<SurveyResponse> responseSurveyList = surveyResService.getsurveyResponseByEmail(session.getAttribute("email").toString());
+            Survey survey = surveyService.findBySurveyId(surveyId);
+            if(survey!=null){
+                if(!survey.getPublished() && survey.getEditable()){
+                    int result = surveyService.deleteSurvey(surveyId);
+                    if(result==1){
+                        List<Survey> createdSurveys = userService.getAllUserSurvey(session.getAttribute("email").toString());
+                        System.out.println("[SurveyController] created" + createdSurveys);
+                        List<SurveyResponse> responseSurveyList = surveyResService.getsurveyResponseByEmail(session.getAttribute("email").toString());
 
-                responseMap.put("created_surveys", createdSurveys);
-                responseMap.put("requested_surveys", responseSurveyList);
-                status = HttpStatus.OK;
-                resMsg = "Survey id: "+surveyId+" deleted succcessfully :)";
-                responseMap.put("message",resMsg);
-            }else if(result == 2){
-                status = HttpStatus.CONFLICT;
-                resMsg = "Can not delete survey id: "+surveyId+" as it has been shared with users !!!";
-            }else {
-                status = HttpStatus.INTERNAL_SERVER_ERROR;
-                resMsg = "Failed to delte survey id: "+surveyId+" due internal server error !!!";
-                responseMap.put("error",resMsg);
+                        responseMap.put("created_surveys", createdSurveys);
+                        responseMap.put("requested_surveys", responseSurveyList);
+                        status = HttpStatus.OK;
+                        resMsg = "Survey id: "+surveyId+" deleted succcessfully :)";
+                        responseMap.put("message",resMsg);
+                    }else if(result == 2){
+                        status = HttpStatus.CONFLICT;
+                        resMsg = "Can not delete survey id: "+surveyId+" as it has been shared with users !!!";
+                        responseMap.put("error",resMsg);
+                    }else {
+                        status = HttpStatus.BAD_REQUEST;
+                        resMsg = "Failed to delte survey id: "+surveyId+" due internal server error !!!";
+                        responseMap.put("error",resMsg);
+                    }
+                }
+                else {
+                    resMsg = "Cannot delete survey";
+                    responseMap.put("error",resMsg);
+                    status = HttpStatus.PRECONDITION_FAILED;
+                }
             }
-
-
+            else {
+                resMsg = "Could not find survey to delete";
+                responseMap.put("error",resMsg);
+                status = HttpStatus.NOT_FOUND;
+            }
         }
         catch (Exception e){
             e.printStackTrace();
@@ -280,7 +313,4 @@ public class SurveyController {
         }
         return responseEntity;
     }
-
-
-
 }
