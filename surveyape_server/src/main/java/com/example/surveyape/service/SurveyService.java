@@ -296,9 +296,13 @@ public class SurveyService {
 					Map<String,Object> dataMap = jsonObjMapper.readValue(map.get("file_content").toString(),new TypeReference<Map<String, Object>>() {});
 					List<Map> questionMapList = (List) dataMap.get("questions");
 					System.out.println(questionMapList);
-					survey.setQuestions(generateQuestionList(questionMapList, survey));
+					List<Question> questionList = survey.getQuestions();
+					questionList.addAll(generateQuestionList(questionMapList, survey));
+					survey.setQuestions(questionList);
 					survey = surveyRepository.save(survey);
-
+					if (survey != null) {
+						survey = surveyRepository.findBySurveyId(map.get("survey_id").toString().trim());
+					}
 
 					System.out.println("SurveyService upload question survey"+survey);
 				} catch (IOException e) {
