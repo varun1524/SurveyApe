@@ -74,7 +74,11 @@ class QuestionComponent extends Component {
                         // alert("Option deleted successfully !!!");
                         this.props.updateSurvey(data);
                     });
-                }else{
+                }
+                else if(response.status === 412){
+                    showAlert("Survey is not editable. Cannot delete option !!!", alert_types.INFO, this);
+                }
+                else{
                     showAlert("Failed to deleted option !!!", alert_types.ERROR, this);
                     // alert("Failed to deleted option !!!");
                     console.log("[QuestionComponent] Failed to delete Option")
@@ -99,7 +103,11 @@ class QuestionComponent extends Component {
                         // alert("Question deleted successfully !!!");
                         this.props.updateSurvey(data);
                     });
-                }else{
+                }
+                else if(response.status === 412){
+                    showAlert("Survey is not editable. Cannot delete Question !!!", alert_types.INFO, this);
+                }
+                else{
                     showAlert("Failed to deleted question !!!", alert_types.ERROR, this);
                     // alert("Failed to deleted question !!!");
                     console.log("[QuestionComponent] Failed to delete question")
