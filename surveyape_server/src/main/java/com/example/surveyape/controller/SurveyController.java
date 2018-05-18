@@ -270,7 +270,7 @@ public class SurveyController {
         try {
             Survey survey = surveyService.uploadQuestion(map);
             if(survey!=null){
-                survey = surveyService.findBySurveyId(survey.getSurveyId());
+                //survey = surveyService.findBySurveyId(survey.getSurveyId());
                 responseEntity = new ResponseEntity(survey, HttpStatus.OK);
 
             }
