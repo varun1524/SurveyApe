@@ -81,22 +81,29 @@ class mysurvey extends Component {
                         console.log(data);
                         console.log("[mysurvey] deleteSurvey() server response data ", data);
                         //this.props.handlePageChange("/home/createsurvey");
-                        this.props.update_surveyor_dashboard(data.created_surveys,data.requested_surveys);
                         showAlert("Survey deleted successfully", alert_types.SUCCESS, this);
+                        setTimeout((()=>{
+                            this.props.update_surveyor_dashboard(data.created_surveys,data.requested_surveys);
+                        }),500);
                     })
-                }else if(response.status === 409){
-                  console.log(response.json());
+                }
+                else if(response.status === 412){
+                    console.log(response.json());
+                    // alert("Can not delete survey, as it has been shared with users !!!")
+                    showAlert("Cannot delete survey !!!", alert_types.INFO, this);
+                }
+                else if(response.status === 409){
+                    console.log(response.json());
                     // alert("Can not delete survey, as it has been shared with users !!!")
                     showAlert("Can not delete survey, as it has been shared with users !!!", alert_types.INFO, this);
-                }else{
+                }
+                else{
                     showAlert("Some error occurred while deleting the survey !!!", alert_types.ERROR, this);
                 }
-
             }).catch((error)=>{
-                console.log("[mysurvey] delete survey error ",error)
-                // alert("Failed to delete survey try again later !!!");
-                showAlert("Some error occurred while deleting the survey !!!", alert_types.ERROR, this);
-
+            console.log("[mysurvey] delete survey error ",error);
+            // alert("Failed to delete survey try again later !!!");
+            showAlert("Some error occurred while deleting the survey !!!", alert_types.ERROR, this);
         })
     }
 
@@ -116,7 +123,7 @@ class mysurvey extends Component {
                     response.json().then((data) => {
                         showAlert("Survey shared successfully", alert_types.SUCCESS, this);
                         // alert("Survey shared successfully !!!");
-                        this.closeShareSurveyModal()
+                        this.closeShareSurveyModal();
                         console.log("[mysurvey] shareSurvey API message", data.message);
 
                     });
@@ -125,7 +132,7 @@ class mysurvey extends Component {
                     console.log("[mysurvey] Failed to share the survey!!!");
                 }
 
-        });
+            });
     }
 
     openStats() {
@@ -184,7 +191,7 @@ class mysurvey extends Component {
                                   rows="7"
                                   onChange={(event)=>{this.state.surveyee_emails = event.target.value;}}
                                   placeholder="Please type in the email addresses separated by comma"
-                        ></textarea>
+                        />
 
                         <input type="button" className="share-survey-submit" value="Submit" onClick={()=>{this.shareSurvey()}}/>
 
@@ -192,7 +199,7 @@ class mysurvey extends Component {
                     </div>
                 </ShareSurveyModal>
                 {/*<button type="button" onClick={() => {*/}
-                    {/*this.editSurvey(this.props.survey_json.survey_id)*/}
+                {/*this.editSurvey(this.props.survey_json.survey_id)*/}
                 {/*}}>Edit</button>*/}
                 <AlertContainer ref={a => this.msg = a} {...alertOptions}/>
             </div>
