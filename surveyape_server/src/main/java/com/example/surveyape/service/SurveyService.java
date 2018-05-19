@@ -9,6 +9,7 @@ import com.example.surveyape.utils.QuestionUtility;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,11 +29,15 @@ public class SurveyService {
 
 	@Autowired
 	InviteeRepository inviteeRepository;
+
 	@Autowired
 	SurveyResponseRepository surveyResponseRepository;
 
 	@Autowired
 	MailService mailService;
+
+	@Autowired
+	S3ServiceImpl s3Service;
 
 	public Survey createSurvey(Map map, User user) {
 		Survey survey = null;
@@ -129,11 +134,25 @@ public class SurveyService {
 			for (Map map : answerMapList) {
 				answerOptions = new OptionAns();
 				answerOptions.setOptionType(map.get("option_type").toString());
-				answerOptions.setOptionText(map.get("option_text").toString());
+				if(map.get("option_type").toString().equals("image")){
+					String image = map.get("option_text").toString();
+					String imageLink = map.get("option_text").toString();
+					System.out.println("Option_Text type: " + Base64.isBase64(image.substring(image.indexOf(",")+1)));
+					if(Base64.isBase64(image.substring(image.indexOf(",")+1))){
+						System.out.println("Image Data");
+//						String filename = UUID.randomUUID().toString()+".JPG";
+						String filename = UUID.randomUUID().toString();
+						s3Service.uploadImage(filename, image);
+						imageLink = s3Service.getBucketURL()+"/"+filename;
+					}
+					answerOptions.setOptionText(imageLink);
+				}
+				else {
+					answerOptions.setOptionText(map.get("option_text").toString());
+				}
 				if(map.get("option_id")!=null){
 					answerOptions.setOptionId(map.get("option_id").toString());
 				}
-
 				answerOptions.setQuestion(question);
 				answerOptionsList.add(answerOptions);
 			}
