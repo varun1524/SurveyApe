@@ -117,25 +117,25 @@ public class SurveyResponseServices {
 
         if(map.get("response_id")!=null ){
             String responseId = map.get("response_id").toString().trim();
-                SurveyResponse surveyResponse = surveyResRepo.findByResponseId(responseId);
-                if(surveyResponse!=null){
-                    surveyResponse.setSubmitted(true);
-                    if(map.get("sendcopy")!=null && Boolean.parseBoolean(map.get("sendcopy").toString().toLowerCase())){
-                        String email = map.get("email")!=null?map.get("email").toString():surveyResponse.getEmail();
-                        if(email!=null){
-                            String msgBody = MailUtility.surveyResponseBody;
-                            String  msgSub = MailUtility.surveyResponseMsg;
-                            surveyResponse.setEmail(email);
-                            mailService.sendEmail(email,msgBody,msgSub);
-                        }
+            SurveyResponse surveyResponse = surveyResRepo.findByResponseId(responseId);
+            if(surveyResponse!=null){
+                surveyResponse.setSubmitted(true);
+                if(map.get("sendcopy")!=null && Boolean.parseBoolean(map.get("sendcopy").toString().toLowerCase())){
+                    String email = map.get("email")!=null?map.get("email").toString():surveyResponse.getEmail();
+                    if(email!=null){
+                        String msgBody = MailUtility.surveyResponseBody;
+                        String  msgSub = MailUtility.surveyResponseMsg;
+                        surveyResponse.setEmail(email);
+                        mailService.sendEmail(email,msgBody,msgSub);
                     }
-                    surveyResRepo.save(surveyResponse);
                 }
-                else{
-                    return false;
-                }
+                surveyResRepo.save(surveyResponse);
+            }
+            else{
+                return false;
+            }
 
-                return true;
+            return true;
         }
         return false;
     }
@@ -152,5 +152,17 @@ public class SurveyResponseServices {
         }
         return resultSurveyResponses;
 
+    }
+
+    public SurveyResponse getGeneralSurveyResponse(Survey survey, String email){
+        SurveyResponse surveyResponse = null;
+        for(SurveyResponse response : survey.getSurveyResponses()){
+            String temp_email = response.getEmail();
+            if(temp_email!=null && temp_email.equals(email)){
+                surveyResponse = response;
+                break;
+            }
+        }
+        return surveyResponse;
     }
 }
