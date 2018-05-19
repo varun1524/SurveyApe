@@ -170,44 +170,9 @@ class QuestionSidebar extends Component {
     }
 
     exportSurvey = (()=>{
-        //TODO: Implement Model to fetch file name
-
-        // let file_name = prompt("Please Enter file name");
         console.log("[QuestionSidebar] exportSurvey filename", this.state.exportSurveyFileName);
 
-        // let export_survey = {
-        //     a: 1,
-        //     b: 2,
-        //     c: {
-        //         x: 11,
-        //         y: 22
-        //     }
-        // };
-
-        // let export_survey = {
-        //     file_name:this.state.exportSurveyFileName,
-        //     questions:""
-        // };
-        //
-        // export_survey.questions = this.props.survey.questions;
-        //
-        // export_survey.questions.map((question)=>{
-        //     if(question.hasOwnProperty("question_id")){
-        //         delete question.question_id;
-        //     }
-        //     if(question.hasOwnProperty("options")){
-        //         question.options.map((option=>{
-        //             if(option.hasOwnProperty("option_id")){
-        //                 delete option.option_id;
-        //             }
-        //         }))
-        //     }
-        // });
-
-        // let file_name = prompt("Please Enter file name");
-        // console.log("[QuestionSidebar] exportSurvey filename", file_name, new RegExp("[a-zA-Z0-9]+$").test(file_name));
         console.log("[QuestionSidebar] exportSurvey filename", this.state.exportSurveyFileName, this.state.exportSurveyFileName.match(/^[0-9a-zA-Z]+$/));
-        // if(file_name && new RegExp("[a-z0-9]+$").test(file_name)){
         if(this.state.exportSurveyFileName && this.state.exportSurveyFileName.match(/^[0-9a-zA-Z]+$/)){
 
             let export_survey = {
@@ -231,15 +196,7 @@ class QuestionSidebar extends Component {
             });
 
 
-        console.log("[QuestionSidebar] exportSurvey sampleObject", JSON.stringify(export_survey));
-
-
-        // let data = new Blob([JSON.stringify(export_survey)], {type: 'text'});
-        // let csvURL = window.URL.createObjectURL(data);
-        // let download_Link = document.createElement('a');
-        // download_Link.href = csvURL;
-        // download_Link.setAttribute('download', this.state.exportSurveyFileName + ".txt");
-        // download_Link.click();
+            console.log("[QuestionSidebar] exportSurvey sampleObject", JSON.stringify(export_survey));
 
             let data = new Blob([JSON.stringify(export_survey)], {type: 'text'});
             let csvURL = window.URL.createObjectURL(data);
@@ -247,11 +204,16 @@ class QuestionSidebar extends Component {
             download_Link.href = csvURL;
             download_Link.setAttribute('download', this.state.exportSurveyFileName +".txt");
             download_Link.click();
+
+            this.setState({
+                ...this.state,
+                exportSurveyFileName : ""
+            })
         }
         else {
             showAlert("Invalid filename!!", alert_types.ERROR, this);
         }
-
+        this.closeExportSurveyModal();
     });
 
     render() {
@@ -310,7 +272,10 @@ class QuestionSidebar extends Component {
                                 <label className="export-survey-file-label">Please enter the file name :</label>
                                 <input type="text"
                                        onChange={((event)=>{
-                                           this.state.exportSurveyFileName = event.target.value
+                                           this.setState({
+                                               ...this.state,
+                                               exportSurveyFileName : event.target.value
+                                           })
                                        })}
                                        className="upload-question-choose-file"
                                 />
