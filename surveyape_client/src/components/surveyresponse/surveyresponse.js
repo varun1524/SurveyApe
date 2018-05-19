@@ -59,37 +59,106 @@ class SurveyResponse extends Component {
         console.log("SurveyResponse params: ", this.props.match.params);
         console.log("SurveyResponse params: ", this.props.match);
         if(this.props.match.params.hasOwnProperty("survey_id")){
-            this.validateSession();
-            console.log(this.props.match.params);
-            console.log("[surveyresponse] param hasProperty survey_id :", this.props.match.params.hasOwnProperty("survey_id"));
-            API.getSurveyById(this.props.match.params.survey_id).then((response)=>{
-                console.log(response.status);
-                if(response.status===200){
-                    response.json().then((data)=>{
-                        console.log("[SurveyResponse]", data);
-                        if(data.ispublished){
-                            if(this.redirectOnExpiredSurvey(data.end_date)){
-                                this.props.handlePageChange("/");
-                            }
-                            this.props.generateSurveyForm(data);
-                            this.createSurveyResponse();
+            API.validateSession().then((response1)=>{
+                if(response1.status===200){
+                    response1.json().then((data)=>{
+                        console.log("[SurveyResponse] ValidateSession: ", data);
+                        this.setState({
+                            ...this.state,
+                            loggedIn : true,
+                            email : data.email
+                        });
+                        this.props.login_success(data);
+                    });
+                    console.log(this.props.match.params);
+                    console.log("[surveyresponse] param hasProperty survey_id :", this.props.match.params.hasOwnProperty("survey_id"));
+                    API.getGeneralSurveyById(this.props.match.params.survey_id).then((response)=>{
+                        console.log(response.status);
+                        if(response.status===200){
+                            response.json().then((data)=>{
+                                console.log("[SurveyResponse]", data);
+                                if(data.survey.ispublished){
+                                    if(this.redirectOnExpiredSurvey(data.survey.end_date)){
+                                        this.props.handlePageChange("/");
+                                    }
+                                    this.props.generateSurveyForm(data.survey);
+                                    this.props.createSurveyResponse(data);
+                                    this.setReadOnly(data);
+                                    this.setState({
+                                        ...this.state,
+                                        email : data.email,
+                                        showEmail : true
+                                    })
+                                }
+                                else{
+                                    showAlert("Survey is not published", alert_types.ERROR, this);
+                                    // alert("Survey is not published");
+                                    this.props.handlePageChange("/")
+                                }
+                            });
                         }
-                        else{
-                            showAlert("Survey is not published", alert_types.ERROR, this);
-                            // alert("Survey is not published");
-                            this.props.handlePageChange("/")
+                        else if(response.status === 206){
+                            response.json().then((data)=>{
+                                console.log("[SurveyResponse]", data);
+                                if(data.ispublished){
+                                    if(this.redirectOnExpiredSurvey(data.end_date)){
+                                        this.props.handlePageChange("/");
+                                    }
+                                    this.props.generateSurveyForm(data);
+                                    this.createSurveyResponse();
+                                }
+                                else{
+                                    showAlert("Survey is not published", alert_types.ERROR, this);
+                                    // alert("Survey is not published");
+                                    this.props.handlePageChange("/")
+                                }
+                            });
+                        }
+                        else if(response.status===412){
+                            showAlert("User not authorized to access this survey!!", alert_types.ERROR, this);
+                        }
+                        else if(response.status===404){
+                            showAlert("Survey not found", alert_types.ERROR, this);
+                            // alert("Error 404 in getSurveyById");
+                        }
+                        else {
+                            showAlert("Error while fetching survey data", alert_types.ERROR, this);
+                            // alert("Error 400 in getSurveyById");
                         }
                     });
                 }
-                else if(response.status===404){
-                    showAlert("Survey not found", alert_types.ERROR, this);
-                    // alert("Error 404 in getSurveyById");
-                }
                 else {
-                    showAlert("Error while fetching survey data", alert_types.ERROR, this);
-                    // alert("Error 400 in getSurveyById");
+                    API.getSurveyById(this.props.match.params.survey_id).then((response)=>{
+                        console.log(response.status);
+                        if(response.status===200){
+                            response.json().then((data)=>{
+                                console.log("[SurveyResponse]", data);
+                                if(data.ispublished){
+                                    if(this.redirectOnExpiredSurvey(data.end_date)){
+                                        this.props.handlePageChange("/");
+                                    }
+                                    this.props.generateSurveyForm(data);
+                                    this.createSurveyResponse();
+                                }
+                                else{
+                                    showAlert("Survey is not published", alert_types.ERROR, this);
+                                    // alert("Survey is not published");
+                                    this.props.handlePageChange("/")
+                                }
+                            });
+                        }
+                        else if(response.status===404){
+                            showAlert("Survey not found", alert_types.ERROR, this);
+                            // alert("Error 404 in getSurveyById");
+                        }
+                        else {
+                            showAlert("Error while fetching survey data", alert_types.ERROR, this);
+                            // alert("Error 400 in getSurveyById");
+                        }
+                    });
                 }
             });
+
         }
         else if(this.props.match.params.hasOwnProperty("response_id")){
             API.validateSession().then((response)=>{
