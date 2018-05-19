@@ -26,6 +26,22 @@ body {
     color: #000;
 }
 
+.upload-question-choose-file {
+    width: 100%;
+    margin-bottom: 5%;
+}
+
+.upload-question-modal-button-close {
+    float: right;
+    width: 45%;
+    background-color: #FF5B38;
+
+}
+
+.upload-question-modal-button-upload {
+    float: left;
+    width: 45%;
+}
 /*.component_div {*/
     /*border: 1px solid #000;*/
     /*margin-top: 2px;*/

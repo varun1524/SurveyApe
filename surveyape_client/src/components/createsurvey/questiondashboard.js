@@ -51,6 +51,9 @@ class QuestionDashboard extends Component {
                   this.props.changePublishState();
               });
           }
+          else if(response.status ===401){
+              showAlert("User not authorized to access current page. Please login")
+          }
 
         }).catch((error)=>{
             showAlert("Failed to publish !!!", alert_types.ERROR, this);
@@ -73,7 +76,11 @@ class QuestionDashboard extends Component {
                   // alert("Survey Saved successfully !!!")
                   this.props.updateSurvey(data);
               });
-            }else{
+            }
+            else if(response.status ===401){
+                showAlert("User not authorized to access current page. Please login")
+            }
+            else{
                 showAlert("Failed to save survey !!!", alert_types.ERROR, this);
                 // alert("Failed to save survey !!!")
             }
@@ -165,11 +172,11 @@ class QuestionDashboard extends Component {
                 {/*<Spinner name="ball-spin-fade-loader" color="coral"/>*/}
                 <div className="survey-name-p">
 
-                    {this.props.survey.survey_name}
+                    <span className="survey_name_span">{this.props.survey.survey_name}</span>
                     <span className="survey-type-span">[{this.props.survey.survey_type}]</span>
 
                     <span className="end-survey-date-label">{display_end_date}</span>
-                    <span className="end-survey-date-label">Survey End Date:</span>
+                    <span className="end-survey-date-label">End Date:</span>
 
                     <input type="date" className="end-survey-datepicker" onChange={(event)=>{
                         // let payload ={

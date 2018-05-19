@@ -10,7 +10,11 @@ import Header from './header';
 import * as API from "../api/API";
 
 import {addQuestion} from "../actions/survey";
-import {update_surveyor_dashboard} from '../actions/login';
+import {alert_types} from './../config/alert_types';
+import {update_surveyor_dashboard} from './../actions/login';
+import {login_success} from './../actions/login';
+import AlertContainer from 'react-alert';
+import {alertOptions, showAlert} from "./../config/alertConfig";
 
 class Home extends Component {
 
@@ -26,34 +30,53 @@ class Home extends Component {
     }
 
     componentDidMount(){
-        this.props.validateSession();
         console.log("[Home] - componentDidMount");
-        API.getSurveyList().then((response) => {
+        API.validateSession().then((response) => {
             console.log(response.status);
             if(response.status === 200){
                 response.json().then((data) => {
-                    console.log("[Home] - componentDidMount created_surveys", data.created_surveys);
-                    /*this.setState({
-                        ...this.state,
-                        created_surveys : data.created_surveys,
-                        requested_surveys : data.requested_surveys
-                    })*/
-                    this.props.update_surveyor_dashboard(data.created_surveys,data.requested_surveys);
+                    this.props.login_success(data);
                 });
+                API.getSurveyList().then((response) => {
+                    console.log(response.status);
+                    if(response.status === 200){
+                        response.json().then((data) => {
+                            console.log("[Home] - componentDidMount created_surveys", data.created_surveys);
+                            /*this.setState({
+                                ...this.state,
+                                created_surveys : data.created_surveys,
+                                requested_surveys : data.requested_surveys
+                            })*/
+                            this.props.update_surveyor_dashboard(data.created_surveys,data.requested_surveys);
+                        });
 
+                    }
+                    else if(response.status === 404) {
+                        this.setState({
+                            ...this.state,
+                            isLoggedIn : false,
+                            email : ""
+                        });
+                        showAlert("Error while getting Survey and Response List", )
+                    }
+                    else {
+                        showAlert("Error while getting Survey and Response List", )
+                    }
+                });
             }
-            else if(response.status === 404) {
+            else if(response.status === 401) {
                 this.setState({
                     ...this.state,
                     isLoggedIn : false,
                     email : ""
                 });
-
+                this.props.handlePageChange("/login");
             }
             else {
-
+                this.props.handlePageChange("/login");
             }
         });
+
 
     }
 
@@ -82,12 +105,12 @@ class Home extends Component {
                         </div>
                     )}/>
                     {/*<Route path="/home/dash" render = {()=> {*/}
-                        {/*return(*/}
-                            {/*<div>*/}
-                                {/*<SurveyorDashboard/>*/}
-                                {/*<SurveyeeDashboard/>*/}
-                            {/*</div>*/}
-                        {/*)*/}
+                    {/*return(*/}
+                    {/*<div>*/}
+                    {/*<SurveyorDashboard/>*/}
+                    {/*<SurveyeeDashboard/>*/}
+                    {/*</div>*/}
+                    {/*)*/}
                     {/*}}/>*/}
                     <Route path= "/home/createsurvey/:survey_id" render = {(match) => (
                         <CreateSurvey
@@ -103,9 +126,8 @@ class Home extends Component {
                         />)}
                     />
                 </Switch>
-
+                <AlertContainer ref={a => this.msg = a} {...alertOptions}/>
             </div>
-
         );
     }
 }
@@ -121,7 +143,12 @@ function mapStateToProps(state) {
 
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({update_surveyor_dashboard: update_surveyor_dashboard}, dispatch)
+    return bindActionCreators(
+        {
+            update_surveyor_dashboard: update_surveyor_dashboard,
+            login_success:login_success
+        }
+        , dispatch)
 }
 
 

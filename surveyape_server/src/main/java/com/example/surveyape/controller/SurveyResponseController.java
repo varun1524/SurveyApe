@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import com.example.surveyape.entity.Survey;
 import com.example.surveyape.entity.User;
+import com.example.surveyape.service.SurveyService;
 import com.example.surveyape.service.UserService;
 import com.example.surveyape.utils.SurveyType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class SurveyResponseController {
 
     @Autowired
     SurveyResponseServices surveyResService;
+
+    @Autowired
+    SurveyService surveyService;
 
     @Autowired
     UserService userService;
@@ -123,6 +127,7 @@ public class SurveyResponseController {
         }
         return responseEntity;
 
+        //region("Close Survey Condition Previous Requirement: 'Login Required'")
 //        try {
 //            System.out.println("getSurveyAndResponseByResponseId:	" + responseId);
 //            SurveyResponse surveyResponse = surveyResService.getSurveyResponseById(responseId);
@@ -167,6 +172,8 @@ public class SurveyResponseController {
 //            e.printStackTrace();
 //        }
 //        return responseEntity;
+        //#end_region
+
     }
 
     @JsonView({ResponseView.summary.class})
@@ -209,6 +216,42 @@ public class SurveyResponseController {
             e.printStackTrace();
         }
         return new ResponseEntity(resMap,status);
+    }
+
+    @JsonView({SurveyAndResponseView.summary.class})
+    @RequestMapping(value = "/general", method = RequestMethod.GET)
+    public ResponseEntity fetchGeneralSurvey(@RequestParam Map<String, String> map, HttpSession session){
+        ResponseEntity responseEntity = new ResponseEntity(null, HttpStatus.BAD_REQUEST);
+        try {
+            String survey_id = map.get("survey_id").toString();
+            if(session.getAttribute("email")!=null){
+                String email = session.getAttribute("email").toString();
+                if(survey_id!=null){
+                    Survey survey = surveyService.findBySurveyId(survey_id);
+                    if(survey!=null){
+                        if(survey.getSurveyType().equals(SurveyType.GENERAL)){
+                            SurveyResponse surveyResponse = surveyResService.getGeneralSurveyResponse(survey, email);
+                            if(surveyResponse!=null){
+                                responseEntity = new ResponseEntity(surveyResponse, HttpStatus.OK);
+                            }
+                            else {
+                                responseEntity = new ResponseEntity(survey, HttpStatus.PARTIAL_CONTENT);
+                            }
+                        }
+                        else {
+                            responseEntity = new ResponseEntity(null, HttpStatus.PRECONDITION_FAILED);
+                        }
+                    }
+                    else {
+                        responseEntity = new ResponseEntity(null, HttpStatus.NOT_FOUND);
+                    }
+                }
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return responseEntity;
     }
 
 }

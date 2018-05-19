@@ -203,6 +203,22 @@ export const getSurveyById = (surveyId) =>
         return error;
     });
 
+export const getGeneralSurveyById = (surveyId) =>
+    fetch(`${api}/response/general?survey_id=${surveyId}`, {
+        method: 'GET',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        credentials:'include'
+    }).then(res => {
+        return res;
+    }).catch(error => {
+        console.log("This is error");
+        console.log(error);
+        return error;
+    });
+
 export const getSurveyBasicStats = (surveyId) =>
     fetch(`${api}/stats/basic/${surveyId}`, {
         method: 'GET',

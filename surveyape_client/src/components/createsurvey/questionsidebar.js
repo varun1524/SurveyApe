@@ -7,7 +7,8 @@ import * as API from './../../api/API';
 import uuidv4 from 'uuid';
 import '../../stylesheets/createsurvey/questionsidebar.css';
 import {alert_types} from "../../config/alert_types";
-import {showAlert} from "../../config/alertConfig";
+import AlertContainer from 'react-alert';
+import {alertOptions, showAlert} from "../../config/alertConfig";
 
 
 const customStyles = {
@@ -30,7 +31,7 @@ const customStyles = {
         padding               : '0px',
         alignContent          : 'center',
         width                 : '50%',
-        height                : '60%'
+        height                : '40%'
     }
 
 
@@ -44,7 +45,8 @@ class QuestionSidebar extends Component {
             upload_data:{}
         }
         this.openUploadModal = this.openUploadModal.bind(this);
-        //this.setUploadData = this.setUploadData.bind(this);
+        // this.closeUploadModal = this.closeUploadModal.bind(this);
+        // this.setUploadData = this.setUploadData.bind(this);
     }
 
     openUploadModal(){
@@ -78,7 +80,7 @@ class QuestionSidebar extends Component {
         fileReader.onload = function(event) {
             console.log("[Questionsidebar] onload ",event.target.result);
             superThis.setUploadData(event.target.result);
-            };
+        };
 
         fileReader.readAsText(file);
         //upload_data.survey_id = this.props.survey.survey_id;
@@ -86,8 +88,7 @@ class QuestionSidebar extends Component {
         //this.state.upload_data = upload_data;
         //console.log("[Questionsidebar] uploadQuestionJson :", this.state.upload_data);
 
-        };
-
+    };
 
     uploadQuestionJson(){
         console.log("[Questionsidebar] uploadQuestionJson before api call upload data: ",this.state.upload_data);
@@ -104,15 +105,13 @@ class QuestionSidebar extends Component {
                 }
 
             }).catch((error)=>{
-                console.log("[Questionsidebar] uploadQuestionJson Error after api call")
+            console.log("[Questionsidebar] uploadQuestionJson Error after api call")
         })
 
     }
 
-
-
     addQuestion(question_type){
-        let payload ={}
+        let payload ={};
         payload.question_id = uuidv4();
         payload.question_type = question_type;
         payload.question_text = "";
@@ -125,16 +124,16 @@ class QuestionSidebar extends Component {
                 option_type:"text",
                 option_text:"Yes"},
                 {
-                  option_id:uuidv4(),
-                  option_type:"text",
-                  option_text:"No"
-              }]
+                    option_id:uuidv4(),
+                    option_type:"text",
+                    option_text:"No"
+                }];
             this.props.addQuestion(payload);
         }else if(question_type === "ShortAnswer" || question_type === "DateTime" || question_type === "StarRating"){
             payload.options = [{
                 option_id:uuidv4(),
                 option_type:"text",
-                option_text:""}]
+                option_text:""}];
             this.props.addQuestion(payload);
         }
 
@@ -147,12 +146,50 @@ class QuestionSidebar extends Component {
                     <a key={question_type.id} href = "#" onClick={() => this.addQuestion(question_type.question_type)}>{question_type.question_type}</a>
                     <hr/>
                 </div>
-
-
-
             )
         });
     }
+
+    exportSurvey = (()=>{
+        //TODO: Implement Model to fetch file name
+        let file_name = prompt("Please Enter file name");
+        // console.log("[QuestionSidebar] exportSurvey filename", file_name, new RegExp("[a-zA-Z0-9]+$").test(file_name));
+        console.log("[QuestionSidebar] exportSurvey filename", file_name, file_name.match(/^[0-9a-zA-Z]+$/));
+        // if(file_name && new RegExp("[a-z0-9]+$").test(file_name)){
+        if(file_name && file_name.match(/^[0-9a-zA-Z]+$/)){
+            let export_survey = {
+                file_name:file_name,
+                questions:""
+            };
+
+            export_survey.questions = this.props.survey.questions;
+
+            export_survey.questions.map((question)=>{
+                if(question.hasOwnProperty("question_id")){
+                    delete question.question_id;
+                }
+                if(question.hasOwnProperty("options")){
+                    question.options.map((option=>{
+                        if(option.hasOwnProperty("option_id")){
+                            delete option.option_id;
+                        }
+                    }))
+                }
+            });
+
+            console.log("[QuestionSidebar] exportSurvey sampleObject", JSON.stringify(export_survey));
+
+            let data = new Blob([JSON.stringify(export_survey)], {type: 'text'});
+            let csvURL = window.URL.createObjectURL(data);
+            let download_Link = document.createElement('a');
+            download_Link.href = csvURL;
+            download_Link.setAttribute('download', file_name+".txt");
+            download_Link.click();
+        }
+        else {
+            showAlert("Invalid filename!!", alert_types.ERROR, this);
+        }
+    });
 
     render() {
 
@@ -163,7 +200,7 @@ class QuestionSidebar extends Component {
                     {this.renderQuestionTypes()}
                     <a key="upload_json_button" href = "#" onClick={()=>{this.openUploadModal()}}>Upload Questions</a>
                     <hr/>
-                    <a key="upload_json_button" href = "#" onClick={()=>{}}>Export Survey</a>
+                    <a key="upload_json_button" href = "#" onClick={()=>{this.exportSurvey()}}>Export Survey</a>
                     <UploadModal
                         isOpen={this.state.uploadModalOpen}
                         onAfterOpen={this.openUploadModal}
@@ -171,21 +208,20 @@ class QuestionSidebar extends Component {
                         style={customStyles}
                     >
                         <div className="modal-header">
-
                             <h3>Upload Questions</h3>
                         </div>
                         <div className="modal-body">
                             <div className="verify-modal-footer">
                                 <input type="file"
                                        onChange={((event)=>{this.onChaneUploadQuestion(event)})}
-                                       className="option-image-choose-file"
+                                       className="upload-question-choose-file"
                                 />
-                                <button className ="verify-success-modal-button-close" onClick={() => {
+                                <button className ="upload-question-modal-button-close" onClick={() => {
                                     this.closeUploadModal()
                                 }}>
                                     Close
                                 </button>
-                                <button className ="verify-success-modal-button-close" onClick={() => {
+                                <button className ="upload-question-modal-button-upload" onClick={() => {
                                     this.uploadQuestionJson()
                                 }}>
                                     Upload
@@ -195,6 +231,7 @@ class QuestionSidebar extends Component {
                         </div>
                     </UploadModal>
                 </div>
+                <AlertContainer ref={a => this.msg = a} {...alertOptions}/>
             </div>
         );
     }
