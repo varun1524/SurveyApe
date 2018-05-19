@@ -204,14 +204,14 @@ class QuestionSidebar extends Component {
         //     }
         // });
 
-        let file_name = prompt("Please Enter file name");
+        // let file_name = prompt("Please Enter file name");
         // console.log("[QuestionSidebar] exportSurvey filename", file_name, new RegExp("[a-zA-Z0-9]+$").test(file_name));
-        console.log("[QuestionSidebar] exportSurvey filename", file_name, file_name.match(/^[0-9a-zA-Z]+$/));
+        console.log("[QuestionSidebar] exportSurvey filename", this.state.exportSurveyFileName, this.state.exportSurveyFileName.match(/^[0-9a-zA-Z]+$/));
         // if(file_name && new RegExp("[a-z0-9]+$").test(file_name)){
-        if(file_name && file_name.match(/^[0-9a-zA-Z]+$/)){
+        if(this.state.exportSurveyFileName && this.state.exportSurveyFileName.match(/^[0-9a-zA-Z]+$/)){
 
             let export_survey = {
-                file_name:file_name,
+                file_name:this.state.exportSurveyFileName,
                 questions:""
             };
 
@@ -245,7 +245,7 @@ class QuestionSidebar extends Component {
             let csvURL = window.URL.createObjectURL(data);
             let download_Link = document.createElement('a');
             download_Link.href = csvURL;
-            download_Link.setAttribute('download', file_name+".txt");
+            download_Link.setAttribute('download', this.state.exportSurveyFileName +".txt");
             download_Link.click();
         }
         else {
@@ -289,7 +289,7 @@ class QuestionSidebar extends Component {
                                 <button className ="upload-question-modal-button-upload" onClick={() => {
                                     this.uploadQuestionJson()
                                 }}>
-                                    Export Survey
+                                    Upload
                                 </button>
                             </div>
 
@@ -322,7 +322,7 @@ class QuestionSidebar extends Component {
                                 <button className ="upload-question-modal-button-upload" onClick={() => {
                                     this.exportSurvey()
                                 }}>
-                                    Upload
+                                    Export Survey
                                 </button>
                             </div>
 
