@@ -8,7 +8,8 @@ import * as API from './../../api/API';
 import uuidv4 from 'uuid';
 import '../../stylesheets/createsurvey/questionsidebar.css';
 import {alert_types} from "../../config/alert_types";
-import {showAlert} from "../../config/alertConfig";
+import AlertContainer from 'react-alert';
+import {alertOptions, showAlert} from "../../config/alertConfig";
 
 
 const customStyles = {
@@ -151,7 +152,7 @@ class QuestionSidebar extends Component {
             payload.options = [{
                 option_id:uuidv4(),
                 option_type:"text",
-                option_text:""}]
+                option_text:""}];
             this.props.addQuestion(payload);
         }
 
@@ -169,8 +170,8 @@ class QuestionSidebar extends Component {
     }
 
     exportSurvey = (()=>{
-        let fs = require("fs");
         //TODO: Implement Model to fetch file name
+
         // let file_name = prompt("Please Enter file name");
         console.log("[QuestionSidebar] exportSurvey filename", this.state.exportSurveyFileName);
 
@@ -183,34 +184,74 @@ class QuestionSidebar extends Component {
         //     }
         // };
 
-        let export_survey = {
-            file_name:this.state.exportSurveyFileName,
-            questions:""
-        };
+        // let export_survey = {
+        //     file_name:this.state.exportSurveyFileName,
+        //     questions:""
+        // };
+        //
+        // export_survey.questions = this.props.survey.questions;
+        //
+        // export_survey.questions.map((question)=>{
+        //     if(question.hasOwnProperty("question_id")){
+        //         delete question.question_id;
+        //     }
+        //     if(question.hasOwnProperty("options")){
+        //         question.options.map((option=>{
+        //             if(option.hasOwnProperty("option_id")){
+        //                 delete option.option_id;
+        //             }
+        //         }))
+        //     }
+        // });
 
-        export_survey.questions = this.props.survey.questions;
+        let file_name = prompt("Please Enter file name");
+        // console.log("[QuestionSidebar] exportSurvey filename", file_name, new RegExp("[a-zA-Z0-9]+$").test(file_name));
+        console.log("[QuestionSidebar] exportSurvey filename", file_name, file_name.match(/^[0-9a-zA-Z]+$/));
+        // if(file_name && new RegExp("[a-z0-9]+$").test(file_name)){
+        if(file_name && file_name.match(/^[0-9a-zA-Z]+$/)){
 
-        export_survey.questions.map((question)=>{
-            if(question.hasOwnProperty("question_id")){
-                delete question.question_id;
-            }
-            if(question.hasOwnProperty("options")){
-                question.options.map((option=>{
-                    if(option.hasOwnProperty("option_id")){
-                        delete option.option_id;
-                    }
-                }))
-            }
-        });
+            let export_survey = {
+                file_name:file_name,
+                questions:""
+            };
+
+            export_survey.questions = this.props.survey.questions;
+
+            export_survey.questions.map((question)=>{
+                if(question.hasOwnProperty("question_id")){
+                    delete question.question_id;
+                }
+                if(question.hasOwnProperty("options")){
+                    question.options.map((option=>{
+                        if(option.hasOwnProperty("option_id")){
+                            delete option.option_id;
+                        }
+                    }))
+                }
+            });
+
 
         console.log("[QuestionSidebar] exportSurvey sampleObject", JSON.stringify(export_survey));
 
-        let data = new Blob([JSON.stringify(export_survey)], {type: 'text'});
-        let csvURL = window.URL.createObjectURL(data);
-        let download_Link = document.createElement('a');
-        download_Link.href = csvURL;
-        download_Link.setAttribute('download', this.state.exportSurveyFileName + ".txt");
-        download_Link.click();
+
+        // let data = new Blob([JSON.stringify(export_survey)], {type: 'text'});
+        // let csvURL = window.URL.createObjectURL(data);
+        // let download_Link = document.createElement('a');
+        // download_Link.href = csvURL;
+        // download_Link.setAttribute('download', this.state.exportSurveyFileName + ".txt");
+        // download_Link.click();
+
+            let data = new Blob([JSON.stringify(export_survey)], {type: 'text'});
+            let csvURL = window.URL.createObjectURL(data);
+            let download_Link = document.createElement('a');
+            download_Link.href = csvURL;
+            download_Link.setAttribute('download', file_name+".txt");
+            download_Link.click();
+        }
+        else {
+            showAlert("Invalid filename!!", alert_types.ERROR, this);
+        }
+
     });
 
     render() {
@@ -288,6 +329,7 @@ class QuestionSidebar extends Component {
                         </div>
                     </ExportSurveyModal>
                 </div>
+                <AlertContainer ref={a => this.msg = a} {...alertOptions}/>
             </div>
         );
     }
