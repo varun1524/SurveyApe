@@ -30,7 +30,7 @@ const customStyles = {
         padding               : '0px',
         alignContent          : 'center',
         width                 : '50%',
-        height                : '60%'
+        height                : '40%'
     }
 
 
@@ -44,7 +44,8 @@ class QuestionSidebar extends Component {
             upload_data:{}
         }
         this.openUploadModal = this.openUploadModal.bind(this);
-        //this.setUploadData = this.setUploadData.bind(this);
+        // this.closeUploadModal = this.closeUploadModal.bind(this);
+        // this.setUploadData = this.setUploadData.bind(this);
     }
 
     openUploadModal(){
@@ -88,7 +89,6 @@ class QuestionSidebar extends Component {
 
     };
 
-
     uploadQuestionJson(){
         console.log("[Questionsidebar] uploadQuestionJson before api call upload data: ",this.state.upload_data);
         API.uploadQuestion(this.state.upload_data)
@@ -108,8 +108,6 @@ class QuestionSidebar extends Component {
         })
 
     }
-
-
 
     addQuestion(question_type){
         let payload ={};
@@ -220,14 +218,14 @@ class QuestionSidebar extends Component {
                             <div className="verify-modal-footer">
                                 <input type="file"
                                        onChange={((event)=>{this.onChaneUploadQuestion(event)})}
-                                       className="option-image-choose-file"
+                                       className="upload-question-choose-file"
                                 />
-                                <button className ="verify-success-modal-button-close" onClick={() => {
+                                <button className ="upload-question-modal-button-close" onClick={() => {
                                     this.closeUploadModal()
                                 }}>
                                     Close
                                 </button>
-                                <button className ="verify-success-modal-button-close" onClick={() => {
+                                <button className ="upload-question-modal-button-upload" onClick={() => {
                                     this.uploadQuestionJson()
                                 }}>
                                     Upload
