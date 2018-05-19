@@ -5,11 +5,11 @@
 
 	<groupId>com.example.surveyape</groupId>
 	<artifactId>surveyape</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.2</version>
 	<packaging>jar</packaging>
 
 	<name>surveyape</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Survey Application</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -60,7 +60,6 @@
 			<artifactId>core</artifactId>
 			<version>3.2.1</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.google.zxing</groupId>
 			<artifactId>javase</artifactId>
@@ -79,7 +78,11 @@
             <version>2.18.0</version>
             <scope>compile</scope>
         </dependency>
-
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk</artifactId>
+			<version>1.11.325</version>
+		</dependency>
     </dependencies>
 
 	<build>
