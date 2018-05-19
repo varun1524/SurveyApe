@@ -194,10 +194,10 @@ class QuestionComponent extends Component {
 
     showAnswerByAnswerType = ((option)=>{
         if(option.option_type==="image"){
-            return(<img src={option.option_text} height="150" width="150"/>)
+            return(<img className="show-response-answer-image" src={option.option_text} height="150" width="150"/>)
         }
         else {
-            return(<span>{option.option_text}</span>)
+            return(<span className="show-response-answer-text">{option.option_text}</span>)
         }
     });
 
