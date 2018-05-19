@@ -128,7 +128,6 @@ class Home extends Component {
                 </Switch>
                 <AlertContainer ref={a => this.msg = a} {...alertOptions}/>
             </div>
-
         );
     }
 }
