@@ -51,8 +51,11 @@ class QuestionDashboard extends Component {
                   this.props.changePublishState();
               });
           }
-          else if(response.status ===401){
-              showAlert("User not authorized to access current page. Please login")
+          else if(response.status === 401){
+              showAlert("User not authorized to access current page. Please login", alert_types.INFO, this);
+              setTimeout((()=>{
+                  this.props.handlePageChange("/login");
+              }),500);
           }
 
         }).catch((error)=>{
@@ -78,7 +81,10 @@ class QuestionDashboard extends Component {
               });
             }
             else if(response.status ===401){
-                showAlert("User not authorized to access current page. Please login")
+                showAlert("User not authorized to access current page. Please login", alert_types.INFO, this);
+                setTimeout((()=>{
+                    this.props.handlePageChange("/login");
+                }),500);
             }
             else{
                 showAlert("Failed to save survey !!!", alert_types.ERROR, this);
