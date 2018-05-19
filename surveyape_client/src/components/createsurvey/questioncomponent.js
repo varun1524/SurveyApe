@@ -142,7 +142,7 @@ class QuestionComponent extends Component {
                                        is_option_image: event.target.checked
                                    })
                                }}/>
-                        <label>Image Option</label>
+                        <label className="image-option-label">Image Option</label>
                     </div>
                     <button type="button"
                             className="delete-option-button"
