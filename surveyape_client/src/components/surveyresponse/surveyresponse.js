@@ -48,6 +48,13 @@ class SurveyResponse extends Component {
                     loggedIn : false
                 });
             }
+            else if(response.status===401){
+                console.log("[SurveyResponse] ValidateSession user not logged in");
+                this.setState({
+                    ...this.state,
+                    loggedIn : false
+                });
+            }
             else {
                 showAlert("Error while checking session existance", alert_types.ERROR, this);
                 // alert("[SurveyResponse] Error while checking session existance");
