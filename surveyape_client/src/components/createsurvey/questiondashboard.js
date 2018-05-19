@@ -51,6 +51,9 @@ class QuestionDashboard extends Component {
                   this.props.changePublishState();
               });
           }
+          else if(response.status ===401){
+              showAlert("User not authorized to access current page. Please login")
+          }
 
         }).catch((error)=>{
             showAlert("Failed to publish !!!", alert_types.ERROR, this);
@@ -73,7 +76,11 @@ class QuestionDashboard extends Component {
                   // alert("Survey Saved successfully !!!")
                   this.props.updateSurvey(data);
               });
-            }else{
+            }
+            else if(response.status ===401){
+                showAlert("User not authorized to access current page. Please login")
+            }
+            else{
                 showAlert("Failed to save survey !!!", alert_types.ERROR, this);
                 // alert("Failed to save survey !!!")
             }
