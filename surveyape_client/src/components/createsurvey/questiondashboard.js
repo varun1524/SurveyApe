@@ -363,7 +363,7 @@ class QuestionDashboard extends Component {
                                 this.closeSurvey()
                             }}
                     >Close</button>
-                    <button type="button" className="save-survey-button-sample" onClick={() => {this.openUploadModal()}}>Upload Survey</button>
+                    <button type="button" className="save-survey-button-sample" onClick={() => {this.openUploadModal()}}>Import Survey</button>
                     <button type="button" className="save-survey-button-sample" onClick={() => {this.openExportSurveyModal()}}>Export Survey</button>
 
                 </div>
