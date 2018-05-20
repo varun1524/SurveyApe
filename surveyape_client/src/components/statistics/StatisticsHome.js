@@ -100,7 +100,9 @@ class StatisticsHome extends Component {
                     console.log(" [StatisticHome] Error 405 in getSurveyById");
                     showAlert("Survey do not have enough data for statistic !!!", alert_types.INFO, this);
                     // alert("Survey do not have enough data for statistic !!!")
-
+                    setTimeout((()=>{
+                        this.props.handlePageChange("/home")
+                    }), 500)
                 }else if(response.status===404){
                     console.log(" [StatisticHome] Error 404 in getSurveyById");
                     showAlert("Error 404 in getSurveyById", alert_types.ERROR, this);
