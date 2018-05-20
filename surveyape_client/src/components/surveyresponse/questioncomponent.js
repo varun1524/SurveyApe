@@ -414,7 +414,7 @@ class QuestionComponent extends Component {
             return(
                 <div className="survey-option-input-box">
                     <div>
-                        <input type="date"
+                        <input type="datetime-local"
                                value={this.getDefaultAnswer(question_id, null, question_types.DATETIME)}
                                disabled={this.props.readOnly}
                                onChange={(event)=>{
