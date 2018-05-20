@@ -150,8 +150,15 @@ class StatisticsHome extends Component {
                             <span className="statistics-survey-type"> [ {this.state.survey_type} ]</span>
                         </span>
 
-                        <span className="statistics-date-label"><span style={{'font-size' : '14px'}}>Survey End Date: </span><strong>{this.state.end_date}</strong></span>
-                        <span className="statistics-date-label"><span style={{'font-size' : '14px'}}>Survey Start Date: </span><strong>{this.state.start_time}</strong></span>
+                        <span className="statistics-date-label">
+                            <span style={{'font-size' : '14px'}}>Survey End Date: </span>
+                            <strong>{this.state.end_date}</strong>
+                        </span>
+
+                        <span className="statistics-date-label">
+                            <span style={{'font-size' : '14px'}}>Survey Start Date: </span>
+                            <strong>{this.state.start_time}</strong>
+                        </span>
 
                         <div className="statistics-block-1">
                             <div className="no-of-participants">Number of Participants</div>
