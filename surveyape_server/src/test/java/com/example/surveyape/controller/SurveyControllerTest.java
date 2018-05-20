@@ -11,8 +11,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.assertj.core.util.DateUtil;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -45,6 +47,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @WebMvcTest(SurveyController.class)
 public class SurveyControllerTest {
+
+    private User user;
+    private Survey survey;
 
     @Autowired
     private MockMvc mvc;
@@ -79,43 +84,58 @@ public class SurveyControllerTest {
         return user;
     }
 
-    private Survey createTestSurvey(String survey_name, String survey_type, String end_date, User user) throws ParseException {
+    private Survey createTestSurvey(String survey_id, String survey_name, String survey_type,
+                                    String creation_date, String update_date, String publish_date,
+                                    Boolean ispublished, Boolean iseditable, String end_date, User user)
+            throws ParseException {
         Survey survey = new Survey();
         //survey.setSurveyId();
+        survey.setSurveyId(survey_id);
         survey.setSurveyName(survey_name);
         survey.setSurveyType(survey_type);
+        survey.setCreationDate(new SimpleDateFormat("yyyy-MM-dd").parse(creation_date));
+        survey.setUpdateDate(new SimpleDateFormat("yyyy-MM-dd").parse(update_date));
+        survey.setPublishDate(new SimpleDateFormat("yyyy-MM-dd").parse(publish_date));
         survey.setSurveyEndDate(new SimpleDateFormat("yyyy-MM-dd").parse(end_date));
+        survey.setPublished(ispublished);
+        survey.setEditable(iseditable);
         survey.setUser(user);
         return survey;
     }
+    @Before
+    public void setUp() throws ParseException {
+        user = this.createTestUser("test_user@gmail.com","Sannisth","Soni","alameda385",true,123456);
 
+        survey=this.createTestSurvey("123456", "Survey1", "general",
+                "2018-01-01", "2018-01-01", "2018-01-01",
+                true, true, "2018-01-01",user);
 
-
+    }
 
     @Test
     public void createSurveySuccess() throws Exception {
-        User user = this.createTestUser("soni.sannist@gmail.com","Sannisth","Soni","alameda385",true,123456);
         when(userService.findByEmail(anyString())).thenReturn(user);
-        when(surveyService.createSurvey(any(HashMap.class),any(User.class))).thenReturn(new Survey());
+        when(surveyService.createSurvey(any(HashMap.class),any(User.class))).thenReturn(survey);
         HashMap<String, Object> sessionattr = new HashMap<String, Object>();
         sessionattr.put("email", "soni.sannisth@gmail.com");
         MvcResult result = mvc.perform(post("/survey/create")
                 .sessionAttrs(sessionattr)
                 .contentType(MediaType.APPLICATION_JSON).
                 content(utils.mapToJson(new HashMap<>()))).andReturn();
-        String Expected = "{\"survey_id\":null,\"survey_name\":null,\"survey_type\":null,\"creation_date\":null,\"update_date\":null,\"publish_date\":null,\"ispublished\":false,\"iseditable\":true,\"end_date\":null,\"email\":null,\"questions\":[],\"survey_responses\":[]}";
+        String Expected = "{\"survey_id\":\"123456\",\"survey_name\":\"Survey1\",\"survey_type\":\"general\",\"creation_date\":\"2018-01-01T08:00:00.000+0000\",\"update_date\":\"2018-01-01T08:00:00.000+0000\",\"publish_date\":\"2018-01-01T08:00:00.000+0000\",\"ispublished\":true,\"iseditable\":true,\"end_date\":\"2018-01-01T08:00:00.000+0000\",\"email\":{\"email\":\"test_user@gmail.com\"},\"questions\":[],\"survey_responses\":[]}";
         String Received = result.getResponse().getContentAsString();
         Assert.assertEquals(Expected,Received);
         Assert.assertEquals(HttpStatus.OK.value(),result.getResponse().getStatus());
+        System.out.println("sas:"+Expected);
     }
+
 
     @Test
     public void createSurveyUnSuccess() throws Exception {
-        User user = this.createTestUser("soni.sannist@gmail.com","Sannisth","Soni","alameda385",true,123456);
         when(userService.findByEmail(anyString())).thenReturn(null);
-        when(surveyService.createSurvey(any(HashMap.class),any(User.class))).thenReturn(new Survey());
+        when(surveyService.createSurvey(any(HashMap.class),any(User.class))).thenReturn(null);
         HashMap<String, Object> sessionattr = new HashMap<String, Object>();
-        sessionattr.put("email", "soni.sannisth@gmail.com");
+        sessionattr.put("email", "test_user@gmail.com");
         MvcResult result = mvc.perform(post("/survey/create")
                 .sessionAttrs(sessionattr)
                 .contentType(MediaType.APPLICATION_JSON).
@@ -128,24 +148,23 @@ public class SurveyControllerTest {
 
     @Test
     public void updateSurveySuccess() throws Exception {
-        User user = this.createTestUser("soni.sannist@gmail.com","Sannisth","Soni","alameda385",true,123456);
-        when(userService.findByEmail(anyString())).thenReturn(null);
-        when(surveyService.updateSurvey(any(HashMap.class))).thenReturn(new Survey());
+        when(userService.findByEmail(anyString())).thenReturn(user);
+        when(surveyService.updateSurvey(any(HashMap.class))).thenReturn(survey);
         HashMap<String, Object> sessionattr = new HashMap<String, Object>();
-        sessionattr.put("email", "soni.sannisth@gmail.com");
+        sessionattr.put("email", "test_user@gmail.com");
         MvcResult result = mvc.perform(put("/survey/create")
                 .sessionAttrs(sessionattr)
                 .contentType(MediaType.APPLICATION_JSON).
                         content(utils.mapToJson(new HashMap<>()))).andReturn();
-        String Expected = "{\"survey_id\":null,\"survey_name\":null,\"survey_type\":null,\"creation_date\":null,\"update_date\":null,\"publish_date\":null,\"ispublished\":false,\"iseditable\":true,\"end_date\":null,\"email\":null,\"questions\":[],\"survey_responses\":[]}";
+        String Expected = "{\"survey_id\":\"123456\",\"survey_name\":\"Survey1\",\"survey_type\":\"general\",\"creation_date\":\"2018-01-01T08:00:00.000+0000\",\"update_date\":\"2018-01-01T08:00:00.000+0000\",\"publish_date\":\"2018-01-01T08:00:00.000+0000\",\"ispublished\":true,\"iseditable\":true,\"end_date\":\"2018-01-01T08:00:00.000+0000\",\"email\":{\"email\":\"test_user@gmail.com\"},\"questions\":[],\"survey_responses\":[]}";
         String Received = result.getResponse().getContentAsString();
         Assert.assertEquals(Expected,Received);
         Assert.assertEquals(HttpStatus.OK.value(),result.getResponse().getStatus());
+        System.out.println("sas:"+Expected);
     }
 
     @Test
     public void updateSurveyUnSuccess() throws Exception {
-        User user = this.createTestUser("soni.sannist@gmail.com","Sannisth","Soni","alameda385",true,123456);
         when(userService.findByEmail(anyString())).thenReturn(null);
         when(surveyService.updateSurvey(any(HashMap.class))).thenReturn(null);
         HashMap<String, Object> sessionattr = new HashMap<String, Object>();
@@ -162,11 +181,12 @@ public class SurveyControllerTest {
 
     @Test
     public void fetchSurveySuccess() throws Exception{
-        when(surveyService.findBySurveyId(anyString())).thenReturn(new Survey());
+        when(surveyService.findBySurveyId(anyString())).thenReturn(survey);
         MvcResult result = mvc.perform(get("/survey?survey_id=123456")).andReturn();
-        String expectedResult = "{\"survey_id\":null,\"survey_name\":null,\"survey_type\":null,\"creation_date\":null,\"update_date\":null,\"publish_date\":null,\"ispublished\":false,\"iseditable\":true,\"end_date\":null,\"email\":null,\"questions\":[],\"survey_responses\":[]}";
+        String expectedResult = "{\"survey_id\":\"123456\",\"survey_name\":\"Survey1\",\"survey_type\":\"general\",\"creation_date\":\"2018-01-01T08:00:00.000+0000\",\"update_date\":\"2018-01-01T08:00:00.000+0000\",\"publish_date\":\"2018-01-01T08:00:00.000+0000\",\"ispublished\":true,\"iseditable\":true,\"end_date\":\"2018-01-01T08:00:00.000+0000\",\"email\":{\"email\":\"test_user@gmail.com\"},\"questions\":[],\"survey_responses\":[]}";
         String receivedResult = result.getResponse().getContentAsString();
         Assert.assertEquals(expectedResult,receivedResult);
+        System.out.println(expectedResult);
     }
 
     @Test
@@ -182,72 +202,80 @@ public class SurveyControllerTest {
     @Test
     public void deleteQuestionSuccess() throws Exception {
         when(questionService.deleteQuestion(anyString())).thenReturn(1);
-        when(surveyService.findBySurveyId(anyString())).thenReturn(new Survey());
-        MvcResult result = mvc.perform(delete("/survey/deletequestion?question_id=1223456&survey_id=123456")).andReturn();
-        String expectedResult = "{\"survey_id\":null,\"survey_name\":null,\"survey_type\":null,\"creation_date\":null,\"update_date\":null,\"publish_date\":null,\"ispublished\":false,\"iseditable\":true,\"end_date\":null,\"email\":null,\"questions\":[],\"survey_responses\":[]}";
+        survey.setPublished(false);
+        when(surveyService.findBySurveyId(anyString())).thenReturn(survey);
+        MvcResult result = mvc.perform(delete("/survey/deletequestion?question_id=123456&survey_id=123456")).andReturn();
+        String expectedResult = "{\"survey_id\":\"123456\",\"survey_name\":\"Survey1\",\"survey_type\":\"general\",\"creation_date\":\"2018-01-01T08:00:00.000+0000\",\"update_date\":\"2018-01-01T08:00:00.000+0000\",\"publish_date\":\"2018-01-01T08:00:00.000+0000\",\"ispublished\":false,\"iseditable\":true,\"end_date\":\"2018-01-01T08:00:00.000+0000\",\"email\":{\"email\":\"test_user@gmail.com\"},\"questions\":[],\"survey_responses\":[]}";
         String receivedResult = result.getResponse().getContentAsString();
         Assert.assertEquals(expectedResult,receivedResult);
         Assert.assertEquals(HttpStatus.OK.value(),result.getResponse().getStatus());
+        survey.setPublished(true);
     }
 
     @Test
     public void deleteQuestionUnSuccess() throws Exception {
         when(questionService.deleteQuestion(anyString())).thenReturn(100);
-        when(surveyService.findBySurveyId(anyString())).thenReturn(new Survey());
-        MvcResult result = mvc.perform(delete("/survey/deletequestion?question_id=1223456&survey_id=123456")).andReturn();
+        survey.setPublished(false);
+        when(surveyService.findBySurveyId(anyString())).thenReturn(survey);
+        MvcResult result = mvc.perform(delete("/survey/deletequestion?question_id=123456&survey_id=123456")).andReturn();
         String expectedResult = "";
         String receivedResult = result.getResponse().getContentAsString();
         Assert.assertEquals(expectedResult,receivedResult);
         Assert.assertEquals(HttpStatus.NOT_FOUND.value(),result.getResponse().getStatus());
+        survey.setPublished(true);
     }
 
     @Test
     public void deleteoptionSuccess() throws Exception {
         when(optionAnsService.deleteOption(anyString())).thenReturn(1);
-        when(surveyService.findBySurveyId(anyString())).thenReturn(new Survey());
+        survey.setPublished(false);
+        when(surveyService.findBySurveyId(anyString())).thenReturn(survey);
         MvcResult result = mvc.perform(delete("/survey/deleteoption?option_id=1223456&survey_id=123456")).andReturn();
-        String expectedResult = "{\"survey_id\":null,\"survey_name\":null,\"survey_type\":null,\"creation_date\":null,\"update_date\":null,\"publish_date\":null,\"ispublished\":false,\"iseditable\":true,\"end_date\":null,\"email\":null,\"questions\":[],\"survey_responses\":[]}";
+        String expectedResult = "{\"survey_id\":\"123456\",\"survey_name\":\"Survey1\",\"survey_type\":\"general\",\"creation_date\":\"2018-01-01T08:00:00.000+0000\",\"update_date\":\"2018-01-01T08:00:00.000+0000\",\"publish_date\":\"2018-01-01T08:00:00.000+0000\",\"ispublished\":false,\"iseditable\":true,\"end_date\":\"2018-01-01T08:00:00.000+0000\",\"email\":{\"email\":\"test_user@gmail.com\"},\"questions\":[],\"survey_responses\":[]}";
         String receivedResult = result.getResponse().getContentAsString();
         Assert.assertEquals(expectedResult,receivedResult);
         Assert.assertEquals(HttpStatus.OK.value(),result.getResponse().getStatus());
+        survey.setPublished(true);
     }
 
     @Test
     public void deleteoptionUnSuccess() throws Exception {
         when(optionAnsService.deleteOption(anyString())).thenReturn(100);
-        when(surveyService.findBySurveyId(anyString())).thenReturn(new Survey());
+        survey.setPublished(false);
+        when(surveyService.findBySurveyId(anyString())).thenReturn(survey);
         MvcResult result = mvc.perform(delete("/survey/deleteoption?option_id=1223456&survey_id=123456")).andReturn();
         String expectedResult = "";
         String receivedResult = result.getResponse().getContentAsString();
         Assert.assertEquals(expectedResult,receivedResult);
         Assert.assertEquals(HttpStatus.NOT_FOUND.value(),result.getResponse().getStatus());
-
+        survey.setPublished(true);
     }
 
     @Test
-    //I DUNNO WHY IT KEEPS GIVING ME NULLPOINTERERROR
     public void deleteSurveyConflict() throws Exception {
-        User user = this.createTestUser("soni.sannist@gmail.com","Sannisth","Soni","alameda385",true,123456);
-        Survey survey = this.createTestSurvey("sannisth","closed","2018-01-01",user);
         List<Survey> surveys = new ArrayList<Survey>();
+        survey.setPublished(false);
         surveys.add(survey);
+        when(surveyService.findBySurveyId(anyString())).thenReturn(survey);
         when(surveyService.deleteSurvey(anyString())).thenReturn(2);
         when(userService.getAllUserSurvey(anyString())).thenReturn(surveys);
         when(surveyResponseServices.getsurveyResponseByEmail(anyString())).thenReturn(new ArrayList<SurveyResponse>());
         MvcResult result = mvc.perform(delete("/survey/deletesurvey?survey_id=123456")).andReturn();
-        String expectedResult = "{}";
+        String expectedResult = "{\"error\":\"Can not delete survey id: 123456 as it has been shared with users !!!\"}";
         String receivedResult = result.getResponse().getContentAsString();
         Assert.assertEquals(expectedResult,receivedResult);
         Assert.assertEquals(HttpStatus.CONFLICT.value(),result.getResponse().getStatus());
+        survey.setPublished(true);
     }
 
     @Test
     //I DUNNO WHY IT KEEPS GIVING ME NULLPOINTERERROR
     public void deleteSurveyINSE() throws Exception {
-        User user = this.createTestUser("soni.sannist@gmail.com","Sannisth","Soni","alameda385",true,123456);
-        Survey survey = this.createTestSurvey("sannisth","closed","2018-01-01",user);
+
         List<Survey> surveys = new ArrayList<Survey>();
+        survey.setPublished(false);
         surveys.add(survey);
+        when(surveyService.findBySurveyId(anyString())).thenReturn(survey);
         when(surveyService.deleteSurvey(anyString())).thenReturn(200);
         when(userService.getAllUserSurvey(anyString())).thenReturn(surveys);
         when(surveyResponseServices.getsurveyResponseByEmail(anyString())).thenReturn(new ArrayList<SurveyResponse>());
@@ -255,7 +283,8 @@ public class SurveyControllerTest {
         String expectedResult = "{\"error\":\"Failed to delte survey id: 123456 due internal server error !!!\"}";
         String receivedResult = result.getResponse().getContentAsString();
         Assert.assertEquals(expectedResult,receivedResult);
-        Assert.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(),result.getResponse().getStatus());
+        Assert.assertEquals(HttpStatus.BAD_REQUEST.value(),result.getResponse().getStatus());
+        survey.setPublished(true);
     }
 
     @Test
@@ -336,21 +365,21 @@ public class SurveyControllerTest {
 
     @Test
     public void uploadQuestionSuccess() throws Exception {
-        when(surveyService.findBySurveyId(anyString())).thenReturn(new Survey());
-        when(surveyService.uploadQuestion(any(HashMap.class))).thenReturn(new Survey());
+        when(surveyService.findBySurveyId(anyString())).thenReturn(survey);
+        when(surveyService.uploadQuestion(any(HashMap.class))).thenReturn(survey);
         MvcResult result = mvc.perform(post("/survey/upload")
         .contentType(MediaType.APPLICATION_JSON)
                 .content(utils.mapToJson(new HashMap<>())))
                 .andReturn();
         String received = result.getResponse().getContentAsString();
-        String expected = "";
+        String expected = "{\"survey_id\":\"123456\",\"survey_name\":\"Survey1\",\"survey_type\":\"general\",\"creation_date\":\"2018-01-01T08:00:00.000+0000\",\"update_date\":\"2018-01-01T08:00:00.000+0000\",\"publish_date\":\"2018-01-01T08:00:00.000+0000\",\"ispublished\":true,\"iseditable\":true,\"end_date\":\"2018-01-01T08:00:00.000+0000\",\"email\":{\"email\":\"test_user@gmail.com\"},\"questions\":[],\"survey_responses\":[]}";
         Assert.assertEquals(expected,received);
         Assert.assertEquals(HttpStatus.OK.value(),result.getResponse().getStatus());
     }
 
     @Test
     public void uploadQuestionUnSuccess() throws Exception {
-        when(surveyService.findBySurveyId(anyString())).thenReturn(new Survey());
+        when(surveyService.findBySurveyId(anyString())).thenReturn(survey);
         when(surveyService.uploadQuestion(any(HashMap.class))).thenReturn(null);
         MvcResult result = mvc.perform(post("/survey/upload")
                 .contentType(MediaType.APPLICATION_JSON)

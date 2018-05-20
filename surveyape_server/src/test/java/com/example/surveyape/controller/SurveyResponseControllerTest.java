@@ -1,5 +1,7 @@
 package com.example.surveyape.controller;
 
+import com.example.surveyape.entity.ResponseAnswers;
+import com.example.surveyape.entity.Survey;
 import com.example.surveyape.entity.SurveyResponse;
 import com.example.surveyape.entity.User;
 import com.example.surveyape.service.SurveyResponseServices;
@@ -21,7 +23,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 //import org.w3c.dom.html.HTMLTableCaptionElement;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -34,7 +40,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @RunWith(SpringRunner.class)
 @WebMvcTest(SurveyResponseController.class)
 public class SurveyResponseControllerTest {
-
+    private User user;
+    private Survey survey;
+    private SurveyResponse sr;
     @Autowired
     private MockMvc mvc;
 
@@ -44,9 +52,54 @@ public class SurveyResponseControllerTest {
 
     @MockBean
     private UserService userService;
+    private User createTestUser(String email, String firstname,String lastname,String password,Boolean verified, Integer verificationcode){
+        User user = new User();
+        user.setEmail(email);
+        user.setFirstname(firstname);
+        user.setLastname(lastname);
+        user.setPassword(password);
+        user.setVerified(verified);
+        user.setVerificationCode(verificationcode);
+        return user;
+    }
+
+    private Survey createTestSurvey(String survey_id, String survey_name, String survey_type,
+                                    String creation_date, String update_date, String publish_date,
+                                    Boolean ispublished, Boolean iseditable, String end_date, User user)
+            throws ParseException {
+        Survey survey = new Survey();
+        //survey.setSurveyId();
+        survey.setSurveyId(survey_id);
+        survey.setSurveyName(survey_name);
+        survey.setSurveyType(survey_type);
+        survey.setCreationDate(new SimpleDateFormat("yyyy-MM-dd").parse(creation_date));
+        survey.setUpdateDate(new SimpleDateFormat("yyyy-MM-dd").parse(update_date));
+        survey.setPublishDate(new SimpleDateFormat("yyyy-MM-dd").parse(publish_date));
+        survey.setSurveyEndDate(new SimpleDateFormat("yyyy-MM-dd").parse(end_date));
+        survey.setPublished(ispublished);
+        survey.setEditable(iseditable);
+        survey.setUser(user);
+        return survey;
+    }
+    public SurveyResponse createTestSurveyResponse(String responseid, Survey survey, User user){
+        SurveyResponse sr = new SurveyResponse();
+        sr.setResponseId(responseid);
+        sr.setSurvey(survey);
+        sr.setUser(user);
+        sr.setResponseAnswers(new ArrayList<ResponseAnswers>());
+        sr.setSubmitted(true);
+        sr.setEmail("test_surveyee@gmail.com");
+        return sr;
+    }
 
     @Before
     public void setUp() throws Exception {
+        user = this.createTestUser("test_user@gmail.com","Sannisth","Soni","alameda385",true,123456);
+
+        survey=this.createTestSurvey("123456", "Survey1", "general",
+                "2018-01-01", "2018-01-01", "2018-01-01",
+                true, true, "2018-01-01",user);
+
     }
 
     @After
