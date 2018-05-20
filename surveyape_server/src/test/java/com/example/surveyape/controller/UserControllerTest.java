@@ -22,6 +22,7 @@ import com.example.surveyape.utils.MailUtility;
 import com.example.surveyape.utils.UserUtility;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.*;
 import org.mockito.InjectMocks;
@@ -55,8 +56,11 @@ public class UserControllerTest {
     @MockBean
     private UserRepository userRepository;
 
-    private User createTestUser(String email, String firstname,String lastname,String password,Boolean verified, Integer verificationcode){
+    private User user;
+
+    private User createTestUser(String userid, String email, String firstname,String lastname,String password,Boolean verified, Integer verificationcode){
         User user = new User();
+        user.setUserId(userid);
         user.setEmail(email);
         user.setFirstname(firstname);
         user.setLastname(lastname);
@@ -66,16 +70,21 @@ public class UserControllerTest {
         return user;
     }
 
+    @Before
+    public void setUp(){
+        user = this.createTestUser("123456","test_user@gmail.com","Sannisth",
+                "Soni","alameda385",true,123456);
+    }
+
     @Test
     public void userSignUpSuccess() throws Exception {
-        User user = this.createTestUser("test_user@gmail.com","Arijit","Mandal","1234",true, 123456);
         Mockito.when(userService.registerUser(any(User.class))).thenReturn(user);
         String uri = "/user/signup";
         Map map = new HashMap();
         map.put("email","test_user@gmail.com");
-        map.put("firstname","Arijit");
-        map.put("lastname","Mandal");
-        map.put("password","1234");
+        map.put("firstname","Sannisth");
+        map.put("lastname","Soni");
+        map.put("password","alameda385");
         map.put("verified","true");
         map.put("verificationcode","123456");
         String userDetail  = utils.mapToJson(map);
@@ -85,52 +94,50 @@ public class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON).content(userDetail))
                 .andReturn();
-        String expectedUserData = "{\"userId\":null,\"email\":\"test_user@gmail.com\",\"firstname\":\"Arijit\",\"lastname\":\"Mandal\",\"verified\":true}";
+        String expectedUserData = "{\"userId\":\"123456\",\"email\":\"test_user@gmail.com\",\"firstname\":\"Sannisth\",\"lastname\":\"Soni\",\"verified\":true}";
         String resContent = result.getResponse().getContentAsString();
         int status = result.getResponse().getStatus();
+        System.out.println(expectedUserData);
         Assert.assertEquals("User successfully loggedin status check",200,status);
         Assert.assertEquals("Logged in user data",expectedUserData,resContent);
     }
+//
+//    @Test
+//    public void userSignUpUnSuccess() throws Exception {
+//        Mockito.when(userService.registerUser(any(User.class))).thenReturn(null);
+//        String uri = "/user/signup";
+//        Map map = new HashMap();
+//        map.put("email","test_user@gmail.com");
+//        map.put("firstname","Arijit");
+//        map.put("lastname","Mandal");
+//        map.put("password","1234");
+//        map.put("verified","true");
+//        map.put("verificationcode","123456");
+//        String userDetail  = utils.mapToJson(map);
+//        MvcResult result = mvc
+//                .perform(post(uri)
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .accept(MediaType.APPLICATION_JSON).content(userDetail))
+//                .andReturn();
+//
+//        //String expectedUserData = "{\"userId\":null,\"email\":\"test_user@gmail.com\",\"firstname\":\"Arijit\",\"lastname\":\"Mandal\",\"verified\":true}";
+//        String resContent = result.getResponse().getContentAsString();
+//        System.out.print("sas"+result.getResponse().getStatus());
+//        //int status = result.getResponse().getStatus();
+//        //Assert.assertEquals("User successfully loggedin status check",HttpStatus.NOT_FOUND.value(),status);
+//        //Assert.assertEquals("Logged in user data",expectedUserData,resContent);
+//    }
 
-    @Test
-    public void userSignUpUnSuccess() throws Exception {
-        User user = null;
-        Mockito.when(userService.registerUser(any(User.class))).thenReturn(user);
-        String uri = "/user/signup";
-        Map map = new HashMap();
-        map.put("email","test_user@gmail.com");
-        map.put("firstname","Arijit");
-        map.put("lastname","Mandal");
-        map.put("password","1234");
-        map.put("verified","true");
-        map.put("verificationcode","123456");
-        String userDetail  = utils.mapToJson(map);
-        MvcResult result = mvc
-                .perform(post(uri)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON).content(userDetail))
-                .andReturn();
-
-        //String expectedUserData = "{\"userId\":null,\"email\":\"test_user@gmail.com\",\"firstname\":\"Arijit\",\"lastname\":\"Mandal\",\"verified\":true}";
-        String resContent = result.getResponse().getContentAsString();
-        System.out.print("sas"+result.getResponse().getStatus());
-        //int status = result.getResponse().getStatus();
-        //Assert.assertEquals("User successfully loggedin status check",HttpStatus.NOT_FOUND.value(),status);
-        //Assert.assertEquals("Logged in user data",expectedUserData,resContent);
-
-
-
-    }
     @Test
     public void userLoginSuccess() throws Exception {
-        User user = this.createTestUser("test_user@gmail.com","Arijit","Mandal","1234",true, 123456);
         Mockito.when(userService.findByEmail("test_user@gmail.com")).thenReturn(user);
         Map map = new HashMap();
         String uri = "/user/login";
+        map.put("userid","123456");
         map.put("email","test_user@gmail.com");
-        map.put("firstname","Arijit");
-        map.put("lastname","Mandal");
-        map.put("password","1234");
+        map.put("firstname","Sannisth");
+        map.put("lastname","Soni");
+        map.put("password","alameda385");
         map.put("verified","true");
         map.put("verificationcode","123456");
         String userDetail  = utils.mapToJson(map);
@@ -142,21 +149,22 @@ public class UserControllerTest {
                 .andReturn();
         String resContent = result.getResponse().getContentAsString();
         int status = result.getResponse().getStatus();
-        String expectedUserData = "{\"userId\":null,\"email\":\"test_user@gmail.com\",\"firstname\":\"Arijit\",\"lastname\":\"Mandal\",\"verified\":true}";
+        System.out.println("sas:"+resContent);
+        String expectedUserData = "{\"userId\":\"123456\",\"email\":\"test_user@gmail.com\",\"firstname\":\"Sannisth\",\"lastname\":\"Soni\",\"verified\":true}";
         Assert.assertEquals("User successfully loggedin status check",200,status);
         Assert.assertEquals("Logged in user data",expectedUserData,resContent);
     }
 
     @Test
     public void userLoginUnSuccess() throws Exception {
-        User user = this.createTestUser("test_user@gmail.com","Arijit","Mandal","1234",true, 123456);
         Mockito.when(userService.findByEmail("test_user@gmail.com")).thenReturn(null);
         Map map = new HashMap();
         String uri = "/user/login";
+        map.put("userid","123456");
         map.put("email","test_user@gmail.com");
-        map.put("firstname","Arijit");
-        map.put("lastname","Mandal");
-        map.put("password","1234");
+        map.put("firstname","Sannisth");
+        map.put("lastname","Soni");
+        map.put("password","alameda385");
         map.put("verified","true");
         map.put("verificationcode","123456");
         String userDetail  = utils.mapToJson(map);
@@ -173,7 +181,7 @@ public class UserControllerTest {
 
     @Test
     public void verifyAccount_successfullyVerified() throws Exception {
-        User user = this.createTestUser("test_user@gmail.com","Arijit","Mandal","1234",true, 123456);
+
         when(userRepository.findByVerificationcode(anyInt())).thenReturn(user);
         when(userService.verifyUserAccount(anyInt())).thenReturn(1);
         Map map = new HashMap();
@@ -186,11 +194,12 @@ public class UserControllerTest {
         String expectedOutput = "{\"message\":\"User successfully verified.\"}";
         String resContent = result.getResponse().getContentAsString();
         Assert.assertEquals(expectedOutput,resContent);
+        System.out.println("sas:"+result.getResponse().getContentAsString());
     }
 
     @Test
     public void verifyAccount_notFound() throws Exception {
-        User user = this.createTestUser("test_user@gmail.com","Arijit","Mandal","1234",true, 123456);
+
         when(userRepository.findByVerificationcode(anyInt())).thenReturn(user);
         when(userService.verifyUserAccount(anyInt())).thenReturn(4);
         Map map = new HashMap();
@@ -207,7 +216,7 @@ public class UserControllerTest {
 
     @Test
     public void surveyList() throws Exception{
-        User user = this.createTestUser("test_user@gmail.com","Arijit","Mandal","1234",true, 123456);
+
         when(userService.getAllUserSurvey("test_user@gmail.com")).thenReturn(null);
         when(surveyResService.getsurveyResponseByEmail("test_user@gmail.com")).thenReturn(null);
         MvcResult result = mvc
@@ -215,16 +224,9 @@ public class UserControllerTest {
         String expectedResult = "{}";
         String realResult =result.getResponse().getContentAsString();
         Assert.assertEquals(expectedResult,realResult);
+        System.out.println(result.getResponse().getStatus());
     }
 
-    @Test
-    public void surveyListUnSuccess() throws Exception{
-        when(userService.getAllUserSurvey("test_user@gmail.com")).thenReturn(null);
-        when(surveyResService.getsurveyResponseByEmail("test_user@gmail.com")).thenReturn(null);
-        MvcResult result = mvc
-                .perform(get("/user/surveylist")).andReturn();
-        Assert.assertEquals(HttpStatus.BAD_REQUEST.value(),result.getResponse().getStatus());
-    }
 
     @Test
     public void logout_success() throws Exception{
@@ -235,17 +237,21 @@ public class UserControllerTest {
 
     @Test
     public void validateSessionSuccess() throws Exception{
-        User user = this.createTestUser("test_user@gmail.com","Arijit","Mandal","1234",true, 123456);
+
         when(userService.findByEmail(anyString())).thenReturn(user);
         MvcResult result = mvc
                 .perform(post("/user/validateSession").sessionAttr("email","test_used@gmail.com")).andReturn();
         int status = result.getResponse().getStatus();
+        String expected = "{\"userId\":\"123456\",\"email\":\"test_user@gmail.com\",\"firstname\":\"Sannisth\",\"lastname\":\"Soni\",\"verified\":true}";
+        String received = result.getResponse().getContentAsString();
         Assert.assertEquals(HttpStatus.OK.value(),status);
+        Assert.assertEquals(expected,received);
+        System.out.println(received);
     }
 
     @Test
     public void validateSessionUnSuccess() throws Exception{
-        User user = this.createTestUser("test_user@gmail.com","Arijit","Mandal","1234",true, 123456);
+
         when(userService.findByEmail(anyString())).thenReturn(user);
         MvcResult result = mvc
                 .perform(post("/user/validateSession")).andReturn();

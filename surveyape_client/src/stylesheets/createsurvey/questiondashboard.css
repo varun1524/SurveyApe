@@ -2,7 +2,19 @@
     color: #F8F8F8;
     font-size: 20px;
     text-align: left;
-    background-color: #54CB8B;
+    background-color: #27AE60;
+    padding: 5px;
+    width: 100%;
+    height: 40px;
+    vertical-align: center;
+}
+
+.survey-name-p-2 {
+    margin-top: 0.5%;
+    color: #F8F8F8;
+    font-size: 20px;
+    text-align: left;
+    background-color: #52BE80;
     padding: 5px;
     width: 100%;
     height: 40px;
@@ -29,7 +41,7 @@
 .end-survey-datepicker {
     /*float: right;*/
     width: 15%;
-    background-color: #54CB8B;
+    background-color: #27AE60;
     border: none;
     font-size: 80%;
     margin-top: 8px;
@@ -50,10 +62,10 @@
 
 .save-survey-button-sample {
     float: right;
-    width: 10%;
-    margin: 0 1%;
-    height: 90%;
+    width: 15%;
+    margin: 0 0.5%;
+    height: 100%;
     padding: 0;
     background-color: #FF5B38;
-    font-size: 70%;
+    font-size: 80%;
 }
