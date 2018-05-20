@@ -237,7 +237,6 @@ public class UserControllerTest {
 
     @Test
     public void validateSessionSuccess() throws Exception{
-
         when(userService.findByEmail(anyString())).thenReturn(user);
         MvcResult result = mvc
                 .perform(post("/user/validateSession").sessionAttr("email","test_used@gmail.com")).andReturn();
@@ -251,7 +250,6 @@ public class UserControllerTest {
 
     @Test
     public void validateSessionUnSuccess() throws Exception{
-
         when(userService.findByEmail(anyString())).thenReturn(user);
         MvcResult result = mvc
                 .perform(post("/user/validateSession")).andReturn();

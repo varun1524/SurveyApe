@@ -5,8 +5,10 @@ import com.example.surveyape.entity.Survey;
 import com.example.surveyape.entity.SurveyResponse;
 import com.example.surveyape.entity.User;
 import com.example.surveyape.service.SurveyResponseServices;
+import com.example.surveyape.service.SurveyService;
 import com.example.surveyape.service.UserService;
 import com.example.surveyape.util.utils;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -49,6 +51,9 @@ public class SurveyResponseControllerTest {
     @MockBean
     private SurveyResponseServices surveyResService;
 
+    @MockBean
+    private SurveyService surveyService;
+
 
     @MockBean
     private UserService userService;
@@ -81,14 +86,14 @@ public class SurveyResponseControllerTest {
         survey.setUser(user);
         return survey;
     }
-    public SurveyResponse createTestSurveyResponse(String responseid, Survey survey, User user){
+    public SurveyResponse createTestSurveyResponse(String responseid, Survey survey, User user, Boolean isSubmitted, String emailid){
         SurveyResponse sr = new SurveyResponse();
         sr.setResponseId(responseid);
         sr.setSurvey(survey);
         sr.setUser(user);
         sr.setResponseAnswers(new ArrayList<ResponseAnswers>());
-        sr.setSubmitted(true);
-        sr.setEmail("test_surveyee@gmail.com");
+        sr.setSubmitted(isSubmitted);
+        sr.setEmail(emailid);
         return sr;
     }
 
@@ -100,6 +105,8 @@ public class SurveyResponseControllerTest {
                 "2018-01-01", "2018-01-01", "2018-01-01",
                 true, true, "2018-01-01",user);
 
+        sr=this.createTestSurveyResponse("123456",survey,user,true,"test_surveyee@gmail.com");
+
     }
 
     @After
@@ -108,18 +115,19 @@ public class SurveyResponseControllerTest {
 
     @Test
     public void saveSurveyResponseCheckboxSuccess() throws Exception {
-        when(surveyResService.getSurveyResponseById(anyString())).thenReturn(new SurveyResponse());
-        when(surveyResService.saveCheckResponse(any(HashMap.class),any(SurveyResponse.class))).thenReturn(new SurveyResponse());
-        when(surveyResService.saveCheckResponse(any(HashMap.class),any(SurveyResponse.class))).thenReturn(new SurveyResponse());
+        when(surveyResService.getSurveyResponseById(anyString())).thenReturn(sr);
+        when(surveyResService.saveCheckResponse(any(HashMap.class),any(SurveyResponse.class))).thenReturn(sr);
+        when(surveyResService.saveCheckResponse(any(HashMap.class),any(SurveyResponse.class))).thenReturn(sr);
         Map map = new HashMap<>();
         map.put("response_id","123456");
         MvcResult result = mvc.perform(post("/response/save/checkbox")
         .contentType(MediaType.APPLICATION_JSON)
         .content(utils.mapToJson(map))).andReturn();
-        String expectedResult = "{\"email\":null,\"response_id\":null,\"survey\":null,\"responses\":[],\"issubmitted\":false}";
+        String expectedResult = "{\"email\":\"test_surveyee@gmail.com\",\"response_id\":\"123456\",\"survey\":{\"survey_id\":\"123456\"},\"responses\":[],\"issubmitted\":true}";
         String receivedResult = result.getResponse().getContentAsString();
         Assert.assertEquals(expectedResult,receivedResult);
         Assert.assertEquals(HttpStatus.OK.value(),result.getResponse().getStatus());
+        System.out.println("sas:"+expectedResult);
     }
 
     @Test

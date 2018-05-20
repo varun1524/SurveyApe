@@ -1,8 +1,6 @@
 package com.example.surveyape.controller;
 
-import com.example.surveyape.entity.Survey;
-import com.example.surveyape.entity.SurveyResponse;
-import com.example.surveyape.entity.User;
+import com.example.surveyape.entity.*;
 import com.example.surveyape.service.*;
 import com.example.surveyape.util.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -50,6 +48,9 @@ public class SurveyControllerTest {
 
     private User user;
     private Survey survey;
+    private Question question;
+    private SurveyResponse surveyResponse;
+    private ResponseAnswers responseAnswers;
 
     @Autowired
     private MockMvc mvc;
@@ -73,6 +74,34 @@ public class SurveyControllerTest {
     @MockBean
     private SurveyResponseServices surveyResponseServices;
 
+    private ResponseAnswers createTestResponseAnswers (String answerId, String answerValue, Question question, SurveyResponse surveyResponse){
+        ResponseAnswers responseAnswers = new ResponseAnswers();
+        responseAnswers.setAnswerId(answerId);
+        responseAnswers.setAnswerValue(answerValue);
+        responseAnswers.setQuestion(question);
+        responseAnswers.setSurveyResponse(surveyResponse);
+
+        return responseAnswers;
+    }
+    private SurveyResponse createTestSurveyResponse(String responseid, Boolean isSubmitted, String email){
+        SurveyResponse surveyResponse = new SurveyResponse();
+        surveyResponse.setResponseId(responseid);
+        surveyResponse.setSubmitted(isSubmitted);
+        surveyResponse.setEmail(email);
+        return surveyResponse;
+    }
+
+    private Question createTestQuestion(String questionId, String questionType, String questionText, Boolean isMultipleChoice){
+        Question question = new Question();
+        question.setQuestionId(questionId);
+        question.setQuestionType(questionType);
+        question.setQuestionText(questionText);
+        question.setMultipleChoice(isMultipleChoice);
+        question.setOptions(new LinkedList<OptionAns>());
+        question.setResponseAnswers(new LinkedList<ResponseAnswers>());
+        return question;
+    }
+
     private User createTestUser(String email, String firstname,String lastname,String password,Boolean verified, Integer verificationcode){
         User user = new User();
         user.setEmail(email);
@@ -86,7 +115,8 @@ public class SurveyControllerTest {
 
     private Survey createTestSurvey(String survey_id, String survey_name, String survey_type,
                                     String creation_date, String update_date, String publish_date,
-                                    Boolean ispublished, Boolean iseditable, String end_date, User user)
+                                    Boolean ispublished, Boolean iseditable, String end_date,
+                                    Question question, SurveyResponse surveyResponse, User user)
             throws ParseException {
         Survey survey = new Survey();
         //survey.setSurveyId();
@@ -99,17 +129,36 @@ public class SurveyControllerTest {
         survey.setSurveyEndDate(new SimpleDateFormat("yyyy-MM-dd").parse(end_date));
         survey.setPublished(ispublished);
         survey.setEditable(iseditable);
+        List surveyresponselist = new ArrayList<SurveyResponse>();
+        surveyresponselist.add(surveyResponse);
+        survey.setSurveyResponses(surveyresponselist);
         survey.setUser(user);
+        List<Question> Questionlist = new ArrayList<Question>();
+        Questionlist.add(question);
+        survey.setQuestions(Questionlist);
         return survey;
     }
+
     @Before
     public void setUp() throws ParseException {
-        user = this.createTestUser("test_user@gmail.com","Sannisth","Soni","alameda385",true,123456);
+
+        //OptionAns
+
+        surveyResponse = this.createTestSurveyResponse("123456",true,"test_surveyee@gmail.com");
+
+        user = this.createTestUser("test_user@gmail.com","Sannisth",
+                "Soni","alameda385",true,123456);
+
+
+        question = this.createTestQuestion("123456","MultipleChoiceQuestion",
+                "How many more Apples are there than oranges?",true);
+
 
         survey=this.createTestSurvey("123456", "Survey1", "general",
                 "2018-01-01", "2018-01-01", "2018-01-01",
-                true, true, "2018-01-01",user);
+                true, true, "2018-01-01",question,surveyResponse,user);
 
+        responseAnswers = this.createTestResponseAnswers("123456","As many as there are berries",question,surveyResponse);
     }
 
     @Test
@@ -122,7 +171,7 @@ public class SurveyControllerTest {
                 .sessionAttrs(sessionattr)
                 .contentType(MediaType.APPLICATION_JSON).
                 content(utils.mapToJson(new HashMap<>()))).andReturn();
-        String Expected = "{\"survey_id\":\"123456\",\"survey_name\":\"Survey1\",\"survey_type\":\"general\",\"creation_date\":\"2018-01-01T08:00:00.000+0000\",\"update_date\":\"2018-01-01T08:00:00.000+0000\",\"publish_date\":\"2018-01-01T08:00:00.000+0000\",\"ispublished\":true,\"iseditable\":true,\"end_date\":\"2018-01-01T08:00:00.000+0000\",\"email\":{\"email\":\"test_user@gmail.com\"},\"questions\":[],\"survey_responses\":[]}";
+        String Expected = "{\"survey_id\":\"123456\",\"survey_name\":\"Survey1\",\"survey_type\":\"general\",\"creation_date\":\"2018-01-01T08:00:00.000+0000\",\"update_date\":\"2018-01-01T08:00:00.000+0000\",\"publish_date\":\"2018-01-01T08:00:00.000+0000\",\"ispublished\":true,\"iseditable\":true,\"end_date\":\"2018-01-01T08:00:00.000+0000\",\"email\":{\"email\":\"test_user@gmail.com\"},\"questions\":[{\"isMultipleChoice\":true,\"options\":[],\"question_id\":\"123456\",\"question_type\":\"MultipleChoiceQuestion\",\"question_text\":\"How many more Apples are there than oranges?\"}],\"survey_responses\":[{}]}";
         String Received = result.getResponse().getContentAsString();
         Assert.assertEquals(Expected,Received);
         Assert.assertEquals(HttpStatus.OK.value(),result.getResponse().getStatus());
@@ -156,7 +205,7 @@ public class SurveyControllerTest {
                 .sessionAttrs(sessionattr)
                 .contentType(MediaType.APPLICATION_JSON).
                         content(utils.mapToJson(new HashMap<>()))).andReturn();
-        String Expected = "{\"survey_id\":\"123456\",\"survey_name\":\"Survey1\",\"survey_type\":\"general\",\"creation_date\":\"2018-01-01T08:00:00.000+0000\",\"update_date\":\"2018-01-01T08:00:00.000+0000\",\"publish_date\":\"2018-01-01T08:00:00.000+0000\",\"ispublished\":true,\"iseditable\":true,\"end_date\":\"2018-01-01T08:00:00.000+0000\",\"email\":{\"email\":\"test_user@gmail.com\"},\"questions\":[],\"survey_responses\":[]}";
+        String Expected = "{\"survey_id\":\"123456\",\"survey_name\":\"Survey1\",\"survey_type\":\"general\",\"creation_date\":\"2018-01-01T08:00:00.000+0000\",\"update_date\":\"2018-01-01T08:00:00.000+0000\",\"publish_date\":\"2018-01-01T08:00:00.000+0000\",\"ispublished\":true,\"iseditable\":true,\"end_date\":\"2018-01-01T08:00:00.000+0000\",\"email\":{\"email\":\"test_user@gmail.com\"},\"questions\":[{\"isMultipleChoice\":true,\"options\":[],\"question_id\":\"123456\",\"question_type\":\"MultipleChoiceQuestion\",\"question_text\":\"How many more Apples are there than oranges?\"}],\"survey_responses\":[{}]}";
         String Received = result.getResponse().getContentAsString();
         Assert.assertEquals(Expected,Received);
         Assert.assertEquals(HttpStatus.OK.value(),result.getResponse().getStatus());
@@ -183,7 +232,7 @@ public class SurveyControllerTest {
     public void fetchSurveySuccess() throws Exception{
         when(surveyService.findBySurveyId(anyString())).thenReturn(survey);
         MvcResult result = mvc.perform(get("/survey?survey_id=123456")).andReturn();
-        String expectedResult = "{\"survey_id\":\"123456\",\"survey_name\":\"Survey1\",\"survey_type\":\"general\",\"creation_date\":\"2018-01-01T08:00:00.000+0000\",\"update_date\":\"2018-01-01T08:00:00.000+0000\",\"publish_date\":\"2018-01-01T08:00:00.000+0000\",\"ispublished\":true,\"iseditable\":true,\"end_date\":\"2018-01-01T08:00:00.000+0000\",\"email\":{\"email\":\"test_user@gmail.com\"},\"questions\":[],\"survey_responses\":[]}";
+        String expectedResult = "{\"survey_id\":\"123456\",\"survey_name\":\"Survey1\",\"survey_type\":\"general\",\"creation_date\":\"2018-01-01T08:00:00.000+0000\",\"update_date\":\"2018-01-01T08:00:00.000+0000\",\"publish_date\":\"2018-01-01T08:00:00.000+0000\",\"ispublished\":true,\"iseditable\":true,\"end_date\":\"2018-01-01T08:00:00.000+0000\",\"email\":{\"email\":\"test_user@gmail.com\"},\"questions\":[{\"isMultipleChoice\":true,\"options\":[],\"question_id\":\"123456\",\"question_type\":\"MultipleChoiceQuestion\",\"question_text\":\"How many more Apples are there than oranges?\"}],\"survey_responses\":[{}]}";
         String receivedResult = result.getResponse().getContentAsString();
         Assert.assertEquals(expectedResult,receivedResult);
         System.out.println(expectedResult);
@@ -205,10 +254,11 @@ public class SurveyControllerTest {
         survey.setPublished(false);
         when(surveyService.findBySurveyId(anyString())).thenReturn(survey);
         MvcResult result = mvc.perform(delete("/survey/deletequestion?question_id=123456&survey_id=123456")).andReturn();
-        String expectedResult = "{\"survey_id\":\"123456\",\"survey_name\":\"Survey1\",\"survey_type\":\"general\",\"creation_date\":\"2018-01-01T08:00:00.000+0000\",\"update_date\":\"2018-01-01T08:00:00.000+0000\",\"publish_date\":\"2018-01-01T08:00:00.000+0000\",\"ispublished\":false,\"iseditable\":true,\"end_date\":\"2018-01-01T08:00:00.000+0000\",\"email\":{\"email\":\"test_user@gmail.com\"},\"questions\":[],\"survey_responses\":[]}";
+        String expectedResult = "{\"survey_id\":\"123456\",\"survey_name\":\"Survey1\",\"survey_type\":\"general\",\"creation_date\":\"2018-01-01T08:00:00.000+0000\",\"update_date\":\"2018-01-01T08:00:00.000+0000\",\"publish_date\":\"2018-01-01T08:00:00.000+0000\",\"ispublished\":false,\"iseditable\":true,\"end_date\":\"2018-01-01T08:00:00.000+0000\",\"email\":{\"email\":\"test_user@gmail.com\"},\"questions\":[{\"isMultipleChoice\":true,\"options\":[],\"question_id\":\"123456\",\"question_type\":\"MultipleChoiceQuestion\",\"question_text\":\"How many more Apples are there than oranges?\"}],\"survey_responses\":[{}]}";
         String receivedResult = result.getResponse().getContentAsString();
         Assert.assertEquals(expectedResult,receivedResult);
         Assert.assertEquals(HttpStatus.OK.value(),result.getResponse().getStatus());
+        System.out.println("sas:"+expectedResult);
         survey.setPublished(true);
     }
 
@@ -225,18 +275,21 @@ public class SurveyControllerTest {
         survey.setPublished(true);
     }
 
+
     @Test
     public void deleteoptionSuccess() throws Exception {
         when(optionAnsService.deleteOption(anyString())).thenReturn(1);
         survey.setPublished(false);
         when(surveyService.findBySurveyId(anyString())).thenReturn(survey);
         MvcResult result = mvc.perform(delete("/survey/deleteoption?option_id=1223456&survey_id=123456")).andReturn();
-        String expectedResult = "{\"survey_id\":\"123456\",\"survey_name\":\"Survey1\",\"survey_type\":\"general\",\"creation_date\":\"2018-01-01T08:00:00.000+0000\",\"update_date\":\"2018-01-01T08:00:00.000+0000\",\"publish_date\":\"2018-01-01T08:00:00.000+0000\",\"ispublished\":false,\"iseditable\":true,\"end_date\":\"2018-01-01T08:00:00.000+0000\",\"email\":{\"email\":\"test_user@gmail.com\"},\"questions\":[],\"survey_responses\":[]}";
+        String expectedResult = "{\"survey_id\":\"123456\",\"survey_name\":\"Survey1\",\"survey_type\":\"general\",\"creation_date\":\"2018-01-01T08:00:00.000+0000\",\"update_date\":\"2018-01-01T08:00:00.000+0000\",\"publish_date\":\"2018-01-01T08:00:00.000+0000\",\"ispublished\":false,\"iseditable\":true,\"end_date\":\"2018-01-01T08:00:00.000+0000\",\"email\":{\"email\":\"test_user@gmail.com\"},\"questions\":[{\"isMultipleChoice\":true,\"options\":[],\"question_id\":\"123456\",\"question_type\":\"MultipleChoiceQuestion\",\"question_text\":\"How many more Apples are there than oranges?\"}],\"survey_responses\":[{}]}";
         String receivedResult = result.getResponse().getContentAsString();
         Assert.assertEquals(expectedResult,receivedResult);
         Assert.assertEquals(HttpStatus.OK.value(),result.getResponse().getStatus());
+        System.out.println("sas:"+expectedResult);
         survey.setPublished(true);
     }
+
 
     @Test
     public void deleteoptionUnSuccess() throws Exception {
@@ -300,6 +353,7 @@ public class SurveyControllerTest {
         String expectedResult = "{\"message\":\"Survey shared successfully !!!\"}";
         String receivedResult = result.getResponse().getContentAsString();
         Assert.assertEquals(expectedResult,receivedResult);
+        System.out.println("sas:"+expectedResult);
         Assert.assertEquals(HttpStatus.OK.value(),result.getResponse().getStatus());
     }
 
@@ -315,6 +369,7 @@ public class SurveyControllerTest {
         String receivedResult = result.getResponse().getContentAsString();
         Assert.assertEquals(expectedResult,receivedResult);
         Assert.assertEquals(HttpStatus.OK.value(),result.getResponse().getStatus());
+        System.out.println("sas:"+expectedResult);
     }
 
     @Test
@@ -339,8 +394,10 @@ public class SurveyControllerTest {
         String expected = "{\"end_date\":\""+sdf.format(now)+"\"}";
         String received = result.getResponse().getContentAsString();
         Assert.assertEquals(expected,received);
+        System.out.println("sas:"+expected);
         Assert.assertEquals(HttpStatus.OK.value(),result.getResponse().getStatus());
     }
+
 
     @Test
     public void closeSurveyUnSuccess() throws Exception {
@@ -354,6 +411,7 @@ public class SurveyControllerTest {
         when(surveyService.saveEndSurvey(anyString(),anyString())).thenReturn(new Date());
         MvcResult result = mvc.perform(get("/survey/savedate/123456/2018-01-01")).andReturn();
         Assert.assertEquals(HttpStatus.OK.value(),result.getResponse().getStatus());
+        System.out.println("sas:"+result.getResponse().getContentAsString());
     }
 
     @Test
@@ -372,9 +430,10 @@ public class SurveyControllerTest {
                 .content(utils.mapToJson(new HashMap<>())))
                 .andReturn();
         String received = result.getResponse().getContentAsString();
-        String expected = "{\"survey_id\":\"123456\",\"survey_name\":\"Survey1\",\"survey_type\":\"general\",\"creation_date\":\"2018-01-01T08:00:00.000+0000\",\"update_date\":\"2018-01-01T08:00:00.000+0000\",\"publish_date\":\"2018-01-01T08:00:00.000+0000\",\"ispublished\":true,\"iseditable\":true,\"end_date\":\"2018-01-01T08:00:00.000+0000\",\"email\":{\"email\":\"test_user@gmail.com\"},\"questions\":[],\"survey_responses\":[]}";
+        String expected = "{\"survey_id\":\"123456\",\"survey_name\":\"Survey1\",\"survey_type\":\"general\",\"creation_date\":\"2018-01-01T08:00:00.000+0000\",\"update_date\":\"2018-01-01T08:00:00.000+0000\",\"publish_date\":\"2018-01-01T08:00:00.000+0000\",\"ispublished\":true,\"iseditable\":true,\"end_date\":\"2018-01-01T08:00:00.000+0000\",\"email\":{\"email\":\"test_user@gmail.com\"},\"questions\":[{\"isMultipleChoice\":true,\"options\":[],\"question_id\":\"123456\",\"question_type\":\"MultipleChoiceQuestion\",\"question_text\":\"How many more Apples are there than oranges?\"}],\"survey_responses\":[{}]}";
         Assert.assertEquals(expected,received);
         Assert.assertEquals(HttpStatus.OK.value(),result.getResponse().getStatus());
+        System.out.println("sas:"+received);
     }
 
     @Test
