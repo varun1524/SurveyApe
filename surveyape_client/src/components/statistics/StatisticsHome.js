@@ -105,12 +105,12 @@ class StatisticsHome extends Component {
                     }), 500)
                 }else if(response.status===404){
                     console.log(" [StatisticHome] Error 404 in getSurveyById");
-                    showAlert("Error 404 in getSurveyById", alert_types.ERROR, this);
+                    showAlert("Error while fetching Stats for survey", alert_types.ERROR, this);
                     // alert("Error 404 in getSurveyById");
                 }
                 else if(response.status===400){
                     console.log(" [StatisticHome] Error 400 in getSurveyById");
-                    showAlert("Error while fetching stats data", alert_types.ERROR, this);
+                    showAlert("Internal Server Error", alert_types.ERROR, this);
                     // alert("Error 400 in getSurveyById");
                 }
             });
