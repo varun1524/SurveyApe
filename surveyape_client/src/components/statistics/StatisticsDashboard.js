@@ -219,7 +219,16 @@ class StatisticsDashboard extends Component {
             return(
 
                     this.state.answers.map((each_answer)=>{
-                       return <p style={{marginLeft:"10%",marginTop:"5%"}}>{each_answer}</p>
+                       return <p style={{
+                           marginLeft:"10%",
+                           marginTop:"2%",
+                           width: "80%",
+                           padding: "1%",
+                           border: "1px solid #000000",
+                           backgroundColor: "#f1f1f1",
+                           fontFamily: "Lucida Grande, Lucida Sans Unicode, Lucida Sans, Geneva, Verdana, sans-serif",
+                           fontWeight: "bold"
+                       }}>{each_answer}</p>
                     })
 
             )
