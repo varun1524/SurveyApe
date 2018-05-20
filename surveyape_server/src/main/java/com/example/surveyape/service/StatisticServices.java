@@ -119,10 +119,14 @@ public class StatisticServices {
     private int getQuestionParticipants(Question question){
         List<String> questionParticipantList = new LinkedList<>();
         for(ResponseAnswers responseAnswer : question.getResponseAnswers()){
-            if(!questionParticipantList.contains(responseAnswer.getSurveyResponse().getResponseId())){
-                questionParticipantList.add(responseAnswer.getSurveyResponse().getResponseId());
+            SurveyResponse surveyResponse = responseAnswer.getSurveyResponse();
+            if(surveyResponse.getSubmitted()) {
+                if (!questionParticipantList.contains(surveyResponse.getResponseId())){
+                    questionParticipantList.add(surveyResponse.getResponseId());
+                }
             }
         }
+        System.out.println("Question participants"+questionParticipantList.size());
         return questionParticipantList.size();
     }
 }
