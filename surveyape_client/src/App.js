@@ -37,6 +37,13 @@ class App extends Component {
                 });
                 this.handlePageChange("/login");
             }
+            else if(response.status===401){
+                console.log("[SurveyResponse] ValidateSession user not logged in");
+                this.setState({
+                    ...this.state,
+                    loggedIn : false
+                });
+            }
             else {
                 this.handlePageChange("/login");
             }

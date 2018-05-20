@@ -48,6 +48,9 @@
     text-align: left;
 }
 
+.show-response-answer-image, .show-response-answer-text {
+    margin-bottom: 1%;
+}
 /*.survey-option-div {*/
     /*width: 100%;*/
     /*margin-top: 2%;*/

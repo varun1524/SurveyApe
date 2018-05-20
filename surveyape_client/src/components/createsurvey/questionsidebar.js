@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {addQuestion,updateSurvey} from '../../actions/survey';
 import UploadModal from 'react-modal';
+import ExportSurveyModal from 'react-modal';
 import * as API from './../../api/API';
 import uuidv4 from 'uuid';
 import '../../stylesheets/createsurvey/questionsidebar.css';
@@ -41,10 +42,14 @@ class QuestionSidebar extends Component {
     constructor() {
         super();
         this.state = {
-            uploadModalOpen:false,
+            uploadModalOpen: false,
+            exportSurveyModalOpen: false,
+            exportSurveyFileName: "",
             upload_data:{}
         }
+
         this.openUploadModal = this.openUploadModal.bind(this);
+        this.openExportSurveyModal = this.openExportSurveyModal.bind(this);
         // this.closeUploadModal = this.closeUploadModal.bind(this);
         // this.setUploadData = this.setUploadData.bind(this);
     }
@@ -60,6 +65,20 @@ class QuestionSidebar extends Component {
         this.setState({
             ...this.state,
             uploadModalOpen : false
+        })
+    }
+
+    openExportSurveyModal(){
+        this.setState({
+            ...this.state,
+            exportSurveyModalOpen : true
+        })
+    }
+
+    closeExportSurveyModal() {
+        this.setState({
+            ...this.state,
+            exportSurveyModalOpen : false
         })
     }
 
@@ -151,14 +170,13 @@ class QuestionSidebar extends Component {
     }
 
     exportSurvey = (()=>{
-        //TODO: Implement Model to fetch file name
-        let file_name = prompt("Please Enter file name");
-        // console.log("[QuestionSidebar] exportSurvey filename", file_name, new RegExp("[a-zA-Z0-9]+$").test(file_name));
-        console.log("[QuestionSidebar] exportSurvey filename", file_name, file_name.match(/^[0-9a-zA-Z]+$/));
-        // if(file_name && new RegExp("[a-z0-9]+$").test(file_name)){
-        if(file_name && file_name.match(/^[0-9a-zA-Z]+$/)){
+        console.log("[QuestionSidebar] exportSurvey filename", this.state.exportSurveyFileName);
+
+        console.log("[QuestionSidebar] exportSurvey filename", this.state.exportSurveyFileName, this.state.exportSurveyFileName.match(/^[0-9a-zA-Z]+$/));
+        if(this.state.exportSurveyFileName && this.state.exportSurveyFileName.match(/^[0-9a-zA-Z]+$/)){
+
             let export_survey = {
-                file_name:file_name,
+                file_name:this.state.exportSurveyFileName,
                 questions:""
             };
 
@@ -177,18 +195,25 @@ class QuestionSidebar extends Component {
                 }
             });
 
+
             console.log("[QuestionSidebar] exportSurvey sampleObject", JSON.stringify(export_survey));
 
             let data = new Blob([JSON.stringify(export_survey)], {type: 'text'});
             let csvURL = window.URL.createObjectURL(data);
             let download_Link = document.createElement('a');
             download_Link.href = csvURL;
-            download_Link.setAttribute('download', file_name+".txt");
+            download_Link.setAttribute('download', this.state.exportSurveyFileName +".txt");
             download_Link.click();
+
+            this.setState({
+                ...this.state,
+                exportSurveyFileName : ""
+            })
         }
         else {
             showAlert("Invalid filename!!", alert_types.ERROR, this);
         }
+        this.closeExportSurveyModal();
     });
 
     render() {
@@ -200,7 +225,9 @@ class QuestionSidebar extends Component {
                     {this.renderQuestionTypes()}
                     <a key="upload_json_button" href = "#" onClick={()=>{this.openUploadModal()}}>Upload Questions</a>
                     <hr/>
-                    <a key="upload_json_button" href = "#" onClick={()=>{this.exportSurvey()}}>Export Survey</a>
+                    <a key="upload_json_button" href = "#" onClick={()=>{this.openExportSurveyModal()}}>Export Survey</a>
+                    <hr/>
+
                     <UploadModal
                         isOpen={this.state.uploadModalOpen}
                         onAfterOpen={this.openUploadModal}
@@ -230,6 +257,42 @@ class QuestionSidebar extends Component {
 
                         </div>
                     </UploadModal>
+
+                    <ExportSurveyModal
+                        isOpen={this.state.exportSurveyModalOpen}
+                        onAfterOpen={this.openExportSurveyModal}
+                        onRequestClose={this.closeExportSurveyModal}
+                        style={customStyles}
+                    >
+                        <div className="modal-header">
+                            <h3>Export Survey</h3>
+                        </div>
+                        <div className="modal-body">
+                            <div className="verify-modal-footer">
+                                <label className="export-survey-file-label">Please enter the file name :</label>
+                                <input type="text"
+                                       onChange={((event)=>{
+                                           this.setState({
+                                               ...this.state,
+                                               exportSurveyFileName : event.target.value
+                                           })
+                                       })}
+                                       className="upload-question-choose-file"
+                                />
+                                <button className ="upload-question-modal-button-close" onClick={() => {
+                                    this.closeExportSurveyModal()
+                                }}>
+                                    Close
+                                </button>
+                                <button className ="upload-question-modal-button-upload" onClick={() => {
+                                    this.exportSurvey()
+                                }}>
+                                    Export Survey
+                                </button>
+                            </div>
+
+                        </div>
+                    </ExportSurveyModal>
                 </div>
                 <AlertContainer ref={a => this.msg = a} {...alertOptions}/>
             </div>
