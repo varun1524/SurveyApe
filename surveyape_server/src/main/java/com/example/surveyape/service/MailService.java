@@ -47,7 +47,7 @@ public class MailService {
             QRCodeUtility qrCodeUtility = new QRCodeUtility();
             BufferedImage bufferedImage = qrCodeUtility.createQRCodeImage(url);
 
-            File outputfile = new File("./temp/QRCode.png");
+            File outputfile = new File("./QRCode.png");
             ImageIO.write(bufferedImage, "png", outputfile);
 
             helper.addAttachment("QRCode.png", outputfile);
