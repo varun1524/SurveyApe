@@ -2,7 +2,7 @@ package com.example.surveyape.utils;
 
 public class MailUtility {
     //    static String verifyUrlPrefix = "http://localhost:8080/verifyaccount/?verificationcode=";
-    static String verifyUrlPrefix = "http://localhost:3000/verifyaccount/";
+
 
     public static String createVerificationMsg(int verificationcode) {
         String msg = "Thank you for registering with SurveyApe !!!\nKindly verify your account"
@@ -15,6 +15,7 @@ public class MailUtility {
 
     public static final String url = "http://localhost:3000";
     //    public static final String url = "http://ec2-54-193-69-76.us-west-1.compute.amazonaws.com:3000";
+    static String verifyUrlPrefix = url+"/verifyaccount/";
     public static final String generalurl = url+"/survey/";
     public static final String openurl = url+"/surveyresponse/o/";
     public static final String closedurl = url+"/surveyresponse/c/";
