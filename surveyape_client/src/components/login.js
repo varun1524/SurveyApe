@@ -103,7 +103,7 @@ class Login extends Component {
                         <div className="sign-in-container">
                             <label className="sign-in-label">SIGN IN</label>
                             <hr/>
-                            <input className = "login-input-text" type="text" placeholder="Enter Username" name="email" style={{color:this.state.emailColor}}
+                            <input className = "login-input-text" type="text" placeholder="Enter Email" name="email" style={{color:this.state.emailColor}}
                                    onChange={(event) => {
                                        this.setState({
                                            ...this.state,

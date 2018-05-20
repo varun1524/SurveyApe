@@ -357,7 +357,7 @@ class SignUp extends Component {
                             <label className="sign-up-label">SIGN UP</label>
                             <hr/>
 
-                            <input className = "signup-input-text" type="text" placeholder="Enter Username" name="email" style={{color:this.state.emailColor}}
+                            <input className = "signup-input-text" type="text" placeholder="Enter Email" name="email" style={{color:this.state.emailColor}}
                                    onChange={(event) => {
                                        this.setState({
                                            ...this.state,
