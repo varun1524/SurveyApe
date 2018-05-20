@@ -6,6 +6,7 @@ import {bindActionCreators} from "redux";
 import {login_success} from "../../actions/login";
 import {createSurveyResponse, generateSurveyForm} from "../../actions/surveyresponse";
 import '../../stylesheets/statistics/StatisticsDashboard.css';
+import {Glyphicon} from "react-bootstrap";
 
 import {connect} from "react-redux";
 import BarChart from "../graph/bargraph";
@@ -256,19 +257,44 @@ class StatisticsDashboard extends Component {
                     handlePageChange = {this.props.handlePageChange}
                     loggedIn = {true}
                 />
-                <div>
-                    <button onClick={(()=>{this.props.handlePageChange(this.props.handlePageChange("/stats/basic/"+this.state.survey_id))})}>Back</button>
-                </div>
-                <div className="statistics-dashboard-question-label">
-                    <h4><strong>{this.state.question?this.state.question.question_text:""}</strong></h4>
-                </div>
-                <div>
-                    Participation Rate:{this.showParticipationRate()}%
+
+                <div className="statistics-dashboard">
+                    <div className="statistics-dashboard-header-inner">
+                        {/*<span className="statistics-survey_name">{this.state.survey_name}*/}
+                            {/*<span className="statistics-survey-type"> [ {this.state.survey_type} ]</span>*/}
+                        {/*</span>*/}
+
+                        {/*<span className="statistics-date-label"><span style={{'font-size' : '14px'}}>Survey End Date: </span><strong>{this.state.end_date}</strong></span>*/}
+                        {/*<span className="statistics-date-label"><span style={{'font-size' : '14px'}}>Survey Start Date: </span><strong>{this.state.start_time}</strong></span>*/}
+
+
+
+                        {/*<div className="statistics-block-2">*/}
+                            {/*<div className="no-of-participants">Participation Rate</div>*/}
+                            {/*<span className="no-of-participants-count">{this.state.participation_rate} %</span>*/}
+                        {/*</div>*/}
+
+                        <div className="response-back-button-class">
+                            <button className="response-back-button" onClick={(()=>{this.props.handlePageChange(this.props.handlePageChange("/stats/basic/"+this.state.survey_id))})}>Back</button>
+                        </div>
+
+                        <div className="statistics-block-1-inner">
+                            <div className="no-of-participants-inner">Participation Rate:</div>
+                            <span className="no-of-participants-count-inner">{this.showParticipationRate()}%</span>
+                        </div>
+
+                        <div className="statistics-dashboard-question-label">
+                            <h3><span style={{color: "#2980B9"}}>Question : </span><strong>{this.state.question?this.state.question.question_text:""}</strong></h3>
+                        </div>
+
+                    </div>
+
+                    <div className="statistics-dashboard-graph-div">
+                        {this.getDasboardView()}
+                    </div>
                 </div>
 
-                <div className="statistics-dashboard-graph-div">
-                    {this.getDasboardView()}
-                </div>
+
                 <AlertContainer ref={a => this.msg = a} {...alertOptions}/>
             </div>
         );

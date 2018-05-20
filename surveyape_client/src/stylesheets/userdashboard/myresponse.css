@@ -1,7 +1,7 @@
 .myresponse {
-    width: 50%;
+    width: 60%;
     height: 100px;
-    margin: 1% 25%;
+    margin: 1% 20%;
     background-color: #fefefe;
     border: 1px solid #cccccc;
     display: inline-block;
@@ -33,5 +33,5 @@
 
 .take-survey-button {
     margin-top: 20px;
-    width: 300px;
+    width: 30%;
 }

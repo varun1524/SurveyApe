@@ -18,8 +18,18 @@
     background-color: #54CB8B;
     padding: 5px;
     width: 100%;
-    height: 250px;
+    height: 220px;
     vertical-align: center;
+}
+
+.response-back-button-class {
+    width: 100%;
+}
+
+.response-back-button {
+    background-color: #239B56;
+    width: 10%;
+    margin-left: 2%;
 }
 
 .statistics-survey_name {

@@ -1,7 +1,7 @@
 .mysurvey {
-    width: 50%;
+    width: 60%;
     height: 100px;
-    margin: 1% 25%;
+    margin: 1% 20%;
     background-color: #fefefe;
     border: 1px solid #cccccc;
     display: inline-block;
@@ -36,6 +36,7 @@
     width: 40%;
     height: 100%;
     letter-spacing: 30px;
+    text-align: right;
 }
 
 .glyphicon {

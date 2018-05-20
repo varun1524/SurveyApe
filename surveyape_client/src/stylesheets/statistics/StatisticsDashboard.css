@@ -1,16 +1,16 @@
 .statistics-dashboard-question-label {
     font-weight: lighter;
     width: 100%;
-    height: 40%;
+    height: 20%;
     margin: 1% 0;
     text-align: center;
 }
 
 .statistics-dashboard-graph-div {
-    width: 80%;
-    min-height: 700px;
+    width: 100%;
+    min-height: auto;
     height: auto;
-    margin: 2% 10%;
+    margin: 2% auto;
     border: 1px solid #cccccc;
 }
 
@@ -28,3 +28,54 @@
     font-size: 16px;
     padding: 10px;
 }
+
+.statistics-dashboard-header-inner {
+    color: #F8F8F8;
+    font-size: 20px;
+    text-align: left;
+    background-color: #54CB8B;
+    padding: 5px;
+    width: 100%;
+    height: 200px;
+    vertical-align: center;
+}
+
+.statistics-block-1-inner {
+    width: 20%;
+    height: 40%;
+    margin: 1% 0 0 2%;
+    float: left;
+    background-color: #f1f1f1;
+    border: 2px solid #000000;
+    border-radius: 5px;
+    position: relative;
+}
+
+.no-of-participants-inner {
+    width: 100%;
+    font-size: medium;
+    color: #000;
+    /*margin: 3%;*/
+}
+
+.no-of-participants-count-inner {
+    width: 100%;
+    font-size: 32px;
+    color: #000;
+    /*margin: 3%;*/
+}
+
+/*.back-glyphicon {*/
+    /*width: 20%;*/
+    /*height: 30px;*/
+    /*float: left;*/
+/*}*/
+
+/*.remove-glyphicon-option .glyphicon-remove {*/
+    /*top: 1%            !important;*/
+    /*font-size: 14px     !important;*/
+    /*color: #FF5B38;*/
+    /*float: left;*/
+    /*cursor: pointer;*/
+    /*margin: 5px;*/
+/*}*/
