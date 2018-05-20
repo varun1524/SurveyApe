@@ -84,7 +84,8 @@ class StatisticsDashboard extends Component {
         }else{
             this.setState({
                 ...this.state,
-                answers:data.answers
+                answers:data.answers,
+                question:data.question
             });
         }
         console.log("[setData]")
@@ -118,7 +119,6 @@ class StatisticsDashboard extends Component {
             data:new_data,
             question:data.question,
             imagedataset:imagedataset
-
         });
     }
 
