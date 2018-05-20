@@ -5,7 +5,10 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as API from '../api/API';
 import '../stylesheets/signin.css';
-import {Alert} from 'reactstrap';
+import {alert_types} from '../config/alert_types';
+import AlertContainer from 'react-alert';
+import {alertOptions, showAlert} from "./../config/alertConfig";
+
 
 class VerifyAccount extends Component {
 
@@ -29,26 +32,36 @@ class VerifyAccount extends Component {
             console.log(response.status);
             if(response.status===200){
                 console.log("User Verified Successfully");
-                response.json().then((data)=>{
-                   console.log(data);
-                   alert(data.message);
-                });
-                this.props.handlePageChange("/login");
+                // response.json().then((data)=>{
+                //     console.log(data);
+                //     alert(data.message);
+                // });
+                showAlert("User Verified Successfully",alert_types.SUCCESS, this);
+                setTimeout((()=>{
+                    this.props.handlePageChange("/login");
+                }), 500)
             }
             else if(response.status === 300) {
                 console.log("All ready verified");
-                response.json().then((data)=>{
-                    console.log(data);
-                    alert(data.message);
-                });
-                this.props.handlePageChange("/login");
+                // response.json().then((data)=>{
+                //     console.log(data);
+                //     alert(data.message);
+                // });
+                showAlert("User already verified",alert_types.SUCCESS, this);
+                setTimeout((()=>{
+                    this.props.handlePageChange("/login");
+                }), 500)
             }
             else {
                 console.log("Error");
-                response.json().then((data)=>{
-                    console.log(data);
-                    alert(data.message);
-                });
+                // response.json().then((data)=>{
+                //     console.log(data);
+                //     alert(data.message);
+                // });
+                showAlert("Error in User verification. Please try again",alert_types.SUCCESS, this);
+                setTimeout((()=>{
+                    this.props.handlePageChange("/login");
+                }), 500)
                 this.props.handlePageChange("/login");
             }
         });
@@ -57,10 +70,13 @@ class VerifyAccount extends Component {
     render() {
         return (
             <div className="DemoSignIn">
-                <HeaderComponent />
+                <HeaderComponent
+                    handlePageChange={this.props.handlePageChange}
+                />
                 <div className="sign-in-form">
                     {this.verifyAccount(this.props.match.params.token)}
                 </div>
+                <AlertContainer ref={a => this.msg = a} {...alertOptions}/>
             </div>
         );
     }
