@@ -89,9 +89,9 @@ class Home extends Component {
                     handlePageChange = {this.props.handlePageChange}
                     loggedIn = {true}
                 />
-                <div className="welcome-user">
-                    <h3>Welcome back, <strong>{this.props.state.user.user.firstname}</strong> !</h3>
-                </div>
+                {/*<div className="welcome-user">*/}
+                    {/*<h3>Welcome <strong>{this.props.state.user.user.firstname}</strong> !</h3>*/}
+                {/*</div>*/}
                 <Switch>
                     <Route exact path="/home" render = {()=> (
                         <div>
