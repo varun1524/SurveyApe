@@ -53,9 +53,24 @@ class StatisticsHome extends Component {
                     ...this.state,
                     loggedIn : false
                 });
+                showAlert("User not authorized to access this page. Please login", alert_types.ERROR, this);
+                setTimeout((()=>{
+                    this.props.handlePageChange("/login");
+                }),500);
+            }
+            else if(response.status===401){
+                console.log("[StatisticsHome] ValidateSession user not logged in");
+                this.setState({
+                    ...this.state,
+                    loggedIn : false
+                });
+                showAlert("User not authorized to access this page. Please login", alert_types.ERROR, this);
+                setTimeout((()=>{
+                    this.props.handlePageChange("/login");
+                }),500);
             }
             else {
-                alert("[StatisticsHome] Error while checking session existence");
+                console.log("Error ")
             }
         });
 
@@ -68,7 +83,7 @@ class StatisticsHome extends Component {
                 console.log(response.status);
                 if(response.status===200){
                     response.json().then((data)=>{
-                       console.log("[StatisticHome] data:",data)
+                        console.log("[StatisticHome] data:",data)
                         this.setState({
                             ...this.state,
                             survey_name:data.survey_name,
@@ -101,23 +116,19 @@ class StatisticsHome extends Component {
     }
 
     getQuestionComponent() {
+        return  this.state.questions.map((each_question)=>{
+            return(
+                <div className="statistics-question-component">
 
-           return  this.state.questions.map((each_question)=>{
-               return(
-                   <div className="statistics-question-component">
+                    <label className="statistics-question-label">Question: {each_question.question_text}</label>
 
-                       <label className="statistics-question-label">Question: {each_question.question_text}</label>
-
-                       <button type="button" className="statistics-question-button" onClick={() => {
-                           // question id is hardcoded here
-                           {this.props.handlePageChange("/stats/response/"+each_question.question_id );}
-                       }}>Check Response Stats</button>
-                   </div>
-               )
-            });
-
-
-
+                    <button type="button" className="statistics-question-button" onClick={() => {
+                        // question id is hardcoded here
+                        {this.props.handlePageChange("/stats/response/"+each_question.question_id );}
+                    }}>Check Response Stats</button>
+                </div>
+            )
+        });
     }
 
     render() {
@@ -137,7 +148,6 @@ class StatisticsHome extends Component {
                             <span className="statistics-survey-type"> [ {this.state.survey_type} ]</span>
                         </span>
 
-
                         <span className="statistics-date-label"><span style={{'font-size' : '14px'}}>Survey End Date: </span><strong>{this.state.end_date}</strong></span>
                         <span className="statistics-date-label"><span style={{'font-size' : '14px'}}>Survey Start Date: </span><strong>{this.state.start_time}</strong></span>
 
@@ -150,9 +160,7 @@ class StatisticsHome extends Component {
                             <div className="no-of-participants">Participation Rate</div>
                             <span className="no-of-participants-count">{this.state.participation_rate} %</span>
                         </div>
-
                     </div>
-
                     {this.getQuestionComponent()}
                 </div>
                 <AlertContainer ref={a => this.msg = a} {...alertOptions}/>

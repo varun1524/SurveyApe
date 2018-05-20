@@ -9,12 +9,18 @@ import '../../stylesheets/statistics/StatisticsDashboard.css';
 
 import {connect} from "react-redux";
 import BarChart from "../graph/bargraph";
+import {alert_types} from '../../config/alert_types';
+import AlertContainer from 'react-alert';
+import {alertOptions, showAlert} from "../../config/alertConfig";
 
 class StatisticsDashboard extends Component {
 
     constructor(){
         super();
         this.state = {
+            survey_id:"",
+            survey_participants:0,
+            question_participants:0,
             question:{},
             answers:[],
             imagedataset:[],
@@ -24,7 +30,6 @@ class StatisticsDashboard extends Component {
                 labelName:"Response",
                 header_text:"Question Response Statistics"
             }
-
         };
     }
 
@@ -38,25 +43,37 @@ class StatisticsDashboard extends Component {
 
         API.getQuestionResponseDitribution(this.props.match.params.question_id)
             .then((response)=>{
+                console.log("[StatisticHome] componentDidMount() Response status: ",response.status);
                 if(response.status===200){
                     response.json().then((data)=>{
                         console.log("StatisticHome] componentDidMount() after api call data: ",data);
                         if(data){
-                            this.setData(data);
+                            this.setState({
+                                ...this.state,
+                                survey_id:data.survey_id,
+                                survey_participants:data.survey_participants,
+                                question_participants:data.question_participants
+                            });
+                            this.setQuestionData(data);
                         }
-
-
                     })
                 }
-
+                else if(response.status===401){
+                    this.setState({
+                        ...this.state,
+                        loggedIn : false
+                    });
+                    showAlert("User not authorized to access this page. Please login", alert_types.ERROR, this);
+                    setTimeout((()=>{
+                        this.props.handlePageChange("/login");
+                    }),500);
+                }
             }).catch((error)=>{
-                console.log("[StatisticDashboard] componentDidMount error: ",error);
+            console.log("[StatisticDashboard] componentDidMount error: ",error);
         })
-
-
     }
 
-    setData(data){
+    setQuestionData(data){
         if(data.question && ((data.question.question_type === "CheckBox")||(data.question.question_type === "DropDown")||data.question.question_type === "RadioGroup")){
             this.setCheckRadioDropDownData(data);
         }else if(data.question && (data.question.question_type === "YesNo")){
@@ -84,14 +101,13 @@ class StatisticsDashboard extends Component {
                 imagedataset.push(each_opt);
                 option_labels.push(imgCount++);
             });
-        }else{
+        }
+        else{
             data.options_list.map((each_opt)=>{
                 let trimed_option_text = each_opt.option_text.length > 10?each_opt.option_text.slice(0,10):each_opt.option_text;
                 option_labels.push(trimed_option_text);
             });
         }
-
-
 
         let new_data = this.state.data;
         new_data.labels = option_labels;
@@ -108,8 +124,8 @@ class StatisticsDashboard extends Component {
     setYesNoData(data){
         console.log("[StatisticDashBoard] setYesNoData() data:",data.answers);
         let server_dataset = data.answers;
-        let option_labels = ["Yes","No"]
-        let datasets = [0,0]
+        let option_labels = ["Yes","No"];
+        let datasets = [0,0];
 
         if(server_dataset){
             server_dataset.map((answer)=>{
@@ -126,16 +142,16 @@ class StatisticsDashboard extends Component {
                 ...this.state,
                 data:new_data,
                 question:data.question
-
             });
         }
-
     }
+
+
     setstarData(data){
         console.log("[StatisticDashBoard] setstarData() data:",data);
         let server_dataset = data.answers;
-        let option_labels = ["1","2","3","4","5"]
-        let datasets = [0,0,0,0,0]
+        let option_labels = ["1","2","3","4","5"];
+        let datasets = [0,0,0,0,0];
         if(server_dataset){
             server_dataset.map((answer)=>{
                 if(answer.toString().toLowerCase() === "1"){
@@ -168,23 +184,16 @@ class StatisticsDashboard extends Component {
         return this.state.imagedataset.map((each_image,index)=>{
             console.log("[statisticdashboard] getImageList() each_image: ",each_image)
             return(
-
-                    <div className="statistics-dashboard-img-div">
-                        <span className="statistics-dashboard-img-number">{index+1}</span>
-                        <img src={each_image.option_text}
-                             height="150"
-                             width="150"
-                             className="option-actual-image"
-                             alt="Please select appropriate image"
-                        />
-                    </div>
-
-
-
-
+                <div className="statistics-dashboard-img-div">
+                    <span className="statistics-dashboard-img-number">{index+1}</span>
+                    <img src={each_image.option_text}
+                         height="150"
+                         width="150"
+                         className="option-actual-image"
+                         alt="Please select appropriate image"
+                    />
+                </div>
             )
-
-
         })
     }
 
@@ -196,59 +205,67 @@ class StatisticsDashboard extends Component {
                 <div className="statisticboard-graph-image-list">
                     {this.getImageList()}
                 </div>
-
             </div>
         )
     }
-
-
-
 
     getDasboardView(){
         console.log("[StatisticDashboard] getDasboardView() state: ",this.state);
         if(this.state.question && ((this.state.question.question_type === "CheckBox")||(this.state.question.question_type === "DropDown")||(this.state.question.question_type === "RadioGroup") || (this.state.question.question_type === "YesNo") ||  (this.state.question.question_type === "StarRating"))){
             if(this.state.imagedataset && this.state.imagedataset.length>0&&this.state.imagedataset[0].option_type==="image"){
                 return this.getCheckDropRadioImageView();
-            }else{
+            }
+            else{
                 return(
                     <BarChart data={this.state.data}/>
                 )
             }
-
-        }else{
+        }
+        else{
             return(
 
-                    this.state.answers.map((each_answer)=>{
-                       return <p style={{marginLeft:"10%",marginTop:"5%"}}>{each_answer}</p>
-                    })
-
+                this.state.answers.map((each_answer)=>{
+                    return <p style={{marginLeft:"10%",marginTop:"5%"}}>{each_answer}</p>
+                })
             )
-
         }
     }
 
+    showParticipationRate = (()=>{
+        let rate = ((this.state.question_participants/this.state.survey_participants)*100);
+        console.log("[StatisticHome] showParticipationRate: ", this.state.question_participants,
+            this.state.survey_participants, rate.toFixed(2));
+        return rate.toFixed(2);
+    });
+
     render() {
         console.log("[StatisticsDashboard] render", this.state);
-
         return (
             <div className="StatisticsHome">
                 <Header
                     handlePageChange = {this.props.handlePageChange}
                     loggedIn = {true}
                 />
+                <div>
+                    <button onClick={(()=>{this.props.handlePageChange(this.props.handlePageChange("/stats/basic/"+this.state.survey_id))})}>Back</button>
+                </div>
                 <div className="statistics-dashboard-question-label">
                     <h4><strong>{this.state.question?this.state.question.question_text:""}</strong></h4>
+                </div>
+                <div>
+                    Participation Rate:{this.showParticipationRate()}%
                 </div>
 
                 <div className="statistics-dashboard-graph-div">
                     {this.getDasboardView()}
-
                 </div>
+                <AlertContainer ref={a => this.msg = a} {...alertOptions}/>
             </div>
-
         );
     }
 }
+
+
 
 function mapStateToProps(state) {
     console.log("[SurveyDashboard] state: ", state);
