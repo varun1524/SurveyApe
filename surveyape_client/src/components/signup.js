@@ -255,7 +255,9 @@ class SignUp extends Component {
         var checkspl = /[~`!#$%\^&*+=\-\[\]\\';,/(){}|\\":<>\?]/g;
         return (
             <div className="DemoSignUp">
-                <HeaderComponent/>
+                <HeaderComponent
+                    handlePageChange = {this.props.handlePageChange}
+                />
 
                 <VerificationModal
                     isOpen={this.state.verificationModalOpen}
