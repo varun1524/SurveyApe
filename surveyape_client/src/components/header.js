@@ -80,24 +80,24 @@ class Header extends Component {
     handleHomeButtonClick(){
         console.log("[Header] - handleHomeButtonClick() server request");
         this.props.handlePageChange("/home");
-            API.getSurveyList().then((response) => {
-                console.log(response.status);
-                if(response.status === 200){
-                    response.json().then((data) => {
-                        console.log("[Header] - handleHomeButtonClick created_surveys", data.created_surveys);
+        API.getSurveyList().then((response) => {
+            console.log(response.status);
+            if(response.status === 200){
+                response.json().then((data) => {
+                    console.log("[Header] - handleHomeButtonClick created_surveys", data.created_surveys);
 
-                        this.props.update_surveyor_dashboard(data.created_surveys,data.requested_surveys);
-                    });
+                    this.props.update_surveyor_dashboard(data.created_surveys,data.requested_surveys);
+                });
 
-                }
-                else if(response.status === 404) {
+            }
+            else if(response.status === 404) {
 
 
-                }
-                else {
+            }
+            else {
 
-                }
-            });
+            }
+        });
 
 
     }
@@ -133,7 +133,7 @@ class Header extends Component {
 
                         showAlert("Survey created successfully", alert_types.SUCCESS, this);
                         setTimeout(() => {
-                            this.props.handlePageChange("/home/createsurvey");
+                            this.props.handlePageChange("/home/createsurvey/"+data.survey_id);
                         }, 500);
                     })
                 }
@@ -161,64 +161,79 @@ class Header extends Component {
         }
     });
 
+    showWelcomeHeader = (()=>{
+        if(this.props.hasOwnProperty("loggedIn")){
+            if(this.props.loggedIn){
+                return(
+                    <div className="welcome-user">
+                        <h3>Welcome <strong>{this.props.state.user.user.firstname}</strong> !</h3>
+                    </div>
+                )
+            }
+        }
+    });
+
     render() {
-        console.log("[Header] render")
+        console.log("[Header] render");
         return(
-            <div className="Header">
-                <div className="header-child">
-                    <a className="logo" onClick={() => {
+            <div>
+                <div className="Header">
+                    <div className="header-child">
+                        <a className="logo" onClick={() => {
 
-                        this.handleHomeButtonClick()
-                    }}>SURVEYape</a>
-                    {this.showLoggedInHeader()}
-                </div>
-
-                <CreateSurveyModal
-                    isOpen={this.state.createSurveyModalOpen}
-                    onAfterOpen={this.openCreateSurveyModal}
-                    onRequestClose={this.closeCreateSurveyModal}
-                    style={customStyles}
-                >
-                    <div className="modal-header">
-                        <span className="close" onClick={() => {this.closeCreateSurveyModal()}}>&times;</span>
-                        <h3>CREATE SURVEY</h3>
+                            this.handleHomeButtonClick()
+                        }}>SURVEYape</a>
+                        {this.showLoggedInHeader()}
                     </div>
-                    <div className="modal-body">
 
-                        <label>Survey Name</label>
-                        <input type="text"
-                               className="survey-name-input-box"
-                               onChange={(event)=>{this.state.survey_name = event.target.value;}}
-                               placeholder="Enter the survey name"
-                        />
+                    <CreateSurveyModal
+                        isOpen={this.state.createSurveyModalOpen}
+                        onAfterOpen={this.openCreateSurveyModal}
+                        onRequestClose={this.closeCreateSurveyModal}
+                        style={customStyles}
+                    >
+                        <div className="modal-header">
+                            <span className="close" onClick={() => {this.closeCreateSurveyModal()}}>&times;</span>
+                            <h3>CREATE SURVEY</h3>
+                        </div>
+                        <div className="modal-body">
 
-                        <label>Survey Type</label>
-                        <select name="survey-dropdown"
-                                className="survey-type-dropdown"
-                                onChange={(event)=>{this.state.survey_type = event.target.value;}}
-                        >
-                            <option value="">Select the survey type</option>
-                            <option value="general">General</option>
-                            <option value="open">Open</option>
-                            <option value="closed">Closed</option>
-                        </select>
-                        {/*<input type="text" onChange={(event)=>{*/}
+                            <label>Survey Name</label>
+                            <input type="text"
+                                   className="survey-name-input-box"
+                                   onChange={(event)=>{this.state.survey_name = event.target.value;}}
+                                   placeholder="Enter the survey name"
+                            />
+
+                            <label>Survey Type</label>
+                            <select name="survey-dropdown"
+                                    className="survey-type-dropdown"
+                                    onChange={(event)=>{this.state.survey_type = event.target.value;}}
+                            >
+                                <option value="">Select the survey type</option>
+                                <option value="general">General</option>
+                                <option value="open">Open</option>
+                                <option value="closed">Closed</option>
+                            </select>
+                            {/*<input type="text" onChange={(event)=>{*/}
                             {/*this.state.survey_type = event.target.value;*/}
-                        {/*}}/>*/}
+                            {/*}}/>*/}
 
-                        <label>End Date</label>
-                        <input type="date" className="survey-name-input-box" onChange={(event) => {this.state.end_date = event.target.value}}/>
+                            <label>End Date</label>
+                            <input type="date" className="survey-name-input-box" onChange={(event) => {this.state.end_date = event.target.value}}/>
 
-                        <input type="button" className="submit-create-survey" value="Submit" onClick={()=>{
-                            this.createSurvey()
-                        }}/>
+                            <input type="button" className="submit-create-survey" value="Submit" onClick={()=>{
+                                this.createSurvey()
+                            }}/>
 
-                        <input type="button" className="cancel-create-survey" value="Cancel" onClick={()=>{
-                            this.closeCreateSurveyModal()
-                        }}/>
-                    </div>
-                </CreateSurveyModal>
-                <AlertContainer ref={a => this.msg = a} {...alertOptions}/>
+                            <input type="button" className="cancel-create-survey" value="Cancel" onClick={()=>{
+                                this.closeCreateSurveyModal()
+                            }}/>
+                        </div>
+                    </CreateSurveyModal>
+                    <AlertContainer ref={a => this.msg = a} {...alertOptions}/>
+                </div>
+                {this.showWelcomeHeader()}
             </div>
         );
     }
