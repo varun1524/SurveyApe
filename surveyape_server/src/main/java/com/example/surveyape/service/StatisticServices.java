@@ -110,11 +110,19 @@ public class StatisticServices {
                     }
                     map.put("answers",responseAnsList);
                 }
-                map.put("question_participants",responseAnswersList.size());
+                map.put("question_participants",getQuestionParticipants(question));
             }
-
-
         }
         return map;
+    }
+
+    private int getQuestionParticipants(Question question){
+        List<String> questionList = new LinkedList<>();
+        for(ResponseAnswers responseAnswer : question.getResponseAnswers()){
+            if(!questionList.contains(responseAnswer.getQuestion().getQuestionId())){
+                questionList.add(responseAnswer.getQuestion().getQuestionId());
+            }
+        }
+        return questionList.size();
     }
 }
