@@ -33,11 +33,12 @@ public class Question {
     private String questionText;
 
     @JsonView({SurveyView.summary.class, SurveyAndResponseView.summary.class})
-    private Boolean isMultipleChoice;
+    private Boolean isMultipleChoice = false;
 
     @JsonView({SurveyView.summary.class, SurveyAndResponseView.summary.class,BasicStatsView.summary.class})
     @OneToMany(mappedBy = "question", cascade = {CascadeType.ALL})
     private List<OptionAns> options;
+
     @JsonView({BasicStatsView.summary.class})
     @OneToMany(mappedBy = "question", cascade = {CascadeType.PERSIST})
     private List<ResponseAnswers> responseAnswers;
