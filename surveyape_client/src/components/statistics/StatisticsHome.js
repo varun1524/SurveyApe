@@ -121,13 +121,11 @@ class StatisticsHome extends Component {
         return  this.state.questions.map((each_question)=>{
             return(
                 <div className="statistics-question-component">
-
-                    <label className="statistics-question-label">Question: {each_question.question_text}</label>
-
+                    <label className="statistics-question-label">{each_question.question_text}</label>
                     <button type="button" className="statistics-question-button" onClick={() => {
                         // question id is hardcoded here
                         {this.props.handlePageChange("/stats/response/"+each_question.question_id );}
-                    }}>Check Response Stats</button>
+                    }}>Check Stats</button>
                 </div>
             )
         });
@@ -170,7 +168,13 @@ class StatisticsHome extends Component {
                             <span className="no-of-participants-count">{this.state.participation_rate} %</span>
                         </div>
                     </div>
-                    {this.getQuestionComponent()}
+                    <div>
+                        <div className="statistics-dashboard-question-label">
+                            <h3><span style={{color: "#2980B9"}}>Questions : </span></h3>
+                        </div>
+                        {this.getQuestionComponent()}
+                    </div>
+
                 </div>
                 <AlertContainer ref={a => this.msg = a} {...alertOptions}/>
             </div>
