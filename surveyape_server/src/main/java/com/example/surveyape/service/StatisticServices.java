@@ -58,11 +58,8 @@ public class StatisticServices {
             if(participants.size()<2){
                 throw new Exception(ErrorMessage.NOT_ENOUGH_RESPONSE);
             }
-
         }
-
         return map;
-
     }
 
     // Currently this is only applicable for ans option other than (data and short answer)
@@ -71,6 +68,17 @@ public class StatisticServices {
         Question question = questionRepository.findByQuestionId(questionId);
         if(question!=null){
             String type = question.getQuestionType();
+            List<SurveyResponse> surveyResponseList = question.getSurvey().getSurveyResponses();
+            int totalParticiapnts = 0;
+            if(surveyResponseList!=null) {
+                for (SurveyResponse eachRequest : surveyResponseList) {
+                    if (eachRequest.getSubmitted()) {
+                        totalParticiapnts++;
+                    }
+                }
+            }
+            map.put("survey_id",question.getSurvey().getSurveyId());
+            map.put("survey_participants",totalParticiapnts);
             map.put("question",question);
             List<OptionAns> optionAnsList = question.getOptions();
             if(optionAnsList!=null) {
@@ -93,19 +101,16 @@ public class StatisticServices {
                     }
                     map.put("options_list", optionAnsList);
                     map.put("response_count", countForOptions);
-
-
                 } else {
                     List<String> responseAnsList = new LinkedList<>();
-
                     if(responseAnswersList!=null){
                         for (ResponseAnswers resAns : responseAnswersList) {
                             responseAnsList.add(resAns.getAnswerValue());
                         }
-
                     }
                     map.put("answers",responseAnsList);
                 }
+                map.put("question_participants",responseAnswersList.size());
             }
 
 

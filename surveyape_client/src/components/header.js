@@ -133,7 +133,7 @@ class Header extends Component {
 
                         showAlert("Survey created successfully", alert_types.SUCCESS, this);
                         setTimeout(() => {
-                            this.props.handlePageChange("/home/createsurvey");
+                            this.props.handlePageChange("/home/createsurvey/"+data.survey_id);
                         }, 500);
                     })
                 }
