@@ -9,7 +9,7 @@ Team Members:
 
 App URL : http://ec2-34-217-100-19.us-west-2.compute.amazonaws.com:3000/
 
-#Setup Instructions
+Setup Instructions
 Please run `npm install` and `npm start` in client module.
 Application.properties contain information of RDS instance, where lies our database. If you test it on localhost, please update it accordingly.
 
