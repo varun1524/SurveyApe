@@ -67,7 +67,7 @@ class StatisticsDashboard extends Component {
                     showAlert("User not authorized to access this page. Please login", alert_types.ERROR, this);
                     setTimeout((()=>{
                         this.props.handlePageChange("/login");
-                    }),500);
+                    }),750);
                 }
             }).catch((error)=>{
             console.log("[StatisticDashboard] componentDidMount error: ",error);
