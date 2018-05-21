@@ -91,7 +91,6 @@ class QuestionComponent extends Component {
         })
     }
 
-
     deletequestion(question_id){
 
         API.deleteQuestion(question_id,this.props.survey.survey_id)
@@ -208,7 +207,6 @@ class QuestionComponent extends Component {
             </div>
         );
     }
-
 
     getOptionView(){
         if(this.props.question_type === "CheckBox"){

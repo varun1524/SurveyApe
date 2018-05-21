@@ -138,7 +138,7 @@ class QuestionDashboard extends Component {
         console.log("[QuestionSidebar] exportSurvey filename", this.state.exportSurveyFileName);
 
         console.log("[QuestionSidebar] exportSurvey filename", this.state.exportSurveyFileName, this.state.exportSurveyFileName.match(/^[0-9a-zA-Z]+$/));
-        if(this.state.exportSurveyFileName && this.state.exportSurveyFileName.match(/^[0-9a-zA-Z]+$/)){
+        if(this.state.exportSurveyFileName && this.state.exportSurveyFileName.match(/^[0-9a-zA-Z]+[0-9a-zA-Z-_]*$/)){
 
             let export_survey = {
                 file_name:this.state.exportSurveyFileName,
@@ -196,26 +196,26 @@ class QuestionDashboard extends Component {
         console.log("[QuestionDashboard] publishSurvey() Survey Data: ",this.props.survey);
         //console.log(JSON.stringify(this.props.survey));
         API.publishSurvey(this.props.survey.survey_id)
-        .then((response)=>{
-          if(response.status === 200){
-              // console.log("[questiondashboard] publishSurvey successful");
+            .then((response)=>{
+                if(response.status === 200){
+                    // console.log("[questiondashboard] publishSurvey successful");
 
-              response.json().then((data)=>{
-                  console.log("[QuestionDashboard] Save Survey publish to database after api call",data);
-                  let str = this.props.survey.ispublished?"unpublished":"published";
-                  showAlert("Survey " + str + " successfully !!!", alert_types.SUCCESS, this);
-                  // alert("Survey "+ str +" successfully !!!");
-                  this.props.changePublishState();
-              });
-          }
-          else if(response.status === 401){
-              showAlert("User not authorized to access current page. Please login", alert_types.INFO, this);
-              setTimeout((()=>{
-                  this.props.handlePageChange("/login");
-              }),500);
-          }
+                    response.json().then((data)=>{
+                        console.log("[QuestionDashboard] Save Survey publish to database after api call",data);
+                        let str = this.props.survey.ispublished?"unpublished":"published";
+                        showAlert("Survey " + str + " successfully !!!", alert_types.SUCCESS, this);
+                        // alert("Survey "+ str +" successfully !!!");
+                        this.props.changePublishState();
+                    });
+                }
+                else if(response.status === 401){
+                    showAlert("User not authorized to access current page. Please login", alert_types.INFO, this);
+                    setTimeout((()=>{
+                        this.props.handlePageChange("/login");
+                    }),500);
+                }
 
-        }).catch((error)=>{
+            }).catch((error)=>{
             showAlert("Failed to publish !!!", alert_types.ERROR, this);
             // alert("Failed to publish !!!");
             console.log("[QuestionDashboard] publish() error",error);
@@ -230,12 +230,12 @@ class QuestionDashboard extends Component {
         API.updateSurvey(this.props.survey).then((response)=>{
             console.log(response.status);
             if(response.status === 200){
-              response.json().then((data)=>{
-                  console.log("[QuestionDashboard] Save Survey to database after api call",data);
-                  showAlert("Survey Saved successfully !!!", alert_types.SUCCESS, this);
-                  // alert("Survey Saved successfully !!!")
-                  this.props.updateSurvey(data);
-              });
+                response.json().then((data)=>{
+                    console.log("[QuestionDashboard] Save Survey to database after api call",data);
+                    showAlert("Survey Saved successfully !!!", alert_types.SUCCESS, this);
+                    // alert("Survey Saved successfully !!!")
+                    this.props.updateSurvey(data);
+                });
             }
             else if(response.status ===401){
                 showAlert("User not authorized to access current page. Please login", alert_types.INFO, this);
@@ -355,16 +355,33 @@ class QuestionDashboard extends Component {
                 </div>
 
                 <div className="survey-name-p-2">
-                    <button type="button" className="save-survey-button-sample" onClick={() => {this.publishSurvey()}}>{this.props.survey.ispublished?"Unpublish":"Publish"}</button>
-                    <button type="button" className="save-survey-button-sample" hidden={!this.props.survey.iseditable} onClick={() => {this.saveSurvey()}}>Save</button>
+                    <button type="button" className="save-survey-button-sample"
+                            onClick={() => {this.publishSurvey()}}>{this.props.survey.ispublished?"Unpublish":"Publish"}
+                    </button>
+                    <button type="button" className="save-survey-button-sample"
+                            hidden={!this.props.survey.iseditable}
+                            onClick={() => {this.saveSurvey()}}
+                    >
+                        Save
+                    </button>
                     <button type="button" className="save-survey-button-sample"  hidden={(this.props.survey.end_date && this.props.survey.end_date.length >0)}
                             onClick={() => {
-                                console.log("[questiondashboard] Close button clicked")
+                                console.log("[questiondashboard] Close button clicked");
                                 this.closeSurvey()
                             }}
-                    >Close</button>
-                    <button type="button" className="save-survey-button-sample" onClick={() => {this.openUploadModal()}}>Import Survey</button>
-                    <button type="button" className="save-survey-button-sample" onClick={() => {this.openExportSurveyModal()}}>Export Survey</button>
+                    >
+                        Close
+                    </button>
+                    <button type="button" className="save-survey-button-sample"
+                            onClick={() => {this.openUploadModal()}}
+                    >
+                        Import Survey
+                    </button>
+                    <button type="button" className="save-survey-button-sample"
+                            onClick={() => {this.openExportSurveyModal()}}
+                    >
+                        Export Survey
+                    </button>
 
                 </div>
 
@@ -394,7 +411,6 @@ class QuestionDashboard extends Component {
                                 Upload
                             </button>
                         </div>
-
                     </div>
                 </UploadModal>
 
