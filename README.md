@@ -7,19 +7,23 @@ Team Members:
 3. Sannisth Soni (sannisth.soni@sjsu.edu) - 012460565
 4. Varun Shah (varun.shah@sjsu.edu) - 010823657
 
-App URL : http://ec2-34-217-100-19.us-west-2.compute.amazonaws.com:3000/login
+App URL : http://ec2-34-217-100-19.us-west-2.compute.amazonaws.com:3000/
 
-For TA:
+#Setup Instructions
 Please run `npm install` and `npm start` in client module.
 Application.properties contain information of RDS instance, where lies our database. If you test it on localhost, please update it accordingly.
 
 Build instructions:
-  From Client:
-    1. npm install
-    2. npm start
+  For Client:
+    1. go to surveyape_client directory
+    2. execute on terminal "npm install" to install dependecies
+    3. execute on terminal "npm start" to run application
     
-  From Server:
-    1. Run the JavaApplication file.
+  Fom Server:
+    1. Go to src of surveyape_server and run the JavaApplication file. This will start server
+    
+  For Database:
+    In application.properties file configuration for RDS MySQL Instance is provided. So run the server and you will be good to go.
     
     
   
