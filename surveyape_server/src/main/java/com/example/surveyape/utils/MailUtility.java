@@ -25,7 +25,7 @@ public class MailUtility {
     public static final String close_survey_body = "Please take the close Survey using the below link:\nURL:" + url+"/surveyresponse/c/";
     public static final String close_survey_subject = "Close Survey request";
 
-    public static final String open_survey_body = "Please take the close Survey using the below link:\nURL:" + url+"/surveyresponse/o/";
+    public static final String open_survey_body = "Please take the open Survey using the below link:\nURL:" + url+"/surveyresponse/o/";
     public static final String open_survey_subject = "Open Survey request";
 
     public static final String surveyResponseMsg = "Thank you for you response !!! ";
