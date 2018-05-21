@@ -73,7 +73,7 @@ public class UserService {
                 user.setVerified(true);
                 userRepository.save(user);
                 mailService.sendEmail(user.getEmail(), MailUtility.verificationSuccessfulMessage,
-                        "Account Verification Successfult");
+                        "Account Verification Successful");
                 status = UserUtility.SUCCESSFULLY_VERIFIED;
             }
             else if(user.getVerified()){
