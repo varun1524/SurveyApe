@@ -73,7 +73,7 @@ class Header extends Component {
             showAlert("Logout successful", alert_types.SUCCESS, this);
             setTimeout((()=>{
                 this.props.history.push("/login");
-            }),500);
+            }),750);
         });
     });
 
@@ -85,22 +85,18 @@ class Header extends Component {
             if(response.status === 200){
                 response.json().then((data) => {
                     console.log("[Header] - handleHomeButtonClick created_surveys", data.created_surveys);
-
                     this.props.update_surveyor_dashboard(data.created_surveys,data.requested_surveys);
                 });
-
             }
             else if(response.status === 404) {
-
 
             }
             else {
 
             }
         });
-
-
     }
+
     validaterCreateSurveyForm(){
         if(!this.state.survey_name || this.state.survey_name.length <=0){
             showAlert("Survey Name can not be left blank !!!", alert_types.INFO, this);
@@ -134,7 +130,7 @@ class Header extends Component {
                         showAlert("Survey created successfully", alert_types.SUCCESS, this);
                         setTimeout(() => {
                             this.props.handlePageChange("/home/createsurvey/"+data.survey_id);
-                        }, 500);
+                        }, 750);
                     })
                 }
                 else {

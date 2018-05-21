@@ -39,7 +39,7 @@ class VerifyAccount extends Component {
                 showAlert("User Verified Successfully",alert_types.SUCCESS, this);
                 setTimeout((()=>{
                     this.props.handlePageChange("/login");
-                }), 500)
+                }), 750)
             }
             else if(response.status === 300) {
                 console.log("All ready verified");
@@ -50,7 +50,7 @@ class VerifyAccount extends Component {
                 showAlert("User already verified",alert_types.SUCCESS, this);
                 setTimeout((()=>{
                     this.props.handlePageChange("/login");
-                }), 500)
+                }), 750)
             }
             else {
                 console.log("Error");
@@ -61,7 +61,7 @@ class VerifyAccount extends Component {
                 showAlert("Error in User verification. Please try again",alert_types.SUCCESS, this);
                 setTimeout((()=>{
                     this.props.handlePageChange("/login");
-                }), 500)
+                }), 750);
                 this.props.handlePageChange("/login");
             }
         });

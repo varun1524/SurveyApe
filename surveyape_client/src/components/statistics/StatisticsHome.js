@@ -56,7 +56,7 @@ class StatisticsHome extends Component {
                 showAlert("User not authorized to access this page. Please login", alert_types.ERROR, this);
                 setTimeout((()=>{
                     this.props.handlePageChange("/login");
-                }),500);
+                }),750);
             }
             else if(response.status===401){
                 console.log("[StatisticsHome] ValidateSession user not logged in");
@@ -67,7 +67,7 @@ class StatisticsHome extends Component {
                 showAlert("User not authorized to access this page. Please login", alert_types.ERROR, this);
                 setTimeout((()=>{
                     this.props.handlePageChange("/login");
-                }),500);
+                }),750);
             }
             else {
                 console.log("Error ")
@@ -102,7 +102,7 @@ class StatisticsHome extends Component {
                     // alert("Survey do not have enough data for statistic !!!")
                     setTimeout((()=>{
                         this.props.handlePageChange("/home")
-                    }), 500)
+                    }), 750)
                 }else if(response.status===404){
                     console.log(" [StatisticHome] Error 404 in getSurveyById");
                     showAlert("Error while fetching Stats for survey", alert_types.ERROR, this);
