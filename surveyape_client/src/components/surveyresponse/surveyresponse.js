@@ -294,6 +294,12 @@ class SurveyResponse extends Component {
                     showAlert("Response doesn't exist", alert_types.ERROR, this);
                     // alert("Error 404 in getSurveyAndResponseByResponseId");
                 }
+                else if(response.status===403){
+                    showAlert("User not authorized to access this survey", alert_types.ERROR, this);
+                    setTimeout((()=>{
+                        this.props.handlePageChange("/login");
+                    }),500);
+                }
                 else {
                     showAlert("Error while fetching response data", alert_types.ERROR, this);
                     // alert("Error 400 in getSurveyAndResponseByResponseId");
