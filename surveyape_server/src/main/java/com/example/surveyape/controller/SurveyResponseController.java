@@ -116,11 +116,24 @@ public class SurveyResponseController {
             System.out.println("getSurveyAndResponseByResponseId:	" + responseId);
             SurveyResponse surveyResponse = surveyResService.getSurveyResponseById(responseId);
             if(surveyResponse!=null){
-                responseEntity = new ResponseEntity(surveyResponse, HttpStatus.OK);
+                String email = null;
+                if (session.getAttribute("email") != null) {
+                    email = session.getAttribute("email").toString();
+                    if (surveyResponse.getEmail().equals(email)) {
+                        responseEntity = new ResponseEntity(surveyResponse, HttpStatus.OK);
+                    } else {
+                        responseEntity = new ResponseEntity(null, HttpStatus.FORBIDDEN);
+                    }
+                }
+                else {
+                    responseEntity = new ResponseEntity(surveyResponse, HttpStatus.OK);
+                }
             }
             else {
                 responseEntity = new ResponseEntity(null, HttpStatus.NOT_FOUND);
             }
+
+
         }
         catch (Exception e){
             e.printStackTrace();
