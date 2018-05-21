@@ -138,7 +138,7 @@ class QuestionDashboard extends Component {
         console.log("[QuestionSidebar] exportSurvey filename", this.state.exportSurveyFileName);
 
         console.log("[QuestionSidebar] exportSurvey filename", this.state.exportSurveyFileName, this.state.exportSurveyFileName.match(/^[0-9a-zA-Z]+$/));
-        if(this.state.exportSurveyFileName && this.state.exportSurveyFileName.match(/^[0-9a-zA-Z]+[0-9a-zA-Z-_]*$/)){
+        if(this.state.exportSurveyFileName && this.state.exportSurveyFileName.trim().match(/^[0-9a-zA-Z]+[0-9a-zA-Z-_ ]*$/)){
 
             let export_survey = {
                 file_name:this.state.exportSurveyFileName,
