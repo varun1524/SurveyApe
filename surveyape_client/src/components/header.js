@@ -73,7 +73,7 @@ class Header extends Component {
             showAlert("Logout successful", alert_types.SUCCESS, this);
             setTimeout((()=>{
                 this.props.history.push("/login");
-            }),750);
+            }),1000);
         });
     });
 
@@ -130,7 +130,7 @@ class Header extends Component {
                         showAlert("Survey created successfully", alert_types.SUCCESS, this);
                         setTimeout(() => {
                             this.props.handlePageChange("/home/createsurvey/"+data.survey_id);
-                        }, 750);
+                        }, 1000);
                     })
                 }
                 else {

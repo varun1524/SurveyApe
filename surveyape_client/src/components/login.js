@@ -54,7 +54,7 @@ class Login extends Component {
                     showAlert("Login Successful", alert_types.SUCCESS, this);
                     setTimeout((()=>{
                         this.props.history.push("/home");
-                    }),750);
+                    }),1000);
                 }
                 else if (response.status === 203) {
                     this.setState({

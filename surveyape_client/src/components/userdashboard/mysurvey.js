@@ -84,7 +84,7 @@ class mysurvey extends Component {
                         showAlert("Survey deleted successfully", alert_types.SUCCESS, this);
                         setTimeout((()=>{
                             this.props.update_surveyor_dashboard(data.created_surveys,data.requested_surveys);
-                        }),750);
+                        }),1000);
                     })
                 }
                 else if(response.status === 412){

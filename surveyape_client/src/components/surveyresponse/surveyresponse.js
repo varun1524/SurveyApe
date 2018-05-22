@@ -235,28 +235,28 @@ class SurveyResponse extends Component {
                     showAlert("User not authorized to access this survey", alert_types.ERROR, this);
                     setTimeout((()=>{
                         this.props.handlePageChange("/login");
-                    }),750);
+                    }),1000);
                 }
                 else if(response.status===401){
                     // alert("User is not Logged In");
                     showAlert("User is not Logged In", alert_types.ERROR, this);
                     setTimeout((()=>{
                         this.props.handlePageChange("/login");
-                    }),750);
+                    }),1000);
                 }
                 else if(response.status===402){
                     // alert("User not registered. Please sign up and provide your response");
                     showAlert("User not registered. Please sign up and provide your response", alert_types.ERROR, this);
                     setTimeout((()=>{
                         this.props.handlePageChange("/signup");
-                    }),750);
+                    }),1000);
                 }
                 else if(response.status===404){
                     // alert("Survey Not Available");
                     showAlert("Survey Response does not exist", alert_types.ERROR, this);
                     setTimeout((()=>{
                         this.props.handlePageChange("/signup");
-                    }),750);
+                    }),1000);
 
                 }
                 else if(response.status===400){
@@ -264,7 +264,7 @@ class SurveyResponse extends Component {
                     showAlert("Error while fetching response data", alert_types.ERROR, this);
                     setTimeout((()=>{
                         this.props.handlePageChange("/");
-                    }),750);
+                    }),1000);
 
                 }
             });
@@ -298,7 +298,7 @@ class SurveyResponse extends Component {
                     showAlert("User not authorized to access this survey", alert_types.ERROR, this);
                     setTimeout((()=>{
                         this.props.handlePageChange("/login");
-                    }),750);
+                    }),1000);
                 }
                 else {
                     showAlert("Error while fetching response data", alert_types.ERROR, this);

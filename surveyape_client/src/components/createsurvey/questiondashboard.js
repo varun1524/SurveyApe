@@ -212,7 +212,7 @@ class QuestionDashboard extends Component {
                     showAlert("User not authorized to access current page. Please login", alert_types.INFO, this);
                     setTimeout((()=>{
                         this.props.handlePageChange("/login");
-                    }),750);
+                    }),1000);
                 }
 
             }).catch((error)=>{
@@ -241,7 +241,7 @@ class QuestionDashboard extends Component {
                 showAlert("User not authorized to access current page. Please login", alert_types.INFO, this);
                 setTimeout((()=>{
                     this.props.handlePageChange("/login");
-                }),750);
+                }),1000);
             }
             else{
                 showAlert("Failed to save survey !!!", alert_types.ERROR, this);
