@@ -87,14 +87,14 @@ const survey = (state = survey_data, action)=>
             //state = action.data;
             let new_end_date = action.data.end_date?action.data.end_date:state.end_date;
             return Object.assign({},state,{
-                survey_name:action.data.survey_name,
-                end_date:new_end_date
-            }
+                    survey_name:action.data.survey_name,
+                    end_date:new_end_date
+                }
             );
 
         case actionTypes.CHANGE_SURVEY_PUBLISH_STATE:
             console.log("UPDATE_SURVEY_NAME_DATE  survey reducer");
-             let currentstate = state.ispublished
+            let currentstate = state.ispublished;
             return Object.assign({},state,{
                 ispublished:!currentstate
             });
@@ -110,7 +110,34 @@ const survey = (state = survey_data, action)=>
             return Object.assign({},state, {
                 end_date: new_end_date1
             });
-
+        case actionTypes.DELETE_QUESTION:
+            console.log("[SurveyReducer] DELETE_QUESTION: data: ",action.data);
+            let questions1;
+            if(action.data && action.data.index_id){
+                // questions1.splice(action.data.index_id, 1);
+                questions1 = [
+                    ...state.questions.slice(0, action.data.index_id),
+                    ...state.questions.slice(action.data.index_id + 1)
+                ];
+            }
+            console.log("[SurveyReducer] DELETE_QUESTION: questions1: ",questions1);
+            return Object.assign({},state, {
+                ...state,
+                questions: questions1
+            });
+        case actionTypes.DELETE_OPTION:
+            console.log("[SurveyReducer] DELETE_OPTION: data: ",action.data);
+            let questions2 = [...state.questions];
+            if(action.data && action.data.option_index!==undefined && action.data.question_index!==undefined){
+                questions2[action.data.question_index].options = [
+                    ...questions2[action.data.question_index].options.slice(0, action.data.option_index),
+                    ...questions2[action.data.question_index].options.slice(action.data.option_index + 1)
+                ];
+            }
+            console.log("[SurveyReducer] DELETE_OPTION: questions2: ",questions2);
+            return Object.assign({},state, {
+                questions: questions2
+            });
         default :
             return state;
     }

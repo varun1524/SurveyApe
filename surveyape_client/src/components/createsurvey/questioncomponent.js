@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import * as API from './../../api/API';
 import '../../stylesheets/createsurvey/questioncomponent.css';
 import {bindActionCreators} from "redux";
-import {addQuestion, editQuestion,editOption, addOption, updateSurvey} from "../../actions/survey";
+import {addQuestion, editQuestion,editOption, addOption, updateSurvey, deleteOption, deleteQuestion} from "../../actions/survey";
 import {Glyphicon} from "react-bootstrap";
 import StarRatingComponent from 'react-star-rating-component';
 
@@ -64,7 +64,7 @@ class QuestionComponent extends Component {
 
     }
 
-    deleteOption(option){
+    deleteOption(option, index_id){
         API.deleteOption(option,this.props.survey.survey_id)
             .then((response)=>{
                 if(response.status === 200){
@@ -78,11 +78,17 @@ class QuestionComponent extends Component {
                 else if(response.status === 412){
                     showAlert("Survey is not editable. Cannot delete option !!!", alert_types.INFO, this);
                 }
+                else if(response.status === 404){
+                    let data = {
+                        option_index:index_id,
+                        question_index:this.props.index_id
+                    };
+                    this.props.deleteOption(data);
+                }
                 else{
                     showAlert("Failed to deleted option !!!", alert_types.ERROR, this);
                     // alert("Failed to deleted option !!!");
                     console.log("[QuestionComponent] Failed to delete Option")
-
                 }
             }).catch((error)=>{
             showAlert("Failed to deleted option !!!", alert_types.ERROR, this);
@@ -92,7 +98,6 @@ class QuestionComponent extends Component {
     }
 
     deletequestion(question_id){
-
         API.deleteQuestion(question_id,this.props.survey.survey_id)
             .then((response)=>{
                 if(response.status === 200){
@@ -101,16 +106,23 @@ class QuestionComponent extends Component {
                         showAlert("Question deleted successfully !!!", alert_types.SUCCESS, this);
                         // alert("Question deleted successfully !!!");
                         this.props.updateSurvey(data);
+                        this.forceUpdate();
                     });
                 }
                 else if(response.status === 412){
                     showAlert("Survey is not editable. Cannot delete Question !!!", alert_types.INFO, this);
                 }
+                else if(response.status === 404){
+                    let data ={
+                        index_id:this.props.index_id
+                    };
+                    this.props.deleteQuestion(data);
+                    this.forceUpdate()
+                }
                 else{
                     showAlert("Failed to deleted question !!!", alert_types.ERROR, this);
                     // alert("Failed to deleted question !!!");
                     console.log("[QuestionComponent] Failed to delete question")
-
                 }
             }).catch((error)=>{
             showAlert("Failed to deleted question !!!", alert_types.ERROR, this);
@@ -200,7 +212,7 @@ class QuestionComponent extends Component {
 
                 <input className="question-input-box" type="text" placeholder="Type your question here" onChange={(event) => {
                     this.editQuestionText(event.target.value);
-                }} defaultValue={this.props.questions[this.props.index_id].question_text}/>
+                }} value={this.props.questions[this.props.index_id].question_text}/>
 
                 {this.getAddButtonView()}
 
@@ -229,7 +241,7 @@ class QuestionComponent extends Component {
                                         />
 
                                         <span className="remove-glyphicon-option" onClick={() => {
-                                            this.deleteOption(option.option_id)
+                                            this.deleteOption(option.option_id, id)
                                         }}><Glyphicon glyph="remove"/></span>
 
                                         <div className="option-actual-image-div">
@@ -250,12 +262,12 @@ class QuestionComponent extends Component {
                                         <input type="text"
                                                className="option-text-box"
                                                placeholder="Enter option here"
-                                               defaultValue={option.option_text}
+                                               value={option.option_text}
                                                onChange={(event)=>{this.editOptionText(event.target.value, id)}}
                                         />
                                         <div className="remove-glyphicon-option">
                                 <span onClick={() => {
-                                    this.deleteOption(option.option_id)
+                                    this.deleteOption(option.option_id, id)
                                 }}><Glyphicon glyph="remove"/></span>
                                         </div>
                                     </div>
@@ -285,7 +297,7 @@ class QuestionComponent extends Component {
                                         />
 
                                         <span className="remove-glyphicon-option" onClick={() => {
-                                            this.deleteOption(option.option_id)
+                                            this.deleteOption(option.option_id, id)
                                         }}><Glyphicon glyph="remove"/></span>
 
                                         <div className="option-actual-image-div">
@@ -304,7 +316,7 @@ class QuestionComponent extends Component {
                                     //     <input type="file" onChange={((event)=>{this.uploadImage(event, id)})}/>
                                     //     <div className="remove-glyphicon-option">
                                     //        <span onClick={() => {
-                                    //            this.deleteOption(option.option_id)
+                                    //            this.deleteOption(option.option_id, id)
                                     //        }}><Glyphicon glyph="remove"/></span>
                                     //     </div>
                                     // </div>
@@ -317,12 +329,12 @@ class QuestionComponent extends Component {
                                         <input type="text"
                                                className="option-text-box"
                                                placeholder="Enter option here"
-                                               defaultValue={option.option_text}
+                                               value={option.option_text}
                                                onChange={(event)=>{this.editOptionText(event.target.value, id)}}
                                         />
                                         <div className="remove-glyphicon-option">
                                         <span onClick={() => {
-                                            this.deleteOption(option.option_id)
+                                            this.deleteOption(option.option_id, id)
                                         }}><Glyphicon glyph="remove"/></span>
                                         </div>
                                     </div>
@@ -346,29 +358,23 @@ class QuestionComponent extends Component {
                                     <input type="text"
                                            className="option-text-box-dropdown"
                                            placeholder="Enter option here"
-                                           defaultValue={option.option_text}
+                                           value={option.option_text}
                                            onChange={(event)=>{this.editOptionText(event.target.value, id)}}
                                     />
                                     <div className="remove-glyphicon-option">
                                         <span onClick={() => {
-                                            this.deleteOption(option.option_id)
+                                            this.deleteOption(option.option_id, id)
                                         }}><Glyphicon glyph="remove"/></span>
                                     </div>
                                 </div>
                             )
                         })
-
                     }
                 </div>);
         }
         else if(this.props.question_type === "YesNo"){
-
             return(
                 <div>
-
-
-
-
                     <div className="option-input-box">
                         <input type="radio" className="option-type"/>
                         <label className="option-text-box-radio">YES</label>
@@ -377,19 +383,15 @@ class QuestionComponent extends Component {
                         <input type="radio" className="option-type"/>
                         <label className="option-text-box-radio">NO</label>
                     </div>
-
                 </div>
             );
 
         }
         else if(this.props.question_type === "ShortAnswer"){
-
-
             return(
                 <div>
                     {
                         //this.props.questions[this.props.index_id].options.map((option, id) => {
-
                         //  return(
                         <div className="option-input-box">
                             <label className="option-type-dropdown">Option</label>
@@ -413,7 +415,6 @@ class QuestionComponent extends Component {
 
         }
         else if(this.props.question_type === "DateTime"){
-
             return(
                 <div className="option-input-box">
 
@@ -423,10 +424,6 @@ class QuestionComponent extends Component {
                             <span></span>
                         </div>
                     </div>
-
-
-
-
                 </div>
             );
 
@@ -514,7 +511,9 @@ function mapDispatchToProps(dispatch) {
         updateSurvey: updateSurvey,
         editQuestion : editQuestion,
         addOption: addOption,
-        editOption:editOption
+        editOption:editOption,
+        deleteQuestion:deleteQuestion,
+        deleteOption:deleteOption
     }, dispatch)
 }
 

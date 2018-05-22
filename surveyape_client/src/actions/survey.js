@@ -72,3 +72,19 @@ export function saveEndDate(data) {
     }
 }
 
+export function deleteQuestion(data) {
+    return {
+        type: actionTypes.DELETE_QUESTION,
+        data
+
+    }
+}
+
+export function deleteOption(data) {
+    return {
+        type: actionTypes.DELETE_OPTION,
+        data
+
+    }
+}
+
