@@ -327,6 +327,19 @@ class QuestionDashboard extends Component {
             })
     }
 
+    isSurveyExpired = (()=>{
+        let end_date = this.props.survey.end_date;
+        console.log("[SurveyResponse] enddate", end_date);
+        if(end_date!==null && end_date!==undefined){
+            let current_date_time = new Date();
+            let end_date_time = new Date(end_date);
+            console.log("[SurveyResponse] end_date_time :" , end_date_time);
+            console.log("[SurveyResponse] current_date_time :" , current_date_time);
+            console.log("[SurveyResponse] redirectOnExpiredSurvey :" , current_date_time > end_date_time);
+            return current_date_time > end_date_time;
+        }
+    });
+
     render () {
         console.log("render questiondashboard data ",this.props.survey)
         let display_end_date = this.props.survey.end_date?new Date(this.props.survey.end_date).toDateString():"";
@@ -359,7 +372,7 @@ class QuestionDashboard extends Component {
                             onClick={() => {this.publishSurvey()}}>{this.props.survey.ispublished?"Unpublish":"Publish"}
                     </button>
                     <button type="button" className="save-survey-button-sample"
-                            hidden={!this.props.survey.iseditable}
+                            hidden={!this.props.survey.iseditable || this.isSurveyExpired()}
                             onClick={() => {this.saveSurvey()}}
                     >
                         Save
@@ -373,6 +386,7 @@ class QuestionDashboard extends Component {
                         Close
                     </button>
                     <button type="button" className="save-survey-button-sample"
+                            hidden={!this.props.survey.iseditable || this.isSurveyExpired()}
                             onClick={() => {this.openUploadModal()}}
                     >
                         Import Survey
