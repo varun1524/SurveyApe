@@ -7,7 +7,7 @@ Team Members:
 3. Sannisth Soni (sannisth.soni@sjsu.edu) - 012460565
 4. Varun Shah (varun.shah@sjsu.edu) - 010823657
 
-App URL : http://ec2-34-217-100-19.us-west-2.compute.amazonaws.com:3000/
+App URL : http://ec2-54-183-163-138.us-west-1.compute.amazonaws.com:3000/
 
 Setup Instructions
 Please run `npm install` and `npm start` in client module.
