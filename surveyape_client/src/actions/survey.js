@@ -88,3 +88,13 @@ export function deleteOption(data) {
     }
 }
 
+export function emptySurveyBuilder(data) {
+    return {
+        type: actionTypes.EMPTY_SURVEY,
+        data
+
+    }
+}
+
+
+

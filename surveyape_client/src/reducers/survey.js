@@ -138,6 +138,16 @@ const survey = (state = survey_data, action)=>
             return Object.assign({},state, {
                 questions: questions2
             });
+        case actionTypes.EMPTY_SURVEY:
+            return Object.assign({},state,{
+                survey_id:"",
+                survey_name: "",
+                survey_type:"",
+                end_date:"",
+                questions:[],
+                ispublished:true,
+                iseditable:true
+            });
         default :
             return state;
     }

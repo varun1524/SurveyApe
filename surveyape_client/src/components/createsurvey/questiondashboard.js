@@ -3,7 +3,14 @@ import {connect} from 'react-redux';
 import QuestionComponent from './questioncomponent';
 import * as API from './../../api/API';
 import {bindActionCreators} from 'redux';
-import {updateSurvey,updateSurveyNameDate, changePublishState, closeSurvey,saveEndDate} from './../../actions/survey';
+import {
+    updateSurvey,
+    updateSurveyNameDate,
+    changePublishState,
+    closeSurvey,
+    saveEndDate,
+    emptySurveyBuilder
+} from './../../actions/survey';
 import Spinner from 'react-spinkit';
 
 import {alert_types} from '../../config/alert_types';
@@ -292,6 +299,11 @@ class QuestionDashboard extends Component {
         }
     }
 
+    componentWillUnmount(){
+        console.log("componentWillUnmount");
+        this.props.emptySurveyBuilder();
+    }
+
     closeSurvey(){
         API.closeSurvey(this.props.survey.survey_id)
             .then((response)=>{
@@ -488,7 +500,8 @@ function mapDispatchToProps(dispatch) {
         saveEndDate:saveEndDate,
         closeSurvey:closeSurvey,
         changePublishState:changePublishState,
-        updateSurveyNameDate:updateSurveyNameDate
+        updateSurveyNameDate:updateSurveyNameDate,
+        emptySurveyBuilder:emptySurveyBuilder
     }, dispatch)
 }
 
