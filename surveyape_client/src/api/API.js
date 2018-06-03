@@ -1,5 +1,7 @@
-const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://localhost:8080';
-// const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://ec2-13-57-251-86.us-west-1.compute.amazonaws.com:8080';
+// const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://localhost:8080';
+// const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://ec2-52-33-147-110.us-west-2.compute.amazonaws.com:8080';
+const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://ec2-54-183-163-138.us-west-1.compute.amazonaws.com:8080';
+// const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://10.142.0.2:8080';
 
 const headers = {
     'Accept': 'application/json'
