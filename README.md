@@ -18,7 +18,7 @@
 
 ### Technology stack
 
-![](Documentation/images/1.png)
+![](readme-src/technologies.png)
 
 <br/>
 <table>
