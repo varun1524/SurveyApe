@@ -1,30 +1,67 @@
-# SurveyApe
-Survey Application
+<link rel="stylesheet" href="readme-src/readme.css">
 
-Team Members:
-1. Arijit Mandal (arijit.mandal@sjsu.edu) - 012458823
-2. Rutvik Pensionwar (rutvik.pensionwar@sjsu.edu) - 012415988
-3. Sannisth Soni (sannisth.soni@sjsu.edu) - 012460565
-4. Varun Shah (varun.shah@sjsu.edu) - 010823657
+![](readme-src/logo.png)
 
-App URL : http://ec2-54-183-163-138.us-west-1.compute.amazonaws.com:3000/
 
-Setup Instructions
-Please run `npm install` and `npm start` in client module.
-Application.properties contain information of RDS instance, where lies our database. If you test it on localhost, please update it accordingly.
+# Online Travel Reservation
 
-Build instructions:
-  For Client:
-    1. go to surveyape_client directory
-    2. execute on terminal "npm install" to install dependecies
-    3. execute on terminal "npm start" to run application
-    
-  Fom Server:
-    1. Go to src of surveyape_server and run the JavaApplication file. This will start server
-    
-  For Database:
-    In application.properties file configuration for RDS MySQL Instance is provided. So run the server and you will be good to go.
-    
-    
-  
+> Team project for Graduate software engineering course Enterprise Distributed Systems.
 
+## Goal
+
+* The goal is to build a distributed enterprise web application which enables the user not only to search for Cars, Hotels and Flights and make a booking but also login/signup along with editing user preferences and viewing travel history. As well as create a Admin side which can be used to add/edit/delete Flights, Cars and Hotels and also be able to delete the user and view the analytics/statistics.
+
+* We were tasked with this project requirement so that we can learn and develop enterprise MERN stack applications with the use of distributed publish-subscribe messaging system like Apache Kafka along with a variety of other technologies like Elasticsearch, redis, mocha, etc.
+
+## System Design
+![](Documentation/HLD/High Level Architecture.png)
+
+### Technology stack
+
+<br/>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Technology</th>
+</tr>
+</thead>
+<tbody>
+	<tr>
+		<td>Front-End</td>
+		<td>React, Redux, React Router, Bootstrap, HTML5, CSS3, Javascript ( ES6 )</td>
+	</tr>
+	<tr>
+		<td>Analytics Graphs</td>
+		<td>chart.js</td>
+	</tr>
+	<tr>
+		<td>Back-End</td>
+		<td>Spring Boot</td>
+	</tr>
+	<tr>
+		<td>API Testing</td>
+		<td>JUnit, Postman</td>
+	</tr>
+	<tr>
+		<td>Database</td>
+		<td>MySQL (AWS RDS)</td>
+	</tr>
+	<tr>
+		<td>Image File Storage</td>
+		<td>AWS S3 Bucket</td>
+	</tr>
+    <tr>
+		<td>Deployment</td>
+		<td>AWS EC2</td>
+	</tr>
+</tbody>
+</table>
+<br/>
+
+## Team Members
+
+*	Arijit Mandal
+*	Rutvik Pensionwar
+*	Sannisth Soni
+*	Varun Shah
