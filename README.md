@@ -93,6 +93,9 @@
 
 ![](Documentation/images/Import_Export/Export/export_survey_modal.png)
 
+##### Exported file JSON data
+![](Documentation/images/Import_Export/Export/export_survey_jsonformat_file.png)
+
 #### Import Survey
 
 ##### Before Import Survey
