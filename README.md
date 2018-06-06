@@ -1,22 +1,24 @@
 <link rel="stylesheet" href="readme-src/readme.css">
 
-![](readme-src/logo.png)
+![](Documentation/images/logo.png)
 
 
-# Online Travel Reservation
+# SurveyApe
 
-> Team project for Graduate software engineering course Enterprise Distributed Systems.
+> Team project for Graduate software engineering course Enterprise Application Development.
 
 ## Goal
 
-* The goal is to build a distributed enterprise web application which enables the user not only to search for Cars, Hotels and Flights and make a booking but also login/signup along with editing user preferences and viewing travel history. As well as create a Admin side which can be used to add/edit/delete Flights, Cars and Hotels and also be able to delete the user and view the analytics/statistics.
+* The goal is to build a distributed enterprise web application which enables the user to become surveyor and surveyee. User can login and create surveys as a surveyor and ask others to provide their response. Surveyee does not have to be registered to participate in survey and can provide survey response.
 
-* We were tasked with this project requirement so that we can learn and develop enterprise MERN stack applications with the use of distributed publish-subscribe messaging system like Apache Kafka along with a variety of other technologies like Elasticsearch, redis, mocha, etc.
+* We were tasked with this project requirement so that we can learn and develop REST API enterprise application. 
 
 ## System Design
-![](Documentation/HLD/High Level Architecture.png)
+![](Documentation/HLD/HighLevelArchitecture.png)
 
 ### Technology stack
+
+![](Documentation/images/1.png)
 
 <br/>
 <table>
@@ -37,7 +39,7 @@
 	</tr>
 	<tr>
 		<td>Back-End</td>
-		<td>Spring Boot</td>
+		<td>Spring Boot (Hibernate, JPA, AOP) </td>
 	</tr>
 	<tr>
 		<td>API Testing</td>
@@ -58,6 +60,85 @@
 </tbody>
 </table>
 <br/>
+
+
+### Database
+![](Documentation/DB%20Design/DB_Design_Circular.png)
+
+> Database design and the data was critical for the project so To maintain consistency within team we deployed our database on AWS RDS (MySQL).
+
+## Screenshots
+
+#### Login/Signup
+
+![](Documentation/images/Signup/signup.png)
+
+#### Email Account Verification Email
+
+![](Documentation/images/Signup/email_verificationcode.png)
+
+#### User Dashboard
+
+![](Documentation/images/Survey/survey_dashboard.png)
+
+#### Create Survey
+
+![](Documentation/images/SurveyBuilder/create_survey.png)
+
+#### Survey Builder
+
+![](Documentation/images/Survey/surveybuilder_imagesupport.png)
+
+#### Export Survey
+
+![](Documentation/images/Import_Export/Export/export_survey_modal.png)
+
+#### Import Survey
+
+##### Before Import Survey
+
+![](Documentation/images/Import_Export/Import/before_survey_import.png)
+
+##### After Import Survey
+
+![](Documentation/images/Import_Export/Import/after_survey_import.png)
+
+#### Invite Users for participating in Survey
+
+![](Documentation/images/Survey/share_survey.png)
+
+#### Participation Link with QR Code for different type of surveys
+##### General Survey
+![](Documentation/images/Survey/general_survey_invitation.png)
+
+##### Open Survey
+![](Documentation/images/Survey/open_survey_invitation.png)
+
+##### Closed Survey
+![](Documentation/images/Survey/close_survey_invitation.png)
+
+#### Survey Response Page for Survey participant
+
+![](Documentation/images/SurveyResponse/surveyresponse_closed_survey.png)
+
+#### Readonly Survey Response for submitted response
+
+![](Documentation/images/SurveyResponse/response_submitted.png)
+
+#### Survey Statistics Dashboard
+
+![](Documentation/images/Statistics/stats_dashboard.png)
+
+#### Statistics for Question Types (Checkbox, Radio, Dropbox, YESNO, Rating)
+
+![](Documentation/images/Statistics/ratings_stats.png)
+
+![](Documentation/images/Statistics/image_statistics.png)
+
+#### Statistics for Question Types (Short Answers, DateTime)
+
+![](Documentation/images/Statistics/short_answer_stats.png)
+
 
 ## Team Members
 
