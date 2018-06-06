@@ -39,7 +39,7 @@
 	</tr>
 	<tr>
 		<td>Back-End</td>
-		<td>Spring Boot (Hibernate, JPA, AOP) </td>
+		<td>Spring Boot (Hibernate, JPA, AOP), Java </td>
 	</tr>
 	<tr>
 		<td>API Testing</td>
