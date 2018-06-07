@@ -40,7 +40,7 @@
 ## System Design
 ![](Documentation/HLD/HighLevelArchitecture.png)
 
-### Technology stack
+## Technology stack
 
 ![](readme-src/technologies.png)
 
@@ -86,7 +86,7 @@
 <br/>
 
 
-### Database
+## Database
 ![](Documentation/DB%20Design/DB_Design.png)
 
 > Database design and the data was critical for the project so To maintain consistency within team we deployed our database on AWS RDS (MySQL).
