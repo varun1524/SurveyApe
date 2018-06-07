@@ -15,9 +15,11 @@
 
 ## Introduction
 
-* Survey Application where user is both surveyor and surveyee
 * User can be surveyee and surveyor
-* 3 types of survey in terms of their accessibility: General, Open, Closed
+* 3 types of survey in terms of their accessibility: 
+	* General: Accessible by anyone 
+	* Open: Accessible by invited user
+	* Closed: Accessible by invited and registered user only
 * Applications supports following questions types in survey:
 	* Multiple choice questions 
 		- Choice type
