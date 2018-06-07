@@ -13,6 +13,28 @@
 
 * We were tasked with this project requirement so that we can learn and develop REST API enterprise application. 
 
+## Introduction
+
+* Survey Application where user is both surveyor and surveyee
+* User can be surveyee and surveyor
+* 3 types of survey in terms of their accessibility: General, Open, Closed
+* Applications supports following questions types in survey:
+	* Multiple choice questions 
+		- Choice type
+			- Text only: all choices are given as text.
+			- Image only: every choice is given as an image.
+		- Answer type:
+			- Dropdownlist (Single selection only)
+			- Radio button (Single selection only)
+			- Checkbox (Single & multiple selection)
+	* Yes/no questions. 
+	* Short answer questions, where the answer is plain text.
+	* Date/time questions, which allow the surveyee to pick a Date and/or Time as the answer
+	* Star rating questions, which allow surveyees to rank a variable using 0-5 stars
+* Surveyor can visualize statistics of survey for each question in dashboard
+* Surveyor can export created survey and import multiple questions from any survey 
+
+
 ## System Design
 ![](Documentation/HLD/HighLevelArchitecture.png)
 
