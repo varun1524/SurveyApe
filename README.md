@@ -63,7 +63,7 @@
 
 
 ### Database
-![](Documentation/DB%20Design/DB_Design_Circular.png)
+![](Documentation/DB%20Design/DB_Design.png)
 
 > Database design and the data was critical for the project so To maintain consistency within team we deployed our database on AWS RDS (MySQL).
 
