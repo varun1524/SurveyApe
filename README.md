@@ -37,7 +37,7 @@
 * Surveyor can export created survey and import multiple questions from any survey 
 
 
-## System Design
+## High Level Architecture
 ![](Documentation/HLD/HighLevelArchitecture.png)
 
 ## Technology stack
