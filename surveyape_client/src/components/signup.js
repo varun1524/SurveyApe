@@ -158,7 +158,7 @@ class SignUp extends Component {
         this.setState({
             ...this.state,
             verificationModalOpen : false,
-            verificationSuccessModalOpen:true
+            verificationSuccessModalOpen: true
         })
     }
 
@@ -233,8 +233,12 @@ class SignUp extends Component {
             .then((response)=>{
                 if(response.status === 200){
                     console.log("[signup] handleVerification status : ", response.status);
+                    setTimeout(()=>{
+                        this.closeVerificationSuccessModal();
+                        this.props.history.push("/login")
+                    }, 2000);
                     showAlert("Account Verified Successfully", alert_types.SUCCESS, this);
-                    this.afterVerifiedSuccess();
+
                 }else{
                     response.json().then((data) => {
                         this.state.message = data.message;
@@ -299,29 +303,29 @@ class SignUp extends Component {
                     </div>
                 </VerificationModal>
 
-                <VerificationSuccessModal
-                    isOpen={this.state.verificationSuccessModalOpen}
-                    onAfterOpen={this.openVerificationSuccessModal}
-                    onRequestClose={this.closeVerificationSuccessModal}
-                    style={customStyles}
-                >
-                    <div className="modal-header">
-
-                        <h3>VERIFICATION SUCCESS</h3>
-                    </div>
-                    <div className="modal-body">
-                        <span className="account-verified-ok"><Glyphicon glyph="ok"/></span>
-                        <div className="verify-modal-footer">
-                            <button className ="verify-success-modal-button-close" onClick={() => {
-                                this.closeVerificationSuccessModal();
-                                this.props.handlePageChange('/login');
-                            }}>
-                                Close
-                            </button>
-                        </div>
-
-                    </div>
-                </VerificationSuccessModal>
+                {/*<VerificationSuccessModal*/}
+                    {/*isOpen={this.state.verificationSuccessModalOpen}*/}
+                    {/*onAfterOpen={this.openVerificationSuccessModal}*/}
+                    {/*onRequestClose={this.closeVerificationSuccessModal}*/}
+                    {/*style={customStyles}*/}
+                {/*>*/}
+                    {/*<div className="modal-header">*/}
+                
+                        {/*<h3>VERIFICATION SUCCESS</h3>*/}
+                    {/*</div>*/}
+                    {/*<div className="modal-body">*/}
+                        {/*<span className="account-verified-ok"><Glyphicon glyph="ok"/></span>*/}
+                        {/*<div className="verify-modal-footer">*/}
+                            {/*<button className ="verify-success-modal-button-close" onClick={() => {*/}
+                                {/*this.closeVerificationSuccessModal();*/}
+                                {/*this.props.handlePageChange('/login');*/}
+                            {/*}}>*/}
+                                {/*Close*/}
+                            {/*</button>*/}
+                        {/*</div>*/}
+                
+                    {/*</div>*/}
+                {/*</VerificationSuccessModal>*/}
 
                 <VerificationFailedModal
                     isOpen={this.state.verificationFailedModalOpen}
