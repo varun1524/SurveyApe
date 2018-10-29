@@ -1,14 +1,9 @@
-// const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://localhost:8080';
-// const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://ec2-52-33-147-110.us-west-2.compute.amazonaws.com:8080';
-const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://ec2-54-183-163-138.us-west-1.compute.amazonaws.com:8080';
-// const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://10.142.0.2:8080';
-
 const headers = {
     'Accept': 'application/json'
 };
 
 export const validateSession = () =>
-    fetch(`${api}/user/validateSession`, {
+    fetch(`/user/validateSession`, {
         method: 'POST',
         headers: {
             ...headers,
@@ -24,7 +19,7 @@ export const validateSession = () =>
     });
 
 export const doLogout = () =>
-    fetch(`${api}/user/logout`, {
+    fetch(`/user/logout`, {
         method: 'POST',
         headers: {
             ...headers,
@@ -40,7 +35,7 @@ export const doLogout = () =>
     });
 
 export const doSignUp = (payload) =>
-    fetch (`${api}/user/signup`,
+    fetch (`/user/signup`,
         {
             method: 'POST',
             headers: {
@@ -57,7 +52,7 @@ export const doSignUp = (payload) =>
     });
 
 export const doLogin = (payload) =>
-    fetch(`${api}/user/login`, {
+    fetch(`/user/login`, {
         method: 'POST',
         headers: {
             ...headers,
@@ -74,7 +69,7 @@ export const doLogin = (payload) =>
     });
 
 export const verifyAccount = (payload) =>
-    fetch (`${api}/user/verifyaccount?verificationcode=${payload}`,
+    fetch (`/user/verifyaccount?verificationcode=${payload}`,
         {
             method: 'GET',
             headers: {
@@ -91,7 +86,7 @@ export const verifyAccount = (payload) =>
     });
 
 export const createSurvey = (payload) =>
-    fetch(`${api}/survey/create`, {
+    fetch(`/survey/create`, {
         method: 'POST',
         headers: {
             ...headers,
@@ -108,7 +103,7 @@ export const createSurvey = (payload) =>
     });
 
 export const updateSurvey = (payload) =>
-    fetch(`${api}/survey/create`, {
+    fetch(`/survey/create`, {
         method: 'PUT',
         headers: {
             ...headers,
@@ -125,7 +120,7 @@ export const updateSurvey = (payload) =>
     });
 
 export const shareSurvey = (payload) =>
-    fetch(`${api}/survey/share`, {
+    fetch(`/survey/share`, {
         method: 'POST',
         headers: {
             ...headers,
@@ -142,7 +137,7 @@ export const shareSurvey = (payload) =>
     });
 
 export const deleteSurvey = (surveyId) =>
-    fetch(`${api}/survey/deletesurvey?survey_id=${surveyId}`, {
+    fetch(`/survey/deletesurvey?survey_id=${surveyId}`, {
         method: 'DELETE',
         headers: {
             ...headers,
@@ -158,7 +153,7 @@ export const deleteSurvey = (surveyId) =>
     });
 
 export const deleteQuestion = (questionId, surveyId) =>
-    fetch(`${api}/survey/deletequestion?question_id=${questionId}&survey_id=${surveyId}`, {
+    fetch(`/survey/deletequestion?question_id=${questionId}&survey_id=${surveyId}`, {
         method: 'DELETE',
         headers: {
             ...headers,
@@ -174,7 +169,7 @@ export const deleteQuestion = (questionId, surveyId) =>
     });
 
 export const deleteOption = (optionId, surveyId) =>
-    fetch(`${api}/survey/deleteoption?option_id=${optionId}&survey_id=${surveyId}`, {
+    fetch(`/survey/deleteoption?option_id=${optionId}&survey_id=${surveyId}`, {
         method: 'DELETE',
         headers: {
             ...headers,
@@ -190,7 +185,7 @@ export const deleteOption = (optionId, surveyId) =>
     });
 
 export const getSurveyById = (surveyId) =>
-    fetch(`${api}/survey?survey_id=${surveyId}`, {
+    fetch(`/survey?survey_id=${surveyId}`, {
         method: 'GET',
         headers: {
             ...headers,
@@ -206,7 +201,7 @@ export const getSurveyById = (surveyId) =>
     });
 
 export const getGeneralSurveyById = (surveyId) =>
-    fetch(`${api}/response/general?survey_id=${surveyId}`, {
+    fetch(`/response/general?survey_id=${surveyId}`, {
         method: 'GET',
         headers: {
             ...headers,
@@ -222,7 +217,7 @@ export const getGeneralSurveyById = (surveyId) =>
     });
 
 export const getSurveyBasicStats = (surveyId) =>
-    fetch(`${api}/stats/basic/${surveyId}`, {
+    fetch(`/stats/basic/${surveyId}`, {
         method: 'GET',
         headers: {
             ...headers,
@@ -238,7 +233,7 @@ export const getSurveyBasicStats = (surveyId) =>
     });
 
 export const getSurveyList = () =>
-    fetch(`${api}/user/surveylist`, {
+    fetch(`/user/surveylist`, {
         method: 'GET',
         headers: {
             ...headers,
@@ -254,7 +249,7 @@ export const getSurveyList = () =>
     });
 
 export const updateCheckBoxAnswer = (payload) =>
-    fetch(`${api}/response/save/checkbox`, {
+    fetch(`/response/save/checkbox`, {
         method: 'POST',
         headers: {
             ...headers,
@@ -271,7 +266,7 @@ export const updateCheckBoxAnswer = (payload) =>
     });
 
 export const updateReponseAnswer = (payload) =>
-    fetch(`${api}/response/save`, {
+    fetch(`/response/save`, {
         method: 'POST',
         headers: {
             ...headers,
@@ -288,7 +283,7 @@ export const updateReponseAnswer = (payload) =>
     });
 
 export const getSurveyAndResponseByResponseId = (response_id) =>
-    fetch(`${api}/response/surveyandresponse?response_id=${response_id}`, {
+    fetch(`/response/surveyandresponse?response_id=${response_id}`, {
         method: 'GET',
         headers: {
             ...headers,
@@ -304,7 +299,7 @@ export const getSurveyAndResponseByResponseId = (response_id) =>
     });
 
 export const submitSurveyResponse = (payload) =>
-    fetch(`${api}/response/submit`, {
+    fetch(`/response/submit`, {
         method: 'POST',
         headers: {
             ...headers,
@@ -321,7 +316,7 @@ export const submitSurveyResponse = (payload) =>
     });
 
     export const publishSurvey = (survey_id) =>
-        fetch(`${api}/survey/publish`, {
+        fetch(`/survey/publish`, {
             method: 'POST',
             headers: {
                 ...headers,
@@ -339,7 +334,7 @@ export const submitSurveyResponse = (payload) =>
 
 
 export const getQuestionResponseDitribution = (question_id) =>
-    fetch(`${api}/stats/response/${question_id}`, {
+    fetch(`/stats/response/${question_id}`, {
         method: 'GET',
         headers: {
             ...headers,
@@ -355,7 +350,7 @@ export const getQuestionResponseDitribution = (question_id) =>
     });
 
 export const closeSurvey = (survey_id) =>
-    fetch(`${api}/survey/close/${survey_id}`, {
+    fetch(`/survey/close/${survey_id}`, {
         method: 'GET',
         headers: {
             ...headers,
@@ -371,7 +366,7 @@ export const closeSurvey = (survey_id) =>
     });
 
 export const saveEndDate = (survey_id, end_date) =>
-    fetch(`${api}/survey/savedate/${survey_id}/${end_date}`, {
+    fetch(`/survey/savedate/${survey_id}/${end_date}`, {
         method: 'GET',
         headers: {
             ...headers,
@@ -387,7 +382,7 @@ export const saveEndDate = (survey_id, end_date) =>
     });
 
 export const uploadQuestion = (payload) =>
-    fetch(`${api}/survey/upload/`, {
+    fetch(`/survey/upload/`, {
         method: 'POST',
         headers: {
             ...headers,
