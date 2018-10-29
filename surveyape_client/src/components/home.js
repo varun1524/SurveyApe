@@ -57,10 +57,10 @@ class Home extends Component {
                             isLoggedIn : false,
                             email : ""
                         });
-                        showAlert("Error while getting Survey and Response List", )
+                        showAlert("Error while getting Survey and Response List", alert_types.ERROR, this);
                     }
                     else {
-                        showAlert("Error while getting Survey and Response List", )
+                        showAlert("Error while getting Survey and Response List", alert_types.ERROR, this)
                     }
                 });
             }
