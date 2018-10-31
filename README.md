@@ -166,6 +166,22 @@
 
 ![](Documentation/images/Statistics/short_answer_stats.png)
 
+## Docker Deployment Steps
+### MySQL
+docker run -d -p 6603:3306 --name=docker-mysql --env="MYSQL_ROOT_PASSWORD=username" --env="MYSQL_PASSWORD=password" --env="MYSQL_DATABASE=dbname" mysql
+
+### SpringBoot Server
+#### Build
+docker build -f Dockerfile -t surveyape-server:1.0.2  .
+#### Run
+docker run -t --name surveyape-server --link docker-mysql:mysql -p 8080:8080 surveyape-server:1.0.2
+
+### React Client
+#### Build
+docker build -f Dockerfile -t surveyape-client:1.0.0  .
+#### Run
+docker run -t --name surveyape-client --link surveyape-server:surveyape-server -p 3000:3000 surveyape-client:1.0.0
+
 
 ## Team Members
 
